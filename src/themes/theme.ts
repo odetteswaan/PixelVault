@@ -1,0 +1,66 @@
+export const theme = {
+  typography: {
+    fontFamily: {
+      fallback: "sans-serif",
+      headers: "Jost",
+      body: "Open Sans",
+      header2: "Poppins",
+    },
+    fontSizes: {
+      10: "1rem",
+      12: "1.2rem",
+      14: "1.4rem",
+      16: "1.6rem",
+      18: "1.8rem",
+      20: "2rem",
+      24: "2.4rem",
+      30: "3rem",
+      44: "4.4rem",
+      52: "5.2rem",
+      62: "6.2rem",
+      74: "7.4rem",
+      86: "8.6rem",
+      98: "9.8rem",
+    },
+    fontWeights: {
+      default: 400,
+      medium: 500,
+      semiBold: 600,
+      bold: 700,
+    },
+    lineHeights: {
+      Default: 1,
+      small: 1.05,
+      medium: 1.2,
+      paragraphDefault: 1.6,
+      large: 1.8,
+    },
+    letterSpacing: {
+      small: "-0.5px",
+      large: "0.75px",
+    },
+  },
+  whitespace: {
+    spacings: {
+      2: "0.2rem",
+      4: "0.4rem",
+      8: "0.8rem",
+      12: "1.2rem",
+      16: "1.6rem",
+      24: "2.4rem",
+      32: "3.2rem",
+      48: "4.8rem",
+      64: "6.4rem",
+      80: "8rem",
+      96: "9.6rem",
+      128: "12.8rem",
+    },
+  },
+  borders: {
+    default: "9px",
+    medium: "11px",
+  },
+  shadows: {
+    default: "0 2.4rem 4.8rem rgba(0, 0, 0, 0.075)",
+  },
+};
