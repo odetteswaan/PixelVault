@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   IconButton,
@@ -55,7 +55,7 @@ const LogoImage = styled('img')({
 
 const Heading = styled(Typography)({
   color: colors.body.white,
-  fontFamily: theme.typography.fontFamily.headers,
+  fontFamily: theme.typography.fontFamily.main,
   wordSpacing: theme.typography.letterSpacing.small,
 });
 
@@ -63,7 +63,7 @@ const SubHeading = styled(Typography)({
   color: colors.body.white,
   opacity: 0.4,
   marginTop: '0.5rem',
-  fontFamily: theme.typography.fontFamily.body,
+  fontFamily: theme.typography.fontFamily.main,
 });
 
 const ImageBox = styled(Box)({
@@ -78,7 +78,7 @@ const HomeImageStyled = styled('img')({
 });
 
 const LoginHeading = styled(Typography)({
-  fontFamily: theme.typography.fontFamily.headers,
+  fontFamily: theme.typography.fontFamily.main,
   color: colors.headers.darkBlack,
   fontWeight: theme.typography.fontWeights.bold,
   marginBottom: '0.3rem',
@@ -87,16 +87,17 @@ const LoginHeading = styled(Typography)({
 
 const LoginSubHeading = styled(Typography)({
   color: colors.body.lightGrey,
-  fontFamily: theme.typography.fontFamily.body,
+  fontFamily: theme.typography.fontFamily.main,
   fontWeight: theme.typography.fontWeights.default,
   marginBottom: '2.5rem',
 });
 
-const StyledLabel = styled(Typography)({
+const StyledLabel = styled(Typography)(({ error }: { error?: boolean }) => ({
   fontFamily: theme.typography.fontFamily.body,
-  color: colors.body.lightGrey,
+  fontWeight: theme.typography.fontWeights.medium,
+  color: error ? '#E15552' : colors.body.lightGrey,
   marginBottom: theme.whitespace.spacings[2],
-});
+}));
 
 const StyledTextField = styled(TextField)({
   marginBottom: theme.whitespace.spacings[8],
@@ -104,15 +105,16 @@ const StyledTextField = styled(TextField)({
 });
 
 const StyledLink = styled(Link)({
-  fontFamily: theme.typography.fontFamily.body,
+  fontFamily: theme.typography.fontFamily.main,
   color: colors.primary.electricIndigo,
   textDecoration: 'none',
   fontSize: theme.typography.fontSizes[10],
+  cursor: 'pointer',
 });
 
 const StyledButton = styled(Button)({
   background: colors.primary.metallicViolet,
-  fontFamily: theme.typography.fontFamily.body,
+  fontFamily: theme.typography.fontFamily.main,
   color: colors.body.white,
   marginBottom: '0.5rem',
   marginTop: '1.5rem',
@@ -120,7 +122,7 @@ const StyledButton = styled(Button)({
 });
 
 const StyledFormControlLabel = styled(FormControlLabel)({
-  fontFamily: theme.typography.fontFamily.body,
+  fontFamily: theme.typography.fontFamily.main,
   color: colors.body.lightGrey,
   fontSize: theme.typography.fontSizes[10],
 });
@@ -139,21 +141,75 @@ const StyledBox = styled(Box)({
 
 const CenteredText = styled(Typography)({
   textAlign: 'center',
-  fontFamily: theme.typography.fontFamily.body,
+  fontFamily: theme.typography.fontFamily.main,
   color: colors.body.lightGrey,
   fontSize: theme.typography.fontSizes[10],
 });
 
+const ErrorText = styled(Typography)({
+  fontFamily: 'Urbanist',
+  fontWeight: 500,
+  fontStyle: 'italic',
+  fontSize: '14px',
+  marginBottom: theme.whitespace.spacings[2],
+  color: '#E15552',
+});
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const idRegex = /^\d+$/;
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const userId = useRef<HTMLInputElement>(null);
-  const Password = useRef<HTMLInputElement>(null);
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { email: '', password: '' };
+
+    if (!formData.email) {
+      newErrors.email = 'Please enter your email';
+      isValid = false;
+    } else if (
+      !emailRegex.test(formData.email) &&
+      !idRegex.test(formData.email)
+    ) {
+      newErrors.email = 'Invalid email or ID';
+      isValid = false;
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Please enter your password';
+      isValid = false;
+    } else if (!passwordRegex.test(formData.password)) {
+      newErrors.password = 'Invalid password';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const enteredId = userId.current?.value;
-    const enteredPassword = Password.current?.value;
-    console.log(enteredId, enteredPassword);
+    if (validateForm()) {
+      console.log('Form submitted:', formData.email, formData.password);
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handlePasswordShow = () => {
@@ -187,17 +243,42 @@ function Login() {
         </LoginSubHeading>
         <StyledBox>
           <form onSubmit={handleSubmit}>
-            <StyledLabel variant="body2">Employee ID/Email ID</StyledLabel>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <StyledLabel error={!!errors.email} variant="body2">
+                Employee ID/Email ID
+              </StyledLabel>
+              <ErrorText>{errors.email}</ErrorText>
+            </Box>
             <StyledTextField
               size="small"
               placeholder="1004320"
-              inputRef={userId}
+              name="email"
+              onChange={handleChange}
+              value={formData.email}
+              error={!!errors.email}
             />
-            <StyledLabel variant="body2">Your Password</StyledLabel>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <StyledLabel error={!!errors.password} variant="body2">
+                Your Password
+              </StyledLabel>
+              <ErrorText>{errors.password}</ErrorText>
+            </Box>
             <StyledTextField
               size="small"
               placeholder="Enter your password"
-              inputRef={Password}
+              value={formData.password}
+              name="password"
+              onChange={handleChange}
               type={showPassword ? 'text' : 'password'}
               InputProps={{
                 endAdornment: (
@@ -212,6 +293,7 @@ function Login() {
                   </InputAdornment>
                 ),
               }}
+              error={!!errors.password}
             />
             <FlexBox>
               <StyledFormControlLabel
