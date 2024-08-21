@@ -306,7 +306,8 @@ function Login() {
               Sign In Now
             </StyledButton>
             <CenteredText variant="body2">
-              Don’t have an account? <StyledLink>sign up now.</StyledLink>
+              Don’t have an account?{' '}
+              <StyledLink href="signup">sign up now.</StyledLink>
             </CenteredText>
           </form>
         </StyledBox>
