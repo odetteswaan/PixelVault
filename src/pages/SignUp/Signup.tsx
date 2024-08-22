@@ -16,6 +16,15 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import HomeImage from '../../assets/HomeImage.png';
 import logo from '../../assets/Actual-pixel-logo.png';
 
+interface FormErrors {
+  employeeId?: string;
+  email?: string;
+  fullName?: string;
+  designation?: string;
+  password?: string;
+  confirmPassword?: string;
+}
+
 const Container = styled(Box)({
   width: '100vw',
   height: '100vh',
@@ -96,12 +105,17 @@ const StyledLabel = styled(Typography)({
 });
 
 const StyledTextField = styled(TextField)({
-  marginBottom: theme.whitespace.spacings[8],
   width: '100%',
   '& .MuiOutlinedInput-root': {
     '&.Mui-focused fieldset': {
       borderColor: colors.primary.metallicViolet,
     },
+    '&.Mui-error fieldset': {
+      borderColor: 'red',
+    },
+  },
+  '& .MuiFormHelperText-root': {
+    color: 'red',
   },
 });
 
@@ -116,7 +130,6 @@ const FlexBox = styled(Box)({
   width: '100%',
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
   gap: '5%',
 });
 
@@ -155,8 +168,28 @@ function Signup() {
     confirmPassword: '',
   });
 
+  const [errors, setErrors] = useState<FormErrors>({});
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log('Form submitted:', formData);
+    const newErrors: FormErrors = {};
+
+    // Example validation logic
+    if (!formData.employeeId) newErrors.employeeId = 'employee id is required';
+    if (!formData.email.includes('@')) newErrors.email = 'Email must be valid';
+    if (!formData.fullName) newErrors.fullName = 'employee id is required';
+    if (!formData.designation)
+      newErrors.designation = 'designation is required';
+    if (!formData.password) newErrors.password = 'Password is required';
+    if (formData.password !== formData.confirmPassword)
+      newErrors.confirmPassword = 'Confirm password does not match';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     console.log('Form submitted:', formData);
   };
 
@@ -199,7 +232,15 @@ function Signup() {
           Enter your details and create a password to continue with us.
         </LoginSubHeading>
         <StyledBox>
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minHeight: '300px',
+            }}
+          >
             <FlexBox>
               <Box>
                 <StyledLabel variant="body2">Your Employee ID</StyledLabel>
@@ -209,6 +250,8 @@ function Signup() {
                   name="employeeId"
                   onChange={handleChange}
                   value={formData.employeeId}
+                  error={!!errors.employeeId}
+                  helperText={errors.employeeId}
                 />
               </Box>
               <Box>
@@ -221,6 +264,8 @@ function Signup() {
                   name="email"
                   onChange={handleChange}
                   value={formData.email}
+                  error={!!errors.email}
+                  helperText={errors.email}
                 />
               </Box>
             </FlexBox>
@@ -233,6 +278,8 @@ function Signup() {
                   name="fullName"
                   onChange={handleChange}
                   value={formData.fullName}
+                  error={!!errors.fullName}
+                  helperText={errors.fullName}
                 />
               </Box>
               <Box>
@@ -243,6 +290,8 @@ function Signup() {
                   name="designation"
                   onChange={handleChange}
                   value={formData.designation}
+                  error={!!errors.designation}
+                  helperText={errors.designation}
                 />
               </Box>
             </FlexBox>
@@ -256,6 +305,8 @@ function Signup() {
                   onChange={handleChange}
                   value={formData.password}
                   type={showPassword ? 'text' : 'password'}
+                  helperText={errors.password}
+                  error={!!errors.password}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -280,6 +331,8 @@ function Signup() {
                   onChange={handleChange}
                   value={formData.confirmPassword}
                   type={showConfirmPassword ? 'text' : 'password'}
+                  error={!!errors.confirmPassword}
+                  helperText={errors.confirmPassword}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">

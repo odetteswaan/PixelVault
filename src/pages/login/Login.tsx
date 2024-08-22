@@ -89,7 +89,6 @@ const LoginHeading = styled(Typography)({
 const LoginSubHeading = styled(Typography)({
   color: colors.greys.grey,
   fontFamily: theme.typography.fontFamily.main,
-  fontWeight: theme.typography.fontWeights.default,
   marginBottom: '2.5rem',
 });
 
