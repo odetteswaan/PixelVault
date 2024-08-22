@@ -79,6 +79,7 @@ const HomeImageStyled = styled('img')({
 
 const LoginHeading = styled(Typography)({
   fontFamily: theme.typography.fontFamily.main,
+  fontSize: theme.typography.fontSizes[18],
   color: colors.headers.darkBlack,
   fontWeight: theme.typography.fontWeights.bold,
   marginBottom: '0.3rem',
@@ -86,7 +87,7 @@ const LoginHeading = styled(Typography)({
 });
 
 const LoginSubHeading = styled(Typography)({
-  color: colors.body.lightGrey,
+  color: colors.greys.grey,
   fontFamily: theme.typography.fontFamily.main,
   fontWeight: theme.typography.fontWeights.default,
   marginBottom: '2.5rem',
@@ -94,21 +95,24 @@ const LoginSubHeading = styled(Typography)({
 
 const StyledLabel = styled(Typography)(({ error }: { error?: boolean }) => ({
   fontFamily: theme.typography.fontFamily.body,
-  fontWeight: theme.typography.fontWeights.medium,
-  color: error ? '#E15552' : colors.body.lightGrey,
+  color: error ? '#E15552' : colors.greys.grey,
   marginBottom: theme.whitespace.spacings[2],
 }));
 
 const StyledTextField = styled(TextField)({
   marginBottom: theme.whitespace.spacings[8],
   width: '100%',
+  '& .MuiOutlinedInput-root': {
+    '&.Mui-focused fieldset': {
+      borderColor: colors.primary.metallicViolet,
+    },
+  },
 });
 
 const StyledLink = styled(Link)({
   fontFamily: theme.typography.fontFamily.main,
   color: colors.primary.electricIndigo,
   textDecoration: 'none',
-  fontSize: theme.typography.fontSizes[10],
   cursor: 'pointer',
 });
 
@@ -116,9 +120,13 @@ const StyledButton = styled(Button)({
   background: colors.primary.metallicViolet,
   fontFamily: theme.typography.fontFamily.main,
   color: colors.body.white,
+  textTransform: 'none',
   marginBottom: '0.5rem',
   marginTop: '1.5rem',
   width: '100%',
+  '&:hover': {
+    background: colors.primary.violet,
+  },
 });
 
 const StyledFormControlLabel = styled(FormControlLabel)({
@@ -143,7 +151,6 @@ const CenteredText = styled(Typography)({
   textAlign: 'center',
   fontFamily: theme.typography.fontFamily.main,
   color: colors.body.lightGrey,
-  fontSize: theme.typography.fontSizes[10],
 });
 
 const ErrorText = styled(Typography)({

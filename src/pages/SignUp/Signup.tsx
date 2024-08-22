@@ -29,7 +29,7 @@ const LeftContainer = styled(Box)({
   padding: '10% 6%',
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.whitespace.spacings[32],
+  gap: theme.whitespace.spacings[48],
 });
 
 const RightContainer = styled(Box)({
@@ -76,13 +76,14 @@ const HomeImageStyled = styled('img')({
 
 const LoginHeading = styled(Typography)({
   fontFamily: theme.typography.fontFamily.main,
+  fontSize: theme.typography.fontSizes[18],
   color: colors.headers.darkBlack,
   fontWeight: theme.typography.fontWeights.bold,
   marginBottom: '0.3rem',
 });
 
 const LoginSubHeading = styled(Typography)({
-  color: colors.body.lightGrey,
+  color: colors.greys.grey,
   fontFamily: theme.typography.fontFamily.main,
   fontWeight: theme.typography.fontWeights.default,
   marginBottom: '2.5rem',
@@ -90,14 +91,18 @@ const LoginSubHeading = styled(Typography)({
 
 const StyledLabel = styled(Typography)({
   fontFamily: theme.typography.fontFamily.body,
-  fontWeight: theme.typography.fontWeights.medium,
-  color: colors.body.lightGrey,
+  color: colors.greys.grey,
   marginBottom: theme.whitespace.spacings[2],
 });
 
 const StyledTextField = styled(TextField)({
   marginBottom: theme.whitespace.spacings[8],
   width: '100%',
+  '& .MuiOutlinedInput-root': {
+    '&.Mui-focused fieldset': {
+      borderColor: colors.primary.metallicViolet,
+    },
+  },
 });
 
 const StyledLink = styled(Link)({
@@ -123,9 +128,13 @@ const StyledButton = styled(Button)({
   background: colors.primary.metallicViolet,
   fontFamily: theme.typography.fontFamily.main,
   color: colors.body.white,
+  textTransform: 'none',
   marginBottom: '0.5rem',
   marginTop: '1.5rem',
   width: '80%',
+  '&:hover': {
+    background: colors.primary.violet,
+  },
 });
 
 const CenteredText = styled(Typography)({
