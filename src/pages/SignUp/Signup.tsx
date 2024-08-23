@@ -156,6 +156,11 @@ const CenteredText = styled(Typography)({
   color: colors.body.lightGrey,
 });
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const idRegex = /^\d+$/;
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -175,13 +180,23 @@ function Signup() {
     console.log('Form submitted:', formData);
     const newErrors: FormErrors = {};
 
-    // Example validation logic
     if (!formData.employeeId) newErrors.employeeId = 'employee id is required';
-    if (!formData.email.includes('@')) newErrors.email = 'Email must be valid';
+    else if (!idRegex.test(formData.employeeId)) {
+      newErrors.employeeId = 'Employee ID must be numeric';
+    }
+    if (!formData.email) newErrors.email = 'Email is required';
+    else if (!emailRegex.test(formData.email)) {
+      newErrors.email = 'Email must be valid';
+    }
+
     if (!formData.fullName) newErrors.fullName = 'employee id is required';
     if (!formData.designation)
       newErrors.designation = 'designation is required';
-    if (!formData.password) newErrors.password = 'Password is required';
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (!passwordRegex.test(formData.password)) {
+      newErrors.password = 'password must be valid';
+    }
     if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = 'Confirm password does not match';
 
