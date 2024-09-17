@@ -134,6 +134,10 @@ const StyledFormControlLabel = styled(FormControlLabel)({
   fontSize: theme.typography.fontSizes[10],
 });
 
+const FlexContainer = styled(Box)({
+  display: 'flex',
+  justifyContent: 'space-between',
+});
 const FlexBox = styled(Box)({
   marginBottom: '10px',
   width: '100%',
@@ -249,17 +253,12 @@ function Login() {
         </LoginSubHeading>
         <StyledBox>
           <form onSubmit={handleSubmit}>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
+            <FlexContainer>
               <StyledLabel error={!!errors.email} variant="body2">
                 Employee ID/Email ID
               </StyledLabel>
               <ErrorText>{errors.email}</ErrorText>
-            </Box>
+            </FlexContainer>
             <StyledTextField
               size="small"
               placeholder="1004320"
@@ -268,17 +267,12 @@ function Login() {
               value={formData.email}
               error={!!errors.email}
             />
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
+            <FlexContainer>
               <StyledLabel error={!!errors.password} variant="body2">
                 Your Password
               </StyledLabel>
               <ErrorText>{errors.password}</ErrorText>
-            </Box>
+            </FlexContainer>
             <StyledTextField
               size="small"
               placeholder="Enter your password"

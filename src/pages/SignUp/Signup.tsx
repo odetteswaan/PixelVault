@@ -149,6 +149,12 @@ const StyledButton = styled(Button)({
     background: colors.primary.violet,
   },
 });
+const ButtonBox = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
 
 const CenteredText = styled(Typography)({
   textAlign: 'center',
@@ -368,14 +374,7 @@ function Signup() {
               </Box>
             </FlexBox>
 
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            <ButtonBox>
               <StyledButton variant="contained" type="submit">
                 Create Account
               </StyledButton>
@@ -383,7 +382,7 @@ function Signup() {
                 Already have an account?
                 <StyledLink href="login">Sign In Now</StyledLink>
               </CenteredText>
-            </Box>
+            </ButtonBox>
           </form>
         </StyledBox>
       </RightContainer>
