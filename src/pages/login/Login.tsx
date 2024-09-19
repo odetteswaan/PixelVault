@@ -258,7 +258,7 @@ function Login() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (validateForm()) {
-      console.log('Form submitted:', formData.email, formData.password);
+      return true;
     }
   };
 

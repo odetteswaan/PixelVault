@@ -227,7 +227,6 @@ function Signup() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Form submitted:', formData);
     const newErrors: FormErrors = {};
 
     if (!formData.employeeId) newErrors.employeeId = 'employee id is required';
@@ -254,8 +253,6 @@ function Signup() {
       setErrors(newErrors);
       return;
     }
-
-    console.log('Form submitted:', formData);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
