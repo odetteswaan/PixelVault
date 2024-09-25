@@ -68,6 +68,11 @@ const OtpInput = styled(TextField)({
   '& input': {
     textAlign: 'center',
   },
+  '& .MuiOutlinedInput-root': {
+    '&.Mui-focused fieldset': {
+      borderColor: colors.primary.metallicViolet,
+    },
+  },
 });
 
 const SubmitButton = styled(Button)({
