@@ -20,7 +20,6 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import HomeImage from '../../assets/HomeImage.svg';
 import logo from '../../assets/Actual-pixel-logo.svg';
 import MobileLogo from '../../assets/Mobile-logo.svg';
-
 import ForgotPassword from '../ForgotPassword/ForgotPassword';
 import { useNavigate, NavLink } from 'react-router-dom';
 
