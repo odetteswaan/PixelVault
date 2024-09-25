@@ -15,6 +15,7 @@ const allRoutes = createBrowserRouter(
       <Route errorElement={<ErrorPage />}>
         <Route path={`/${paths.login}`} element={<Login />} />
         <Route path={`/${paths.signup}`} element={<Signup />} />
+        <Route path={`/${paths.forgotPassword}`} element={<Login />} />
 
         {/* /protected */}
         <Route element={<ProtectedRoutes />} path={paths.root}>

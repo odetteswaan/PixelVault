@@ -6,6 +6,7 @@ export const colors = {
     pear: '#DCEA36',
     purple: '#9934FF',
     lavender: '#BAFF75',
+    red: '#E15552',
   },
   tints: {},
   shades: {},

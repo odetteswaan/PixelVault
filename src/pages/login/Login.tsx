@@ -3,7 +3,6 @@ import {
   Box,
   IconButton,
   InputAdornment,
-  Link,
   Checkbox,
   TextField,
   Typography,
@@ -21,6 +20,9 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import HomeImage from '../../assets/HomeImage.svg';
 import logo from '../../assets/Actual-pixel-logo.svg';
 import MobileLogo from '../../assets/Mobile-logo.svg';
+
+import ForgotPassword from '../ForgotPassword/ForgotPassword';
+import { useNavigate, NavLink } from 'react-router-dom';
 
 const Container = styled(Box)(({ theme }) => ({
   height: '100vh',
@@ -43,7 +45,6 @@ const LeftContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'space-between',
   alignItems: 'center',
-  //gap: theme.whitespace.spacings[32],
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     minHeight: '50vh',
@@ -151,7 +152,7 @@ const StyledTextField = styled(TextField)({
   },
 });
 
-const StyledLink = styled(Link)({
+const StyledLink = styled(NavLink)({
   fontFamily: theme.typography.fontFamily.main,
   color: colors.primary.electricIndigo,
   fontWeight: theme.typography.fontWeights.medium,
@@ -215,6 +216,7 @@ const passwordRegex =
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -227,6 +229,18 @@ function Login() {
   });
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const navigate = useNavigate();
+
+  const handleForgotPassword = () => {
+    setShowForgotPassword(true);
+    navigate('/forgotPassword');
+  };
+
+  const handleCloseForgotPassword = () => {
+    setShowForgotPassword(false);
+    navigate('/login');
+  };
 
   const validateForm = () => {
     let isValid = true;
@@ -273,6 +287,10 @@ function Login() {
 
   return (
     <Container>
+      <ForgotPassword
+        open={showForgotPassword}
+        setShowForgotPassword={handleCloseForgotPassword}
+      />
       <ImageContainer>
         {isMobile ? (
           <LogoImage src={MobileLogo} alt="Logo" />
@@ -350,14 +368,16 @@ function Login() {
                   control={<Checkbox size="small" />}
                   label="Remember me?"
                 />
-                <StyledLink href="forgotPassword">Forgot Password?</StyledLink>
+                <StyledLink to="#" onClick={handleForgotPassword}>
+                  Forgot Password?
+                </StyledLink>
               </FlexBox>
               <StyledButton variant="contained" type="submit">
                 Sign In Now
               </StyledButton>
               <CenteredText variant="body2">
                 Don’t have an account?{' '}
-                <StyledLink href="signup">sign up now.</StyledLink>
+                <StyledLink to="signup">sign up now.</StyledLink>
               </CenteredText>
             </form>
           </StyledBox>
