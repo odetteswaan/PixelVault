@@ -19,18 +19,16 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
   const [newPassword, setNewPassword] = useState('');
 
   const handleSendOtp = () => {
-    console.log(`Sending OTP to ${email}`);
     setStep(2);
   };
 
   const handleVerifyOtp = () => {
-    console.log(`Verifying OTP ${otp}`);
     setStep(3);
   };
 
   const handleResetPassword = () => {
-    console.log(`Resetting password to ${newPassword}`);
     HandleClose();
+    setStep(1);
   };
 
   const HandleClose = () => {
