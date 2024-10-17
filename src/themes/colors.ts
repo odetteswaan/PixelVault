@@ -12,6 +12,8 @@ export const colors = {
   shades: {},
   greys: {
     grey: '#8A92A6',
+    dustygrey: '#A1AAB9',
+    darkgrey: '#6c6c6c',
   },
   headers: {
     darkBlack: '#1b1b1b',

@@ -23,8 +23,14 @@ const Container = styled(Box)({
 const CloseButton = styled(Button)({
   position: 'absolute',
   top: 10,
+  borderRadius: '6px',
   right: 10,
-  color: '#6c6c6c',
+  color: colors.greys.darkgrey,
+  minWidth: '0',
+  lineHeight: '10px',
+  padding: '5px',
+  background: colors.greys.dustygrey,
+  border: colors.greys.dustygrey,
 });
 
 const ImageContainer = styled(Box)({

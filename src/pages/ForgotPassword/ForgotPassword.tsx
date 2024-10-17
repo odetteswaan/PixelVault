@@ -3,6 +3,7 @@ import { Dialog } from '@mui/material';
 import VerifyOtp from './VerifyOTP';
 import ResetPassword from './ResetPassword';
 import EnterEmail from './EnterEmail';
+import SuccessMessage from './SuccessMessage';
 
 interface ForgotPasswordProps {
   open: boolean;
@@ -17,6 +18,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState<string[]>(['', '', '', '']);
   const [newPassword, setNewPassword] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleSendOtp = () => {
     setStep(2);
@@ -35,33 +37,45 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
     setShowForgotPassword(false);
   };
 
+  const handleSuccessClose = () => {
+    setShowSuccess(false);
+  };
+
   return (
-    <Dialog open={open} onClose={HandleClose} maxWidth="sm">
-      {step === 1 && (
-        <EnterEmail
-          email={email}
-          setEmail={setEmail}
-          onSendOtp={handleSendOtp}
-          onClose={HandleClose}
-        />
+    <>
+      <Dialog open={open} onClose={HandleClose} maxWidth="sm">
+        {step === 1 && (
+          <EnterEmail
+            email={email}
+            setEmail={setEmail}
+            onSendOtp={handleSendOtp}
+            onClose={HandleClose}
+          />
+        )}
+        {step === 2 && (
+          <VerifyOtp
+            otp={otp}
+            setOtp={setOtp}
+            onVerifyOtp={handleVerifyOtp}
+            onClose={HandleClose}
+          />
+        )}
+        {step === 3 && (
+          <ResetPassword
+            newPassword={newPassword}
+            setNewPassword={setNewPassword}
+            onResetPassword={handleResetPassword}
+            onClose={HandleClose}
+            setShowSuccess={setShowSuccess}
+          />
+        )}
+      </Dialog>
+      {showSuccess && (
+        <Dialog open={showSuccess} onClose={handleSuccessClose} maxWidth="sm">
+          <SuccessMessage onClose={handleSuccessClose} />
+        </Dialog>
       )}
-      {step === 2 && (
-        <VerifyOtp
-          otp={otp}
-          setOtp={setOtp}
-          onVerifyOtp={handleVerifyOtp}
-          onClose={HandleClose}
-        />
-      )}
-      {step === 3 && (
-        <ResetPassword
-          newPassword={newPassword}
-          setNewPassword={setNewPassword}
-          onResetPassword={handleResetPassword}
-          onClose={HandleClose}
-        />
-      )}
-    </Dialog>
+    </>
   );
 };
 
