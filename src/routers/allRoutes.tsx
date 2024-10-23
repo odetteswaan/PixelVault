@@ -8,6 +8,7 @@ import { paths } from 'src/routers/paths';
 import { CounterPage, HomePage, ErrorPage } from 'src/routers/loads/lazyLoads';
 import Login from '../pages/login/Login';
 import Signup from 'src/pages/SignUp/Signup';
+import Dashboard from 'src/pages/dashboard/Dashboard';
 
 const allRoutes = createBrowserRouter(
   createRoutesFromElements(
@@ -15,7 +16,10 @@ const allRoutes = createBrowserRouter(
       <Route errorElement={<ErrorPage />}>
         <Route path={`/${paths.login}`} element={<Login />} />
         <Route path={`/${paths.signup}`} element={<Signup />} />
+        <Route path={`/${paths.dashboard}`} element={<Dashboard />} />
         <Route path={`/${paths.forgotPassword}`} element={<Login />} />
+        <Route path="/new-ticket" element={<Dashboard />} />
+        <Route path="/request-asset" element={<Dashboard />} />
 
         {/* /protected */}
         <Route element={<ProtectedRoutes />} path={paths.root}>
