@@ -25,7 +25,7 @@ import { useNavigate, NavLink } from 'react-router-dom';
 
 const Container = styled(Box)(({ theme }) => ({
   height: '100vh',
-  width: '100vw',
+  width: '100%',
   display: 'flex',
   position: 'relative',
   [theme.breakpoints.down('sm')]: {
@@ -39,7 +39,7 @@ const Container = styled(Box)(({ theme }) => ({
 const LeftContainer = styled(Box)(({ theme }) => ({
   width: '50%',
   background: colors.primary.metallicViolet,
-  padding: '10% 6%',
+  padding: '5% 6%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
