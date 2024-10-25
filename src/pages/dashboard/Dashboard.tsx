@@ -2,13 +2,12 @@ import { Box, styled } from '@mui/material';
 import TopNav from '../../components/navbar/TopNav';
 import SideNav from '../../components/navbar/SideNav';
 import Profile from './Profile';
-import { colors } from 'src/themes/colors';
 import { theme } from 'src/themes/theme';
 
 const DashboardContainer = styled(Box)({
   display: 'flex',
-  height: '100vh',
-  width: '100vw',
+  height: 'auto',
+  width: '100%',
 });
 
 const SideNavContainer = styled(Box)({
@@ -19,7 +18,6 @@ const MainContent = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   width: '80%',
-  border: `1px solid ${colors.primary.electricIndigo}`,
 });
 const TopNavContainer = styled(Box)({
   height: '15%',

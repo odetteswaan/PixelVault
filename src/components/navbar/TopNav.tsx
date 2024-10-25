@@ -5,7 +5,6 @@ import { colors } from 'src/themes/colors';
 import { theme } from 'src/themes/theme';
 
 const TopNavContainer = styled(Box)({
-  border: '1px solid green',
   padding: '1% 5%',
   display: 'flex',
   justifyContent: 'space-between',
@@ -46,12 +45,13 @@ const StyledTextField = styled(TextField)({
 const Header = styled(Typography)({
   color: colors.headers.charcoalBlack,
   fontFamily: theme.typography.fontFamily.main,
+  fontSize: theme.typography.fontSizes[12],
   fontWeight: theme.typography.fontWeights.bold,
 });
 
 const SubHeading = styled(Typography)({
   fontFamily: theme.typography.fontFamily.main,
-  fontSize: theme.typography.fontSizes[10],
+  fontSize: '13px',
   color: colors.greys.grey,
 });
 
@@ -59,8 +59,8 @@ function TopNav() {
   return (
     <TopNavContainer>
       <LeftSection>
-        <Header variant="h5">Good Evening, Camero 🤩</Header>
-        <SubHeading variant="body2">
+        <Header>Good Evening, Camero 🤩</Header>
+        <SubHeading>
           It’s a great day to optimise your asset management for greater
           efficiency and growth.
         </SubHeading>
