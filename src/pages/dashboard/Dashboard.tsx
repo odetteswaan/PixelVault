@@ -7,6 +7,7 @@ import { theme } from 'src/themes/theme';
 const DashboardContainer = styled(Box)({
   display: 'flex',
   height: 'auto',
+  minHeight: '100%',
   width: '100%',
 });
 
@@ -20,7 +21,10 @@ const MainContent = styled(Box)({
   width: '80%',
 });
 const TopNavContainer = styled(Box)({
-  height: '15%',
+  borderBottom: '1px solid #ECECEC',
+  padding: '1% 3%',
+  display: 'flex',
+  alignItems: 'center',
 });
 
 const ContentWrapper = styled(Box)({

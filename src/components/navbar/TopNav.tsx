@@ -5,9 +5,10 @@ import { colors } from 'src/themes/colors';
 import { theme } from 'src/themes/theme';
 
 const TopNavContainer = styled(Box)({
-  padding: '1% 5%',
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '100%',
 });
 
 const LeftSection = styled(Box)({
@@ -25,11 +26,13 @@ const RightSection = styled(Box)({
 
 const StyledTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
+    borderRadius: '0 5px 5px 0',
+    height: '40px',
     '& fieldset': {
       borderColor: colors.greys.lightGrey,
     },
     '& input': {
-      height: '30px',
+      height: '100%',
       padding: '6px 10px',
       background: colors.primary.grayishWhite,
     },
@@ -55,6 +58,23 @@ const SubHeading = styled(Typography)({
   color: colors.greys.grey,
 });
 
+const StyledBox = styled(Box)({
+  width: '50px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: '5px 0 0 5px',
+  height: '40px',
+  background: colors.primary.grayishWhite,
+  border: `1px solid ${colors.greys.lightGrey}`,
+});
+const StyledText = styled(Typography)({
+  fontFamily: 'Urbanist',
+  fontSize: '14px',
+  fontWeight: '500',
+  color: '#8A96A8',
+});
+
 function TopNav() {
   return (
     <TopNavContainer>
@@ -67,7 +87,12 @@ function TopNav() {
       </LeftSection>
 
       <RightSection>
-        <StyledTextField placeholder="search..." variant="outlined" />
+        <Box display="flex" alignItems="center">
+          <StyledBox>
+            <StyledText>All</StyledText>
+          </StyledBox>
+          <StyledTextField placeholder="search..." variant="outlined" />
+        </Box>
         <img src={notificationLogo} alt="Notifications" />
         <Avatar />
       </RightSection>
