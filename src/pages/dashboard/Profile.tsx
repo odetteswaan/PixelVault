@@ -257,7 +257,7 @@ function Profile() {
             <Grid item xs={12} sm={6}>
               <StyledLabel>Address</StyledLabel>
               <StyledTextfield
-                multiline
+                multiline={!isSmallScreen}
                 rows={2}
                 onChange={handleChange}
                 name="address"

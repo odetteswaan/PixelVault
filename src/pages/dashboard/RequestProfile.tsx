@@ -38,11 +38,12 @@ const ContentBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-const WelcomeContainer = styled(Box)({
+const WelcomeContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
+  textAlign: 'center',
   marginTop: customTheme.whitespace.spacings[12],
   '& .welcome-title': {
     fontSize: customTheme.typography.fontSizes[20],
@@ -55,11 +56,25 @@ const WelcomeContainer = styled(Box)({
     fontFamily: customTheme.typography.fontFamily.main,
     color: colors.body.lightGrey,
   },
-});
+  [theme.breakpoints.down('sm')]: {
+    marginBottom: '30px',
+    padding: '0 10%',
+    gap: '5px',
+    '& .welcome-title': {
+      fontSize: customTheme.typography.fontSizes[16],
+    },
+    '& .welcome-message': {
+      fontSize: customTheme.typography.fontSizes[12],
+    },
+  },
+}));
 
-const StyledContainer = styled(Box)({
+const StyledContainer = styled(Box)(({ theme }) => ({
   padding: '3% 10%',
-});
+  [theme.breakpoints.down('sm')]: {
+    padding: '0',
+  },
+}));
 
 function RequestProfile() {
   return (
