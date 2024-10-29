@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Button, Typography, Box, styled, TextField } from '@mui/material';
 import OtpVerification from '../../assets/OtpVerification.svg';
 import { colors } from 'src/themes/colors';
-import { theme } from 'src/themes/theme';
+import { customTheme } from 'src/themes/theme';
 
 interface VerifyOtpProps {
   otp: string[];
@@ -58,12 +58,12 @@ const TextContainer = styled(Box)({
 });
 
 const StyledTypographyH6 = styled(Typography)({
-  fontFamily: theme.typography.fontFamily.main,
-  fontWeight: theme.typography.fontWeights.semiBold,
+  fontFamily: customTheme.typography.fontFamily.main,
+  fontWeight: customTheme.typography.fontWeights.semiBold,
 });
 
 const StyledTypographyBody2 = styled(Typography)({
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   color: '5A5A5A',
 });
 

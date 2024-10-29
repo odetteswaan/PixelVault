@@ -1,4 +1,4 @@
-export const theme = {
+export const customTheme = {
   typography: {
     fontFamily: {
       fallback: 'sans-serif',

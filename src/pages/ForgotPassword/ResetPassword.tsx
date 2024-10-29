@@ -11,7 +11,7 @@ import {
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { colors } from 'src/themes/colors';
-import { theme } from 'src/themes/theme';
+import { customTheme } from 'src/themes/theme';
 import UpdatePassword from '../../assets/UpdatePassword.svg';
 
 interface ResetPasswordProps {
@@ -69,12 +69,12 @@ const TextContainer = styled(Box)({
 });
 
 const StyledTypographyH6 = styled(Typography)({
-  fontFamily: theme.typography.fontFamily.main,
-  fontWeight: theme.typography.fontWeights.semiBold,
+  fontFamily: customTheme.typography.fontFamily.main,
+  fontWeight: customTheme.typography.fontWeights.semiBold,
 });
 
 const StyledTypographyBody2 = styled(Typography)({
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   color: '#5A5A5A',
 });
 
@@ -83,13 +83,13 @@ const StyledBox = styled(Box)({
 });
 
 const StyledLabel = styled(Typography)({
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   color: colors.body.lightGrey,
-  marginBottom: theme.whitespace.spacings[2],
+  marginBottom: customTheme.whitespace.spacings[2],
 });
 
 const StyledTextField = styled(TextField)({
-  marginBottom: theme.whitespace.spacings[8],
+  marginBottom: customTheme.whitespace.spacings[8],
   width: '100%',
   '& .MuiOutlinedInput-root': {
     '&.Mui-focused fieldset': {

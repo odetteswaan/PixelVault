@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 
 import { colors } from 'src/themes/colors';
-import { theme } from 'src/themes/theme';
+import { customTheme } from 'src/themes/theme';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import HomeImage from '../../assets/HomeImage.svg';
@@ -25,7 +25,7 @@ import { useNavigate, NavLink } from 'react-router-dom';
 
 const Container = styled(Box)(({ theme }) => ({
   height: '100vh',
-  width: '100vw',
+  width: '100%',
   display: 'flex',
   position: 'relative',
   [theme.breakpoints.down('sm')]: {
@@ -39,7 +39,7 @@ const Container = styled(Box)(({ theme }) => ({
 const LeftContainer = styled(Box)(({ theme }) => ({
   width: '50%',
   background: colors.primary.metallicViolet,
-  padding: '10% 6%',
+  padding: '5% 6%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
@@ -85,8 +85,8 @@ const LogoImage = styled('img')({
 
 const Heading = styled(Typography)({
   color: colors.body.white,
-  fontFamily: theme.typography.fontFamily.main,
-  wordSpacing: theme.typography.letterSpacing.small,
+  fontFamily: customTheme.typography.fontFamily.main,
+  wordSpacing: customTheme.typography.letterSpacing.small,
   marginTop: '10px',
 });
 
@@ -94,7 +94,7 @@ const SubHeading = styled(Typography)({
   color: colors.body.white,
   opacity: 0.4,
   marginTop: '0.5rem',
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
 });
 
 const ImageBox = styled(Box)(({ theme }) => ({
@@ -121,28 +121,28 @@ const StyledFormContainer = styled(Box)(({ theme }) => ({
 }));
 
 const LoginHeading = styled(Typography)({
-  fontFamily: theme.typography.fontFamily.main,
-  fontSize: theme.typography.fontSizes[18],
+  fontFamily: customTheme.typography.fontFamily.main,
+  fontSize: customTheme.typography.fontSizes[18],
   color: colors.headers.darkBlack,
-  fontWeight: theme.typography.fontWeights.bold,
+  fontWeight: customTheme.typography.fontWeights.bold,
   marginBottom: '0.3rem',
-  letterSpacing: theme.typography.letterSpacing.small,
+  letterSpacing: customTheme.typography.letterSpacing.small,
 });
 
 const LoginSubHeading = styled(Typography)({
   color: colors.greys.grey,
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   marginBottom: '2.5rem',
 });
 
 const StyledLabel = styled(Typography)(({ error }: { error?: boolean }) => ({
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   color: error ? '#E15552' : colors.greys.grey,
-  marginBottom: theme.whitespace.spacings[2],
+  marginBottom: customTheme.whitespace.spacings[2],
 }));
 
 const StyledTextField = styled(TextField)({
-  marginBottom: theme.whitespace.spacings[8],
+  marginBottom: customTheme.whitespace.spacings[8],
   width: '100%',
   '& .MuiOutlinedInput-root': {
     '&.Mui-focused fieldset': {
@@ -152,16 +152,16 @@ const StyledTextField = styled(TextField)({
 });
 
 const StyledLink = styled(NavLink)({
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   color: colors.primary.electricIndigo,
-  fontWeight: theme.typography.fontWeights.medium,
+  fontWeight: customTheme.typography.fontWeights.medium,
   textDecoration: 'none',
   cursor: 'pointer',
 });
 
 const StyledButton = styled(Button)({
   background: colors.primary.metallicViolet,
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   color: colors.body.white,
   textTransform: 'none',
   marginBottom: '0.5rem',
@@ -173,7 +173,7 @@ const StyledButton = styled(Button)({
 });
 
 const StyledFormControlLabel = styled(FormControlLabel)({
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   color: colors.body.lightGrey,
 });
 
@@ -195,7 +195,7 @@ const StyledBox = styled(Box)({
 
 const CenteredText = styled(Typography)({
   textAlign: 'center',
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   color: colors.body.lightGrey,
 });
 
@@ -204,7 +204,7 @@ const ErrorText = styled(Typography)({
   fontWeight: 500,
   fontStyle: 'italic',
   fontSize: '14px',
-  marginBottom: theme.whitespace.spacings[2],
+  marginBottom: customTheme.whitespace.spacings[2],
   color: '#E15552',
 });
 
