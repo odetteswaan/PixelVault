@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material';
+import { Box, styled, useMediaQuery } from '@mui/material';
 import TopNav from '../../components/navbar/TopNav';
 import SideNav from '../../components/navbar/SideNav';
 import Profile from './Profile';
@@ -15,11 +15,14 @@ const SideNavContainer = styled(Box)({
   width: '20%',
 });
 
-const MainContent = styled(Box)({
+const MainContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   width: '80%',
-});
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+  },
+}));
 const TopNavContainer = styled(Box)({
   borderBottom: '1px solid #ECECEC',
   padding: '1% 3%',
@@ -32,11 +35,14 @@ const ContentWrapper = styled(Box)({
 });
 
 function Dashboard() {
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
   return (
     <DashboardContainer>
-      <SideNavContainer>
-        <SideNav />
-      </SideNavContainer>
+      {!isSmallScreen && (
+        <SideNavContainer>
+          <SideNav />
+        </SideNavContainer>
+      )}
       <MainContent>
         <TopNavContainer>
           <TopNav />

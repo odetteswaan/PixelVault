@@ -9,23 +9,34 @@ const MainContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
 }));
-const HeaderContainer = styled(Box)({
+const HeaderContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: '0 3%',
   borderBottom: `1px solid ${colors.greys.lightGrey}`,
   height: '100px',
-});
+  [theme.breakpoints.down('sm')]: {
+    padding: '3%',
+    height: '150px',
+    borderBottom: `2px solid ${colors.greys.lightGrey}`,
+  },
+}));
 
-const LogoImage = styled('img')({
+const LogoImage = styled('img')(({ theme }) => ({
   width: '100px',
   height: '50px',
-});
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+  },
+}));
 
-const ContentBox = styled(Box)({
+const ContentBox = styled(Box)(({ theme }) => ({
   width: '80%',
-});
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+  },
+}));
 
 const WelcomeContainer = styled(Box)({
   display: 'flex',

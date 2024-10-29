@@ -1,28 +1,43 @@
-import { Avatar, Box, TextField, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import notificationLogo from '../../assets/notification-bing.svg';
 import { colors } from 'src/themes/colors';
 import { theme } from 'src/themes/theme';
+import SideNav from './SideNav';
 
-const TopNavContainer = styled(Box)({
+const TopNavContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   width: '100%',
-});
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column-reverse',
+    gap: '10px',
+  },
+}));
 
 const LeftSection = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
 });
 
-const RightSection = styled(Box)({
+const RightSection = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   width: '400px',
   maxWidth: '100%',
   justifyContent: 'space-between',
-});
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    position: 'relative',
+  },
+}));
 
 const StyledTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
@@ -76,6 +91,7 @@ const StyledText = styled(Typography)({
 });
 
 function TopNav() {
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
   return (
     <TopNavContainer>
       <LeftSection>
@@ -95,6 +111,7 @@ function TopNav() {
         </Box>
         <img src={notificationLogo} alt="Notifications" />
         <Avatar />
+        {isSmallScreen && <SideNav />}
       </RightSection>
     </TopNavContainer>
   );
