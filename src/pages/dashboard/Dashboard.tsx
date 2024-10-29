@@ -23,16 +23,23 @@ const MainContent = styled(Box)(({ theme }) => ({
     width: '100%',
   },
 }));
-const TopNavContainer = styled(Box)({
+const TopNavContainer = styled(Box)(({ theme }) => ({
   borderBottom: '1px solid #ECECEC',
   padding: '1% 3%',
   display: 'flex',
   alignItems: 'center',
-});
+  [theme.breakpoints.down('sm')]: {
+    padding: '3%',
+    marginBottom: '20px',
+  },
+}));
 
-const ContentWrapper = styled(Box)({
+const ContentWrapper = styled(Box)(({ theme }) => ({
   padding: customTheme.whitespace.spacings[16],
-});
+  [theme.breakpoints.down('sm')]: {
+    padding: '0',
+  },
+}));
 
 function Dashboard() {
   const isSmallScreen = useMediaQuery('(max-width:600px)');

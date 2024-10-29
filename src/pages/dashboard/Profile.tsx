@@ -6,19 +6,24 @@ import {
   Grid,
   Button,
   styled,
+  useMediaQuery,
 } from '@mui/material';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 import editImage from '../../assets/EditImage.svg';
 import { useState } from 'react';
 
-const MainContainer = styled(Box)({
+const MainContainer = styled(Box)(({ theme }) => ({
   background: colors.primary.grayishWhite,
   border: `1px solid ${colors.greys.lightGrey}`,
   padding: '20px',
   height: '100%',
   borderRadius: '5px',
-});
+  [theme.breakpoints.down('sm')]: {
+    border: 'none',
+    padding: '25px',
+  },
+}));
 
 const StyledProfile = styled(Typography)({
   borderBottom: `1px solid ${colors.greys.frostedGrey}`,
@@ -30,7 +35,7 @@ const StyledProfile = styled(Typography)({
   paddingBottom: '5px',
 });
 
-const ProfileContainer = styled(Box)({
+const ProfileContainer = styled(Box)(({ theme }) => ({
   width: '20%',
   display: 'flex',
   alignItems: 'center',
@@ -39,7 +44,11 @@ const ProfileContainer = styled(Box)({
   '.job-title': {
     color: `${colors.primary.metallicViolet}`,
   },
-});
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    marginBottom: '20px',
+  },
+}));
 
 const StyledLabel = styled(Typography)({
   color: `${colors.greys.grey}`,
@@ -98,10 +107,14 @@ const StyledEditImage = styled('img')({
   width: '30px',
   height: '30px',
 });
-const StyledFormBox = styled(Box)({
+const StyledFormBox = styled(Box)(({ theme }) => ({
   width: '70%',
   marginBottom: '50px',
-});
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    marginBottom: '10px',
+  },
+}));
 
 const ButtonContainer = styled(Box)({
   display: 'flex',
@@ -139,6 +152,7 @@ function Profile() {
     address: '',
     pinCode: '',
   });
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
   const [isEditing, setIsEditing] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,7 +192,7 @@ function Profile() {
             <Grid item xs={12} sm={6}>
               <StyledLabel>Full Name</StyledLabel>
               <StyledTextfield
-                size="small"
+                size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
                 name="fullName"
               />
@@ -186,7 +200,7 @@ function Profile() {
             <Grid item xs={12} sm={6}>
               <StyledLabel>Mobile Number</StyledLabel>
               <StyledTextfield
-                size="small"
+                size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
                 name="mobileNumber"
               />
@@ -194,7 +208,7 @@ function Profile() {
             <Grid item xs={12} sm={6}>
               <StyledLabel>Office Email ID</StyledLabel>
               <StyledTextfield
-                size="small"
+                size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
                 name="officeEmail"
                 disabled
@@ -203,7 +217,7 @@ function Profile() {
             <Grid item xs={12} sm={6}>
               <StyledLabel>Personal Email ID</StyledLabel>
               <StyledTextfield
-                size="small"
+                size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
                 name="personalEmail"
               />
@@ -211,7 +225,7 @@ function Profile() {
             <Grid item xs={12} sm={6}>
               <StyledLabel>Employee ID</StyledLabel>
               <StyledTextfield
-                size="small"
+                size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
                 name="employeeId"
                 disabled
@@ -219,12 +233,15 @@ function Profile() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <StyledLabel>Company Name</StyledLabel>
-              <StyledTextfield size="small" disabled />
+              <StyledTextfield
+                size={isSmallScreen ? 'medium' : 'small'}
+                disabled
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <StyledLabel>State</StyledLabel>
               <StyledTextfield
-                size="small"
+                size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
                 name="state"
               />
@@ -232,7 +249,7 @@ function Profile() {
             <Grid item xs={12} sm={6}>
               <StyledLabel>City</StyledLabel>
               <StyledTextfield
-                size="small"
+                size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
                 name="city"
               />
@@ -249,7 +266,7 @@ function Profile() {
             <Grid item xs={12} sm={6}>
               <StyledLabel>Pin Code</StyledLabel>
               <StyledTextfield
-                size="small"
+                size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
                 name="pinCode"
               />
