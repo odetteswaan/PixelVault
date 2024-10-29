@@ -1,7 +1,7 @@
 import { Box, styled, Typography, Button } from '@mui/material';
 import SuccessImage from '../../assets/SuccessImage.svg';
 import { colors } from 'src/themes/colors';
-import { theme } from 'src/themes/theme';
+import { customTheme } from 'src/themes/theme';
 
 interface SuccessMessageProps {
   onClose: () => void;
@@ -13,9 +13,9 @@ const Container = styled(Box)({
   borderRadius: '5px',
   display: 'flex',
   flexDirection: 'column',
-  padding: theme.whitespace.spacings[4],
+  padding: customTheme.whitespace.spacings[4],
   justifyContent: 'center',
-  gap: theme.whitespace.spacings[12],
+  gap: customTheme.whitespace.spacings[12],
   alignItems: 'center',
   width: '500px',
   maxWidth: '100%',
@@ -49,15 +49,15 @@ const HeadingContainer = styled(Box)({
 
 const Heading = styled(Typography)({
   color: colors.headers.darkBlack,
-  fontFamily: theme.typography.fontFamily.main,
-  fontSize: theme.typography.fontSizes[16],
-  fontWeight: theme.typography.fontWeights.semiBold,
+  fontFamily: customTheme.typography.fontFamily.main,
+  fontSize: customTheme.typography.fontSizes[16],
+  fontWeight: customTheme.typography.fontWeights.semiBold,
 });
 
 const SubHeading = styled(Typography)({
   color: colors.body.lightGrey,
-  fontFamily: theme.typography.fontFamily.main,
-  fontSize: theme.typography.fontSizes[10],
+  fontFamily: customTheme.typography.fontFamily.main,
+  fontSize: customTheme.typography.fontSizes[10],
   fontWeight: 400,
 });
 

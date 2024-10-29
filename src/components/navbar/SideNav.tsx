@@ -1,7 +1,7 @@
 import { Box, styled } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { colors } from 'src/themes/colors';
-import { theme } from 'src/themes/theme';
+import { customTheme } from 'src/themes/theme';
 import logo from '../../assets/Actual-pixel-logo.svg';
 import Dashboard from '../../assets/sidenavLogos/Dashboard.svg';
 import RiseTicket from '../../assets/sidenavLogos/RiseTicket.svg';
@@ -37,16 +37,16 @@ const StyledList = styled('ul')({
 const StyledListItem = styled(NavLink)({
   display: 'flex',
   alignItems: 'center',
-  fontFamily: theme.typography.fontFamily.main,
-  fontWeight: theme.typography.fontWeights.medium,
-  fontSize: theme.typography.fontSizes[10],
+  fontFamily: customTheme.typography.fontFamily.main,
+  fontWeight: customTheme.typography.fontWeights.medium,
+  fontSize: customTheme.typography.fontSizes[10],
   color: colors.greys.grey,
   padding: '10px',
   borderRadius: '5px',
   textDecoration: 'none',
 
   '&.active': {
-    fontWeight: theme.typography.fontWeights.semiBold,
+    fontWeight: customTheme.typography.fontWeights.semiBold,
     color: colors.primary.metallicViolet,
     borderLeft: `5px solid ${colors.primary.metallicViolet}`,
     background:

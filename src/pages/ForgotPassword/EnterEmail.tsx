@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, styled } from '@mui/material';
 import PasswordWithdraw from '../../assets/Passwordwithdraw.svg';
 import { colors } from 'src/themes/colors';
-import { theme } from 'src/themes/theme';
+import { customTheme } from 'src/themes/theme';
 
 interface EnterEmailProps {
   email: string;
@@ -82,16 +82,16 @@ const SubmitButton = styled(Button)({
 });
 
 const StyledTypographyH6 = styled(Typography)({
-  fontFamily: theme.typography.fontFamily.main,
-  fontWeight: theme.typography.fontWeights.semiBold,
+  fontFamily: customTheme.typography.fontFamily.main,
+  fontWeight: customTheme.typography.fontWeights.semiBold,
 });
 
 const StyledTypographyBody2 = styled(Typography)({
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
 });
 
 const StyledTypographySubtitle = styled(Typography)({
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   color: '#8A92A6',
 });
 
