@@ -8,7 +8,7 @@ import {
 import { styled } from '@mui/material/styles';
 import notificationLogo from '../../assets/notification-bing.svg';
 import { colors } from 'src/themes/colors';
-import { theme } from 'src/themes/theme';
+import { customTheme } from 'src/themes/theme';
 import SideNav from './SideNav';
 
 const TopNavContainer = styled(Box)(({ theme }) => ({
@@ -18,7 +18,7 @@ const TopNavContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column-reverse',
-    gap: '10px',
+    gap: '20px',
   },
 }));
 
@@ -47,9 +47,9 @@ const StyledTextField = styled(TextField)({
       borderColor: colors.greys.lightGrey,
     },
     '& input': {
-      height: '100%',
       padding: '6px 10px',
       background: colors.primary.grayishWhite,
+      height: '80%',
     },
     '&:hover fieldset': {
       borderColor: colors.greys.lightGrey,
@@ -62,13 +62,13 @@ const StyledTextField = styled(TextField)({
 
 const Header = styled(Typography)({
   color: colors.headers.charcoalBlack,
-  fontFamily: theme.typography.fontFamily.main,
-  fontSize: theme.typography.fontSizes[12],
-  fontWeight: theme.typography.fontWeights.bold,
+  fontFamily: customTheme.typography.fontFamily.main,
+  fontSize: customTheme.typography.fontSizes[12],
+  fontWeight: customTheme.typography.fontWeights.bold,
 });
 
 const SubHeading = styled(Typography)({
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   fontSize: '13px',
   color: colors.greys.grey,
 });

@@ -2,7 +2,7 @@ import { Box, styled, useMediaQuery } from '@mui/material';
 import TopNav from '../../components/navbar/TopNav';
 import SideNav from '../../components/navbar/SideNav';
 import Profile from './Profile';
-import { theme } from 'src/themes/theme';
+import { customTheme } from 'src/themes/theme';
 
 const DashboardContainer = styled(Box)({
   display: 'flex',
@@ -31,7 +31,7 @@ const TopNavContainer = styled(Box)({
 });
 
 const ContentWrapper = styled(Box)({
-  padding: theme.whitespace.spacings[16],
+  padding: customTheme.whitespace.spacings[16],
 });
 
 function Dashboard() {

@@ -8,7 +8,7 @@ import {
   styled,
 } from '@mui/material';
 import { colors } from 'src/themes/colors';
-import { theme } from 'src/themes/theme';
+import { customTheme } from 'src/themes/theme';
 import editImage from '../../assets/EditImage.svg';
 import { useState } from 'react';
 
@@ -25,8 +25,8 @@ const StyledProfile = styled(Typography)({
   marginBottom: '20px',
   color: `${colors.headers.charcoalBlack}`,
   fontWeight: 600,
-  fontSize: theme.typography.fontSizes[12],
-  fontFamily: theme.typography.fontFamily.main,
+  fontSize: customTheme.typography.fontSizes[12],
+  fontFamily: customTheme.typography.fontFamily.main,
   paddingBottom: '5px',
 });
 
@@ -35,7 +35,7 @@ const ProfileContainer = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',
-  fontFamily: theme.typography.fontFamily.main,
+  fontFamily: customTheme.typography.fontFamily.main,
   '.job-title': {
     color: `${colors.primary.metallicViolet}`,
   },
@@ -43,8 +43,8 @@ const ProfileContainer = styled(Box)({
 
 const StyledLabel = styled(Typography)({
   color: `${colors.greys.grey}`,
-  fontSize: theme.typography.fontSizes[10],
-  fontFamily: theme.typography.fontFamily.main,
+  fontSize: customTheme.typography.fontSizes[10],
+  fontFamily: customTheme.typography.fontFamily.main,
   marginBottom: '3px',
 });
 

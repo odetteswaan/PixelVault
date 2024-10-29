@@ -2,7 +2,7 @@ import TopNav from 'src/components/navbar/TopNav';
 import Profile from './Profile';
 import { Box, Typography, styled } from '@mui/material';
 import { colors } from 'src/themes/colors';
-import { theme } from 'src/themes/theme';
+import { customTheme } from 'src/themes/theme';
 import Logo from '../../assets/Actual-pixel-logo.svg';
 
 const MainContainer = styled(Box)(() => ({
@@ -43,16 +43,16 @@ const WelcomeContainer = styled(Box)({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: theme.whitespace.spacings[12],
+  marginTop: customTheme.whitespace.spacings[12],
   '& .welcome-title': {
-    fontSize: theme.typography.fontSizes[20],
-    fontFamily: theme.typography.fontFamily.main,
+    fontSize: customTheme.typography.fontSizes[20],
+    fontFamily: customTheme.typography.fontFamily.main,
     color: colors.primary.metallicViolet,
-    fontWeight: theme.typography.fontWeights.semiBold,
+    fontWeight: customTheme.typography.fontWeights.semiBold,
   },
   '& .welcome-message': {
-    fontSize: theme.typography.fontSizes[16],
-    fontFamily: theme.typography.fontFamily.main,
+    fontSize: customTheme.typography.fontSizes[16],
+    fontFamily: customTheme.typography.fontFamily.main,
     color: colors.body.lightGrey,
   },
 });
