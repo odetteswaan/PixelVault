@@ -19,6 +19,7 @@ export const colors = {
     frostedGrey: '#E2E2E5',
   },
   headers: {
+    black: '#000000',
     darkBlack: '#1b1b1b',
     lightBlack: '#27272f',
     charcoalBlack: '#000104',

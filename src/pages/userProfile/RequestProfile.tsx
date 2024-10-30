@@ -54,7 +54,7 @@ const WelcomeContainer = styled(Box)(({ theme }) => ({
   '& .welcome-message': {
     fontSize: customTheme.typography.fontSizes[16],
     fontFamily: customTheme.typography.fontFamily.main,
-    color: colors.body.lightGrey,
+    color: colors.headers.black,
   },
   [theme.breakpoints.down('sm')]: {
     marginBottom: '30px',
