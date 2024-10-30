@@ -3,11 +3,12 @@ import TopNav from '../../components/navbar/TopNav';
 import SideNav from '../../components/navbar/SideNav';
 import Profile from './Profile';
 import { customTheme } from 'src/themes/theme';
+import { colors } from 'src/themes/colors';
 
-const DashboardContainer = styled(Box)({
+const UserProfileContainer = styled(Box)({
   display: 'flex',
-  height: 'auto',
-  minHeight: '100%',
+  height: '100%',
+  minHeight: '100vh',
   width: '100%',
 });
 
@@ -24,13 +25,14 @@ const MainContent = styled(Box)(({ theme }) => ({
   },
 }));
 const TopNavContainer = styled(Box)(({ theme }) => ({
-  borderBottom: '1px solid #ECECEC',
+  borderBottom: `1px solid ${colors.greys.lightGrey}`,
   padding: '1% 3%',
   display: 'flex',
   alignItems: 'center',
   [theme.breakpoints.down('sm')]: {
     padding: '3%',
     marginBottom: '20px',
+    borderBottom: `2px solid ${colors.greys.lightGrey}`,
   },
 }));
 
@@ -41,10 +43,10 @@ const ContentWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
-function Dashboard() {
+function UserProfile() {
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   return (
-    <DashboardContainer>
+    <UserProfileContainer>
       {!isSmallScreen && (
         <SideNavContainer>
           <SideNav />
@@ -59,8 +61,8 @@ function Dashboard() {
           <Profile />
         </ContentWrapper>
       </MainContent>
-    </DashboardContainer>
+    </UserProfileContainer>
   );
 }
 
-export default Dashboard;
+export default UserProfile;

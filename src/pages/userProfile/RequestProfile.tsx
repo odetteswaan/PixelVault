@@ -10,16 +10,15 @@ const MainContainer = styled(Box)(() => ({
   flexDirection: 'column',
   minHeight: '100vh',
 }));
+
 const HeaderContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: '0 3%',
   borderBottom: `1px solid ${colors.greys.lightGrey}`,
-  height: '100px',
   [theme.breakpoints.down('sm')]: {
     padding: '3%',
-    height: '150px',
     borderBottom: `2px solid ${colors.greys.lightGrey}`,
   },
 }));

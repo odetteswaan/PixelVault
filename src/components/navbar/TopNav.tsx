@@ -16,8 +16,10 @@ const TopNavContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   width: '100%',
+  height: '15vh',
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column-reverse',
+    height: '100%',
     gap: '20px',
   },
 }));

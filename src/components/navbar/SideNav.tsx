@@ -12,8 +12,7 @@ import { useState } from 'react';
 
 const StyledContainer = styled(Box)({
   borderRight: '1px solid #E2E2E4',
-  height: 'auto',
-  minHeight: '100vh',
+  height: '100%',
   padding: '10%',
   backgroundColor: 'colors.body.white',
   position: 'relative',

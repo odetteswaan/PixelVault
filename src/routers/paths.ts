@@ -4,5 +4,6 @@ export const paths = {
   counter: 'counter',
   signup: 'signup',
   forgotPassword: 'forgotPassword',
-  dashboard: 'dashboard',
+  requestProfile: 'request-profile',
+  userProfile: 'user-profile',
 };
