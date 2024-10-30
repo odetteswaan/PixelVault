@@ -44,6 +44,10 @@ const ProfileContainer = styled(Box)(({ theme }) => ({
   '.job-title': {
     color: `${colors.primary.metallicViolet}`,
   },
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+    marginBottom: '20px',
+  },
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     marginBottom: '20px',
@@ -110,6 +114,10 @@ const StyledEditImage = styled('img')({
 const StyledFormBox = styled(Box)(({ theme }) => ({
   width: '70%',
   marginBottom: '50px',
+  [theme.breakpoints.down('md')]: {
+    width: '90%',
+    marginBottom: '10px',
+  },
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     marginBottom: '10px',
