@@ -8,6 +8,7 @@ import Logo from '../../assets/Actual-pixel-logo.svg';
 const MainContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
+  minHeight: '100vh',
 }));
 const HeaderContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
