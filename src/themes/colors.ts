@@ -6,11 +6,14 @@ export const colors = {
     pear: '#DCEA36',
     purple: '#9934FF',
     lavender: '#BAFF75',
+    red: '#E15552',
   },
   tints: {},
   shades: {},
   greys: {
     grey: '#8A92A6',
+    dustygrey: '#A1AAB9',
+    darkgrey: '#6c6c6c',
   },
   headers: {
     darkBlack: '#1b1b1b',
