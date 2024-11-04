@@ -124,7 +124,7 @@ const StyledFormBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ButtonContainer = styled(Box)({
+const ButtonContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'flex-end',
   marginTop: '20px',
@@ -145,7 +145,12 @@ const ButtonContainer = styled(Box)({
     fontWeight: '500',
     fontFamily: 'Urbanist',
   },
-});
+  [theme.breakpoints.down('sm')]: {
+    justifyContent: 'center',
+    width: '100%',
+    gap: '20px',
+  },
+}));
 
 function Profile() {
   const [formState, setFormState] = useState({
