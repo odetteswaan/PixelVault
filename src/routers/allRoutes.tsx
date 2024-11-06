@@ -10,6 +10,7 @@ import Login from '../pages/login/Login';
 import Signup from 'src/pages/SignUp/Signup';
 import RequestProfile from 'src/pages/userProfile/RequestProfile';
 import UserProfile from 'src/pages/userProfile/UserProfile';
+import MainLayout from 'src/components/layout/MainLayout';
 
 const allRoutes = createBrowserRouter(
   createRoutesFromElements(
@@ -17,9 +18,11 @@ const allRoutes = createBrowserRouter(
       <Route errorElement={<ErrorPage />}>
         <Route path={`/${paths.login}`} element={<Login />} />
         <Route path={`/${paths.signup}`} element={<Signup />} />
-        <Route path={`/${paths.requestProfile}`} element={<RequestProfile />} />
-        <Route path={`/${paths.userProfile}`} element={<UserProfile />} />
         <Route path={`/${paths.forgotPassword}`} element={<Login />} />
+        <Route path={`/${paths.requestProfile}`} element={<RequestProfile />} />
+        <Route element={<MainLayout />} path={paths.root}>
+          <Route path={`/${paths.userProfile}`} element={<UserProfile />} />
+        </Route>
 
         {/* /protected */}
         <Route element={<ProtectedRoutes />} path={paths.root}>
