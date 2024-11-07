@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material';
+import { Box, IconButton, styled, useMediaQuery } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
@@ -7,13 +7,15 @@ import Dashboard from '../../assets/sidenavLogos/Dashboard.svg';
 import RiseTicket from '../../assets/sidenavLogos/RiseTicket.svg';
 import NewAsset from '../../assets/sidenavLogos/NewAsset.svg';
 import Logout from '../../assets/sidenavLogos/Logout.svg';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useState } from 'react';
 
 const StyledContainer = styled(Box)({
   borderRight: '1px solid #E2E2E4',
-  height: 'auto',
-  minHeight: '100vh',
+  height: '100%',
   padding: '10%',
   backgroundColor: 'colors.body.white',
+  position: 'relative',
 });
 
 const LogoContainer = styled(Box)({
@@ -58,6 +60,19 @@ const StyledListItem = styled(NavLink)({
   },
 });
 
+const DropdownMenu = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  listStyle: 'none',
+  padding: 0,
+  backgroundColor: colors.body.white,
+  border: '1px solid #E2E2E4',
+  borderRadius: '5px',
+  position: 'absolute',
+  top: '50px',
+  right: '10px',
+});
+
 const links = [
   { name: 'Dashboard', path: '/dashboard', img: Dashboard },
   { name: 'Raise New Ticket', path: '/new-ticket', img: RiseTicket },
@@ -66,24 +81,51 @@ const links = [
 ];
 
 function SideNav() {
+  const [open, setOpen] = useState(false);
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
   return (
-    <StyledContainer>
-      <LogoContainer>
-        <StyledLogo src={logo} alt="Logo" />
-      </LogoContainer>
-      <StyledList>
-        {links.map((link) => (
-          <StyledListItem key={link.path} to={link.path}>
-            <img
-              src={link.img}
-              alt={link.name}
-              style={{ marginRight: '10px' }}
-            />
-            {link.name}
-          </StyledListItem>
-        ))}
-      </StyledList>
-    </StyledContainer>
+    <>
+      {isSmallScreen ? (
+        <>
+          <IconButton onClick={() => setOpen(!open)}>
+            <MenuIcon />
+          </IconButton>
+
+          {open && (
+            <DropdownMenu>
+              {links.map((link) => (
+                <StyledListItem key={link.path} to={link.path}>
+                  <img
+                    src={link.img}
+                    alt={link.name}
+                    style={{ marginRight: '10px' }}
+                  />
+                  {link.name}
+                </StyledListItem>
+              ))}
+            </DropdownMenu>
+          )}
+        </>
+      ) : (
+        <StyledContainer>
+          <LogoContainer>
+            <StyledLogo src={logo} alt="Logo" />
+          </LogoContainer>
+          <StyledList>
+            {links.map((link) => (
+              <StyledListItem key={link.path} to={link.path}>
+                <img
+                  src={link.img}
+                  alt={link.name}
+                  style={{ marginRight: '10px' }}
+                />
+                {link.name}
+              </StyledListItem>
+            ))}
+          </StyledList>
+        </StyledContainer>
+      )}
+    </>
   );
 }
 
