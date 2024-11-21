@@ -10,13 +10,21 @@ export const colors = {
     grayishWhite: '#FCFCFD',
   },
   tints: {},
-  shades: {},
+  shades: {
+    dustyPlum: '#5E5873',
+    royalIndigo: '#0C2755',
+    charcoalBlue: '#495464',
+  },
   greys: {
     grey: '#8A92A6',
     dustygrey: '#A1AAB9',
     darkgrey: '#6c6c6c',
     lightGrey: '#ECECEC',
     frostedGrey: '#E2E2E5',
+    blueGrey: '#2C3E50',
+    charcoalGray: '#5B5858',
+    slatGrey: '#323A47',
+    slateGrey: '#8A96A8',
   },
   headers: {
     black: '#000000',

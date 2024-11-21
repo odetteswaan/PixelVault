@@ -10,7 +10,10 @@ import Login from '../pages/login/Login';
 import Signup from 'src/pages/SignUp/Signup';
 import RequestProfile from 'src/pages/userProfile/RequestProfile';
 import UserProfile from 'src/pages/userProfile/UserProfile';
+import Dashboard from 'src/pages/Dashboard/Employee/Dashboard';
 import MainLayout from 'src/components/layout/MainLayout';
+import AllAllocatedAssets from 'src/pages/AssetAllocationLogs/AllAllocatedAssets';
+import AllIssues from 'src/pages/IssuesRaised/AllIssues';
 
 const allRoutes = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +25,10 @@ const allRoutes = createBrowserRouter(
         <Route path={`/${paths.requestProfile}`} element={<RequestProfile />} />
         <Route element={<MainLayout />} path={paths.root}>
           <Route path={`/${paths.userProfile}`} element={<UserProfile />} />
+          <Route path={`/${paths.dashboard}`} element={<Dashboard />} />
+          <Route path={`/${paths.assets}`} element={<AllAllocatedAssets />} />
+          <Route path={`/${paths.issues}`} element={<AllIssues />} />
+          <Route path={`/${paths.logout}`} element={<Dashboard />} />
         </Route>
 
         {/* /protected */}

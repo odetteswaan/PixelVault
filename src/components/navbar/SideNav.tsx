@@ -1,26 +1,30 @@
 import { Box, IconButton, styled, useMediaQuery } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 import logo from '../../assets/Actual-pixel-logo.svg';
 import Dashboard from '../../assets/sidenavLogos/Dashboard.svg';
 import RiseTicket from '../../assets/sidenavLogos/RiseTicket.svg';
 import NewAsset from '../../assets/sidenavLogos/NewAsset.svg';
-import Logout from '../../assets/sidenavLogos/Logout.svg';
+import LogoutIcon from '../../assets/sidenavLogos/Logout.svg';
+import Logout from 'src/pages/Logout/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 
-const StyledContainer = styled(Box)({
+const StyledContainer = styled(Box)(() => ({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  height: '100vh',
+  width: '20%',
+  padding: '3% 2%',
+  backgroundColor: colors.body.white,
   borderRight: '1px solid #E2E2E4',
-  height: '100%',
-  padding: '10%',
-  backgroundColor: 'colors.body.white',
-  position: 'relative',
-});
+}));
 
 const LogoContainer = styled(Box)({
   height: '60px',
-  width: '120px',
+  width: '110px',
 });
 
 const StyledLogo = styled('img')({
@@ -75,14 +79,29 @@ const DropdownMenu = styled(Box)({
 
 const links = [
   { name: 'Dashboard', path: '/dashboard', img: Dashboard },
-  { name: 'Raise New Ticket', path: '/new-ticket', img: RiseTicket },
+  { name: 'Raise New Ticket', path: '/newTicket', img: RiseTicket },
   { name: 'Request New Asset', path: '/request-asset', img: NewAsset },
-  { name: 'Logout', path: '/logout', img: Logout },
+  { name: 'logout', path: '/logout', img: LogoutIcon },
 ];
 
 function SideNav() {
   const [open, setOpen] = useState(false);
   const isSmallScreen = useMediaQuery('(max-width:600px)');
+  const navigate = useNavigate();
+
+  const [openLogout, setOpenLogout] = useState(false);
+
+  const handleOpen = (name: string) => {
+    if (name === 'logout') {
+      setOpenLogout(true);
+    }
+  };
+
+  const handleClose = () => {
+    navigate(-1);
+    setOpenLogout(false);
+  };
+
   return (
     <>
       {isSmallScreen ? (
@@ -94,7 +113,11 @@ function SideNav() {
           {open && (
             <DropdownMenu>
               {links.map((link) => (
-                <StyledListItem key={link.path} to={link.path}>
+                <StyledListItem
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => handleOpen(link.name)}
+                >
                   <img
                     src={link.img}
                     alt={link.name}
@@ -113,7 +136,11 @@ function SideNav() {
           </LogoContainer>
           <StyledList>
             {links.map((link) => (
-              <StyledListItem key={link.path} to={link.path}>
+              <StyledListItem
+                key={link.path}
+                to={link.path}
+                onClick={() => handleOpen(link.name)}
+              >
                 <img
                   src={link.img}
                   alt={link.name}
@@ -125,6 +152,7 @@ function SideNav() {
           </StyledList>
         </StyledContainer>
       )}
+      {openLogout && <Logout open={openLogout} close={handleClose} />}
     </>
   );
 }

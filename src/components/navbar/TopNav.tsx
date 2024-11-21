@@ -1,15 +1,11 @@
-import {
-  Avatar,
-  Box,
-  TextField,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Avatar, Box, Typography, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import notificationLogo from '../../assets/notification-bing.svg';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 import SideNav from './SideNav';
+import { useNavigate } from 'react-router-dom';
+import Search from './Search';
+import NotificationDropdown from './NotificationDropdown';
 
 const TopNavContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -41,27 +37,6 @@ const RightSection = styled(Box)(({ theme }) => ({
   },
 }));
 
-const StyledTextField = styled(TextField)({
-  '& .MuiOutlinedInput-root': {
-    borderRadius: '0 5px 5px 0',
-    height: '40px',
-    '& fieldset': {
-      borderColor: colors.greys.lightGrey,
-    },
-    '& input': {
-      padding: '6px 10px',
-      background: colors.primary.grayishWhite,
-      height: '80%',
-    },
-    '&:hover fieldset': {
-      borderColor: colors.greys.lightGrey,
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: colors.greys.lightGrey,
-    },
-  },
-});
-
 const Header = styled(Typography)({
   color: colors.headers.charcoalBlack,
   fontFamily: customTheme.typography.fontFamily.main,
@@ -75,29 +50,32 @@ const SubHeading = styled(Typography)({
   color: colors.greys.grey,
 });
 
-const StyledBox = styled(Box)({
-  width: '50px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderRadius: '5px 0 0 5px',
-  height: '40px',
-  background: colors.primary.grayishWhite,
-  border: `1px solid ${colors.greys.lightGrey}`,
-});
-const StyledText = styled(Typography)({
-  fontFamily: 'Urbanist',
-  fontSize: '14px',
-  fontWeight: '500',
-  color: '#8A96A8',
+const StyledAvathar = styled(Avatar)({
+  cursor: 'pointer',
 });
 
 function TopNav() {
   const isSmallScreen = useMediaQuery('(max-width:600px)');
+  const navigate = useNavigate();
+
+  const getGreeting = () => {
+    const currentHour = new Date().getHours();
+    if (currentHour >= 0 && currentHour < 12) {
+      return 'Good Morning';
+    } else if (currentHour >= 12 && currentHour < 18) {
+      return 'Good Afternoon';
+    } else {
+      return 'Good Evening';
+    }
+  };
+
+  const handleProfileClick = () => {
+    navigate('/user-profile');
+  };
   return (
     <TopNavContainer>
       <LeftSection>
-        <Header>Good Evening, Camero 🤩</Header>
+        <Header>{`${getGreeting()}, Camero 🤩`}</Header>
         <SubHeading>
           It’s a great day to optimise your asset management for greater
           efficiency and growth.
@@ -105,14 +83,11 @@ function TopNav() {
       </LeftSection>
 
       <RightSection>
-        <Box display="flex" alignItems="center">
-          <StyledBox>
-            <StyledText>All</StyledText>
-          </StyledBox>
-          <StyledTextField placeholder="search..." variant="outlined" />
-        </Box>
-        <img src={notificationLogo} alt="Notifications" />
-        <Avatar />
+        <Search />
+        <NotificationDropdown />
+        <StyledAvathar>
+          <Avatar onClick={handleProfileClick} />
+        </StyledAvathar>
         {isSmallScreen && <SideNav />}
       </RightSection>
     </TopNavContainer>
