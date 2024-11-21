@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 
 const MainContainer = styled(Box)({
   display: 'flex',
-  width: '100%',
+  width: '100vw',
   minHeight: '100vh',
 });
 

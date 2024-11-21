@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   TextField,
   Typography,
@@ -10,8 +9,8 @@ import {
 } from '@mui/material';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
-import editImage from '../../assets/EditImage.svg';
 import { useState } from 'react';
+import UserDetails from './UserDetails';
 
 const MainContainer = styled(Box)(({ theme }) => ({
   background: colors.primary.grayishWhite,
@@ -34,25 +33,6 @@ const StyledProfile = styled(Typography)({
   fontFamily: customTheme.typography.fontFamily.main,
   paddingBottom: '5px',
 });
-
-const ProfileContainer = styled(Box)(({ theme }) => ({
-  width: '20%',
-  display: 'flex',
-  alignItems: 'center',
-  flexDirection: 'column',
-  fontFamily: customTheme.typography.fontFamily.main,
-  '.job-title': {
-    color: `${colors.primary.metallicViolet}`,
-  },
-  [theme.breakpoints.down('md')]: {
-    width: '100%',
-    marginBottom: '20px',
-  },
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    marginBottom: '20px',
-  },
-}));
 
 const StyledLabel = styled(Typography)({
   color: `${colors.greys.grey}`,
@@ -88,29 +68,6 @@ const FormContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const EditButton = styled(Button)({
-  position: 'absolute',
-  bottom: '1px',
-  right: '1px',
-  background: 'transparent',
-  border: 'none',
-  cursor: 'pointer',
-});
-
-const StyledAvatarContainer = styled(Box)({
-  position: 'relative',
-});
-
-const StyledAvatar = styled(Avatar)({
-  width: '150px',
-  height: '150px',
-  marginBottom: '10px',
-});
-
-const StyledEditImage = styled('img')({
-  width: '30px',
-  height: '30px',
-});
 const StyledFormBox = styled(Box)(({ theme }) => ({
   width: '70%',
   marginBottom: '50px',
@@ -187,19 +144,7 @@ function Profile() {
     <MainContainer>
       <StyledProfile>My Profile</StyledProfile>
       <FormContainer>
-        <ProfileContainer>
-          <StyledAvatarContainer>
-            <StyledAvatar />
-            <EditButton>
-              <StyledEditImage src={editImage} alt="Edit" />
-            </EditButton>
-          </StyledAvatarContainer>
-          <Typography variant="h6">Camero Jorden</Typography>
-          <Typography variant="body2" className="job-title">
-            Software Designer
-          </Typography>
-        </ProfileContainer>
-
+        <UserDetails />
         <StyledFormBox>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
