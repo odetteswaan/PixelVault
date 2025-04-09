@@ -4,9 +4,16 @@ import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 import logo from '../../assets/Actual-pixel-logo.svg';
 import Dashboard from '../../assets/sidenavLogos/Dashboard.svg';
+import ActiveDashboard from '../../assets/sidenavLogos/ActiveDashboard.svg';
 import RiseTicket from '../../assets/sidenavLogos/RiseTicket.svg';
-import NewAsset from '../../assets/sidenavLogos/NewAsset.svg';
+import ActiveRiseTicket from '../../assets/sidenavLogos/ActiveRiseTicket.svg';
+import AddCircle from '../../assets/sidenavLogos/AddCircle.svg';
+import ActiveAddCircle from '../../assets/sidenavLogos/ActiveAddCircle.svg';
 import LogoutIcon from '../../assets/sidenavLogos/Logout.svg';
+import AllAssets from '../../assets/sidenavLogos/AllAssets.svg';
+import ActiveAllAssets from '../../assets/sidenavLogos/ActiveAllAssets.svg';
+import AllEmployee from '../../assets/sidenavLogos/AllEmployees.svg';
+import ActiveEmployeesImg from '../../assets/sidenavLogos/ActiveEmployeesImg.svg';
 import Logout from 'src/pages/Logout/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
@@ -76,14 +83,73 @@ const DropdownMenu = styled(Box)({
   top: '50px',
   right: '10px',
 });
-
-const links = [
-  { name: 'Dashboard', path: '/dashboard', img: Dashboard },
-  { name: 'Raise New Ticket', path: '/newTicket', img: RiseTicket },
-  { name: 'Request New Asset', path: '/request-asset', img: NewAsset },
-  { name: 'logout', path: '/logout', img: LogoutIcon },
-];
-
+const role = localStorage.getItem('role');
+const links =
+  role == 'user'
+    ? [
+        {
+          name: 'Dashboard',
+          path: '/dashboard',
+          activeImg: ActiveDashboard,
+          inactiveImg: Dashboard,
+        },
+        {
+          name: 'Raise New Ticket',
+          path: '/newTicket',
+          activeImg: ActiveRiseTicket,
+          inactiveImg: RiseTicket,
+        },
+        {
+          name: 'Request New Asset',
+          path: '/request-asset',
+          activeImg: ActiveAddCircle,
+          inactiveImg: AddCircle,
+        },
+        {
+          name: 'logout',
+          path: '/logout',
+          activeImg: LogoutIcon,
+          inactiveImg: LogoutIcon,
+        },
+      ]
+    : [
+        {
+          name: 'Dashboard',
+          path: '/dashboard',
+          activeImg: ActiveDashboard,
+          inactiveImg: Dashboard,
+        },
+        {
+          name: 'All Assets',
+          path: '/assets',
+          activeImg: ActiveAllAssets,
+          inactiveImg: AllAssets,
+        },
+        {
+          name: 'All Employee',
+          path: '/employee',
+          activeImg: ActiveEmployeesImg,
+          inactiveImg: AllEmployee,
+        },
+        {
+          name: 'Tickets Raised',
+          path: '/tickets',
+          activeImg: ActiveRiseTicket,
+          inactiveImg: RiseTicket,
+        },
+        {
+          name: 'Add New Asset',
+          path: '/add-new-asset',
+          activeImg: ActiveAddCircle,
+          inactiveImg: AddCircle,
+        },
+        {
+          name: 'logout',
+          path: '/logout',
+          activeImg: LogoutIcon,
+          inactiveImg: LogoutIcon,
+        },
+      ];
 function SideNav() {
   const [open, setOpen] = useState(false);
   const isSmallScreen = useMediaQuery('(max-width:600px)');
@@ -118,12 +184,16 @@ function SideNav() {
                   to={link.path}
                   onClick={() => handleOpen(link.name)}
                 >
-                  <img
-                    src={link.img}
-                    alt={link.name}
-                    style={{ marginRight: '10px' }}
-                  />
-                  {link.name}
+                  {({ isActive }) => (
+                    <>
+                      <img
+                        src={isActive ? link.activeImg : link.inactiveImg}
+                        alt={link.name}
+                        style={{ marginRight: '10px' }}
+                      />
+                      {link.name}
+                    </>
+                  )}
                 </StyledListItem>
               ))}
             </DropdownMenu>
@@ -141,12 +211,16 @@ function SideNav() {
                 to={link.path}
                 onClick={() => handleOpen(link.name)}
               >
-                <img
-                  src={link.img}
-                  alt={link.name}
-                  style={{ marginRight: '10px' }}
-                />
-                {link.name}
+                {({ isActive }) => (
+                  <>
+                    <img
+                      src={isActive ? link.activeImg : link.inactiveImg}
+                      alt={link.name}
+                      style={{ marginRight: '10px' }}
+                    />
+                    {link.name}
+                  </>
+                )}
               </StyledListItem>
             ))}
           </StyledList>
