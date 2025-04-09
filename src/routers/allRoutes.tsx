@@ -23,18 +23,28 @@ const allRoutes = createBrowserRouter(
         <Route path={`/${paths.signup}`} element={<Signup />} />
         <Route path={`/${paths.forgotPassword}`} element={<Login />} />
         <Route path={`/${paths.requestProfile}`} element={<RequestProfile />} />
-        <Route element={<MainLayout />} path={paths.root}>
-          <Route path={`/${paths.userProfile}`} element={<UserProfile />} />
-          <Route path={`/${paths.dashboard}`} element={<Dashboard />} />
-          <Route path={`/${paths.assets}`} element={<AllAllocatedAssets />} />
-          <Route path={`/${paths.issues}`} element={<AllIssues />} />
-          <Route path={`/${paths.logout}`} element={<Dashboard />} />
+        <Route
+          element={<ProtectedRoutes requiredRole="user" />}
+          path={paths.root}
+        >
+          <Route element={<MainLayout />} path={paths.root}>
+            <Route path={`/${paths.userProfile}`} element={<UserProfile />} />
+            <Route path={`/${paths.dashboard}`} element={<Dashboard />} />
+            <Route path={`/${paths.assets}`} element={<AllAllocatedAssets />} />
+            <Route path={`/${paths.issues}`} element={<AllIssues />} />
+            <Route path={`/${paths.logout}`} element={<Dashboard />} />
+          </Route>
         </Route>
 
         {/* /protected */}
-        <Route element={<ProtectedRoutes />} path={paths.root}>
-          <Route index element={<HomePage />} />
-          <Route path={paths.counter} element={<CounterPage />} />
+        <Route
+          element={<ProtectedRoutes requiredRole="admin" />}
+          path={paths.adminRoot}
+        >
+          <Route element={<MainLayout />} path={paths.adminRoot}>
+            <Route index element={<HomePage />} />
+            <Route path={paths.counter} element={<CounterPage />} />
+          </Route>
         </Route>
       </Route>
     </>
