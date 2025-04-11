@@ -147,7 +147,7 @@ function Profile() {
         <UserDetails />
         <StyledFormBox>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs:12,sm:6}}>
               <StyledLabel>Full Name</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
@@ -155,7 +155,7 @@ function Profile() {
                 name="fullName"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs:12,sm:6}}>
               <StyledLabel>Mobile Number</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
@@ -163,7 +163,7 @@ function Profile() {
                 name="mobileNumber"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs:12,sm:6}}>
               <StyledLabel>Office Email ID</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
@@ -172,7 +172,7 @@ function Profile() {
                 disabled
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs:12,sm:6}}>
               <StyledLabel>Personal Email ID</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
@@ -180,7 +180,7 @@ function Profile() {
                 name="personalEmail"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs:12,sm:6}}>
               <StyledLabel>Employee ID</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
@@ -189,14 +189,14 @@ function Profile() {
                 disabled
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs:12,sm:6}}>
               <StyledLabel>Company Name</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
                 disabled
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs:12,sm:6}}>
               <StyledLabel>State</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
@@ -204,7 +204,7 @@ function Profile() {
                 name="state"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs:12,sm:6}}>
               <StyledLabel>City</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
@@ -212,7 +212,7 @@ function Profile() {
                 name="city"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs:12,sm:6}}>
               <StyledLabel>Address</StyledLabel>
               <StyledTextfield
                 multiline={!isSmallScreen}
@@ -221,7 +221,7 @@ function Profile() {
                 name="address"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs:12,sm:6}}>
               <StyledLabel>Pin Code</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
@@ -230,7 +230,7 @@ function Profile() {
               />
             </Grid>
             {isEditing && (
-              <Grid item xs={12}>
+              <Grid size={{xs:12}}>
                 <ButtonContainer>
                   <Button
                     onClick={handleCancel}

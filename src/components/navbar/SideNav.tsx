@@ -121,7 +121,7 @@ const links =
         },
         {
           name: 'All Assets',
-          path: '/assets',
+          path: '/admin/assets',
           activeImg: ActiveAllAssets,
           inactiveImg: AllAssets,
         },
@@ -133,13 +133,13 @@ const links =
         },
         {
           name: 'Tickets Raised',
-          path: '/tickets',
+          path: '/admin/tickets',
           activeImg: ActiveRiseTicket,
           inactiveImg: RiseTicket,
         },
         {
           name: 'Add New Asset',
-          path: '/add-new-asset',
+          path: '/admin/add-new-asset',
           activeImg: ActiveAddCircle,
           inactiveImg: AddCircle,
         },

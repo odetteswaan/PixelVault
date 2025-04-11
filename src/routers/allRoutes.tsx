@@ -14,7 +14,11 @@ import Dashboard from 'src/pages/Dashboard/Employee/Dashboard';
 import MainLayout from 'src/components/layout/MainLayout';
 import AllAllocatedAssets from 'src/pages/AssetAllocationLogs/AllAllocatedAssets';
 import AllIssues from 'src/pages/IssuesRaised/AllIssues';
-
+import AddNewAsset from 'src/pages/Admin/AddNewAsset';
+import AllAssets from 'src/pages/Admin/AllAssets';
+import RaisedTickets from 'src/pages/Admin/RaisedTickets';
+import WarrantyExpiring from 'src/pages/Admin/WarrantyExpiring';
+import EmployeeAssetAllocation from 'src/pages/Admin/EmployeeAssetAllocation';
 const allRoutes = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -44,6 +48,12 @@ const allRoutes = createBrowserRouter(
           <Route element={<MainLayout />} path={paths.adminRoot}>
             <Route index element={<HomePage />} />
             <Route path={paths.counter} element={<CounterPage />} />
+            <Route path={`${paths.addNewAsset}`} element={<AddNewAsset/>}/>
+            <Route path={paths.allAssets} element={<AllAssets/>}/>
+            <Route path={paths.raisedTickets} element={<RaisedTickets/>}/>
+            <Route path={paths.warranty} element={<WarrantyExpiring/>} />
+            <Route path={paths.AssetAllocated} element={<EmployeeAssetAllocation/>}/>
+            
           </Route>
         </Route>
       </Route>
