@@ -301,7 +301,7 @@ function Signup() {
           <StyledBox>
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
-                <Grid item xs={12} md={6} sm={6}>
+                <Grid size={{xs:12,md:6,sm:6}}>
                   <StyledLabel variant="body2">Your Employee ID</StyledLabel>
                   <StyledTextField
                     size="small"
@@ -313,7 +313,7 @@ function Signup() {
                     helperText={errors.employeeId}
                   />
                 </Grid>
-                <Grid item xs={12} md={6} sm={6}>
+                <Grid size={{xs:12,md:6,sm:6}}>
                   <StyledLabel variant="body2">
                     Your Official Email ID
                   </StyledLabel>
@@ -327,7 +327,7 @@ function Signup() {
                     helperText={errors.email}
                   />
                 </Grid>
-                <Grid item xs={12} md={6} sm={6}>
+                <Grid size={{xs:12,md:6,sm:6}}>
                   <StyledLabel variant="body2">Your Full Name</StyledLabel>
                   <StyledTextField
                     size="small"
@@ -339,7 +339,7 @@ function Signup() {
                     helperText={errors.fullName}
                   />
                 </Grid>
-                <Grid item xs={12} md={6} sm={6}>
+                <Grid size={{xs:12,md:6,sm:6}}>
                   <StyledLabel variant="body2">Your Designation</StyledLabel>
                   <StyledTextField
                     size="small"
@@ -351,7 +351,7 @@ function Signup() {
                     helperText={errors.designation}
                   />
                 </Grid>
-                <Grid item xs={12} md={6} sm={6}>
+                <Grid size={{xs:12,md:6,sm:6}}>
                   <StyledLabel variant="body2">Your Password</StyledLabel>
                   <StyledTextField
                     size="small"
@@ -377,7 +377,7 @@ function Signup() {
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} md={6} sm={6}>
+                <Grid size={{xs:12,md:6,sm:6}}>
                   <StyledLabel variant="body2">Confirm Password</StyledLabel>
                   <StyledTextField
                     size="small"

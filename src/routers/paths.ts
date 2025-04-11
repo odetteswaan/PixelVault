@@ -11,4 +11,9 @@ export const paths = {
   assets: 'assets',
   issues: 'issues-raised',
   logout: 'logout',
+  addNewAsset:'add-new-asset',
+  allAssets:'assets',
+  raisedTickets:'tickets',
+  warranty:'ticketsWarranty',
+  AssetAllocated:'employee-asset-allocation'
 };
