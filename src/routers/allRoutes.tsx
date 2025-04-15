@@ -19,6 +19,7 @@ import AllAssets from 'src/pages/Admin/AllAssets';
 import RaisedTickets from 'src/pages/Admin/RaisedTickets';
 import WarrantyExpiring from 'src/pages/Admin/WarrantyExpiring';
 import EmployeeAssetAllocation from 'src/pages/Admin/EmployeeAssetAllocation';
+import AssetDetail from 'src/pages/Admin/AssetDetail';
 const allRoutes = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -53,6 +54,7 @@ const allRoutes = createBrowserRouter(
             <Route path={paths.raisedTickets} element={<RaisedTickets/>}/>
             <Route path={paths.warranty} element={<WarrantyExpiring/>} />
             <Route path={paths.AssetAllocated} element={<EmployeeAssetAllocation/>}/>
+            <Route path={paths.AssetDetail} element={<AssetDetail/>}/>
             
           </Route>
         </Route>

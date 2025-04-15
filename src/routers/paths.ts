@@ -15,5 +15,6 @@ export const paths = {
   allAssets:'assets',
   raisedTickets:'tickets',
   warranty:'ticketsWarranty',
-  AssetAllocated:'employee-asset-allocation'
+  AssetAllocated:'employee-asset-allocation',
+  AssetDetail:'asset-detail',
 };
