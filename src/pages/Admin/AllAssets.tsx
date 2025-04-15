@@ -6,10 +6,13 @@ import { TableHeading, TableData } from './MockData';
 import { useState } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { KeyboardArrowDown } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const AllAssets = () => {
   const [currentNav, setCurrentNav] = useState(1);
   const [display, setDisplay] = useState(NaN);
+  const [option, setOptions] = useState(NaN)
+  const Navigate = useNavigate()
   const handleIncrement = () => {
     if (currentNav < 3) {
       setCurrentNav(currentNav + 1);
@@ -20,6 +23,17 @@ const AllAssets = () => {
       setCurrentNav(currentNav - 1);
     }
   };
+  const setIndex = (index: number) => {
+    if (option === index) {
+      setOptions(NaN)
+    }
+    else {
+      setOptions(index)
+    }
+  }
+  const EditPage = () => {
+    Navigate('/admin/asset-detail')
+  }
   return (
     <Wrapper>
       <Box className="btnContainer">
@@ -38,7 +52,7 @@ const AllAssets = () => {
               ))}
             </Box>
             <hr className="hr" />
-            {TableData.map((item) => (
+            {TableData.map((item, index) => (
               <>
                 <Box className="tablerow">
                   <Typography className="sNo">{item.id}</Typography>
@@ -49,13 +63,19 @@ const AllAssets = () => {
                   <Typography className="sNo">{item.brand}</Typography>
                   <Typography className="sNo">{item.date}</Typography>
                   <Typography className="sNo">{item.date}</Typography>
-                  <Button
+                  <Button onClick={() => setIndex(index)}
                     variant="contained"
                     className={item.status === 'Available'
                       ? "allocateBtnGreen" : "allocateBtn"} >
                     {item.status}
                   </Button>
                   <Box className="action">⋮</Box>
+                  <Box className={`${option === index ? 'popupWindow' : 'none'}`}>
+                    <Box className="box1" onClick={EditPage}>Edit Detail</Box>
+                    <Box className="box2"><Typography>Assign Now</Typography></Box>
+                    <Box className="box3"> <Typography>Delete</Typography></Box>
+                    <Box className="box2"><Typography>Dealloacte</Typography></Box>
+                  </Box>
                 </Box>
                 <hr
                   className={`hr ${item.id === '8' ? 'none' : ''}`}
@@ -375,4 +395,12 @@ const Wrapper = styled(Box)(({ theme }) => ({
       gap: '15px',
     },
   },
+  "& .popupWindow": {
+    width: '225px', height: '210px', backgroundColor: 'white',
+    position: 'absolute', right: '8%', marginTop: '22px', zIndex: 1, border: '1px solid #8D939A', borderRadius: '7px', display: 'flex', flexDirection: 'column'
+  },
+  "& .box1": { padding: "13px", flex: 1, cursor: "pointer" },
+  "& .box2": { backgroundColor: '#F5F5F5', padding: '13px', flex: 1 },
+  "& .box3": { padding: '13px', flex: 1 }
+
 }));

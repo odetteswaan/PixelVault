@@ -273,3 +273,62 @@ export const employeeAssetAllocationData = [
 
 
 ]
+export const systemConfigurationData=[
+{
+    key:'Processor',
+    value:'2.8 GHz Quad-Core Intel Core i7'
+},
+{
+    key:'Graphics',
+    value:'Radeon Pro 555 2 GB'
+},
+{
+    key:'Memory',
+    value:'16 GB 2133 MHz LPDDR3'
+},
+{
+    key:'Serial Number',
+    value:'C02VM42FHTD7'
+},
+{
+    key:'OS',
+    value:'13.6.7 (22G720)'
+},
+{
+    key:'Model',
+    value:'MacBook Pro 2017'
+},
+{
+    key:"Purchase On",
+    value:'15 May 2024'
+},
+{
+    key:'Warranty Renewal',
+    value:'15 May 2025'
+},
+{
+key:'Repairing Done',
+value:'1 time'
+}
+]
+
+export const AssetAllocationLogs=[
+{
+    id:1,
+    name:'Seamans Furniture',
+    status:'Allocated',
+    date:'20 May 2024'
+},
+{
+    id:2,
+    name:"Murray's Discount Auto Stores",
+    status:'Returned',
+    date:'12 May 2024'
+},
+{
+    id:3,
+    name:"Pro Property Maintenance",
+    status:'Returned',
+    date:'27 May 2024 '
+}
+]
