@@ -85,7 +85,7 @@ const RaisedTickets = () => {
                                 <Grid size={2}><Typography className="tableHeading color" >{item.username}</Typography></Grid>
                                 <Grid size={2}><Typography className="tableData">{item.date}</Typography></Grid>
                                 <Grid size={2}><Typography className="tableData">{item.emailId}</Typography></Grid>
-                                <Grid size={1}><Typography><Button fullWidth className={item.status === 'Ressolved' ? "Ressolved" : "status"}>{item.status}</Button></Typography></Grid>
+                                <Grid size={1}><Button fullWidth className={item.status === 'Ressolved' ? "Ressolved" : "status"}>{item.status}</Button></Grid>
                                 <Grid size={1}><Typography className="tableData">{item.Asset}</Typography></Grid>
                                 <Grid size={3}><Typography className="tableData">{item.Query}</Typography></Grid>
                                 <Grid size={1}><Box className="moreOption" onClick={() => { handlePopUp(index) }}><MoreVertIcon className="blue" />
@@ -270,7 +270,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
     },
     "& .status": {
         color: '#28C76F',
-        backgroundColor: '#9ff2c4',
+        backgroundColor: 'rgba(45, 175, 104, 0.15)',
         fontFamily: customTheme.typography.fontFamily.main,
         fontWeight: customTheme.typography.fontWeights.medium,
         fontSize: "14px",
@@ -278,7 +278,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
         borderRadius: '5px'
     },
     "& .Ressolved": {
-        backgroundColor: '#ffd68e', color: "#FE5B00",
+        backgroundColor: 'rgba(254, 91, 0, 0.15)', color: "#FE5B00",
         fontFamily: customTheme.typography.fontFamily.main,
         fontWeight: customTheme.typography.fontWeights.medium,
         fontSize: "14px",
@@ -291,8 +291,9 @@ const Wrapper = styled(Box)(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#f3c8fb',
-        borderRadius: '5px'
+        backgroundColor: 'rgba(89, 0, 179, 0.15)',
+        borderRadius: '5px',
+        cursor:'pointer'
     },
     '& .btnContainer': {
         width: '95%',

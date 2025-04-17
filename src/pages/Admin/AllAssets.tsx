@@ -37,7 +37,7 @@ const AllAssets = () => {
   return (
     <Wrapper>
       <Box className="btnContainer">
-        <Button startIcon={<AddCircleOutlineIcon />} className="addBtn">
+        <Button startIcon={<AddCircleOutlineIcon />} className="addBtn" onClick={()=>Navigate('/admin/add-new-asset')}>
           Add New Asset
         </Button>
       </Box>
@@ -56,7 +56,7 @@ const AllAssets = () => {
               <>
                 <Box className="tablerow">
                   <Typography className="sNo">{item.id}</Typography>
-                  <Typography className="sNo" >
+                  <Typography className="sNoBold" >
                     {item.name}
                   </Typography>
                   <Typography className="sNo">{item.type}</Typography>
@@ -128,14 +128,21 @@ const AllAssets = () => {
                 <Box className="Container">
                   <Box className="contentContainer">
                     <Typography className="cardHeading">Status</Typography>
-                    <Button
+                    <Button onClick={() => setIndex(index)}
                       className={item.status === 'Available' ? "allocateBtnGreen" : "allocateBtn"} >
                       {item.status}
                     </Button>
                   </Box>
                   <Box className="contentContainer">
                     <Typography className="cardHeading">Action</Typography>
-                    <Box className="actionNew">⋮</Box>
+                    <Box className="actionNew" onClick={() => setIndex(index)}>⋮</Box>
+                    <Box className={`${option===index?'actionPopUp':'none'}`}>
+                         <Box className="whitebg"><Typography className='poptext' onClick={EditPage}>Edit Detail</Typography></Box>
+                         <Box className="greybg"><Typography className='poptext'>Assign now</Typography></Box>
+                         <Box className="whitebg"><Typography className='poptext'>Delete</Typography></Box>
+                         <Box className="greybg"><Typography className='poptext'>Deallocate</Typography></Box>
+
+                    </Box>
                   </Box>
                 </Box>
               </Box>
@@ -273,12 +280,18 @@ const Wrapper = styled(Box)(({ theme }) => ({
     fontSize: '16px',
     color: colors.shades.charcoalBlue,
   },
+  '& .sNoBold': {
+    fontFamily: customTheme.typography.fontFamily.main,
+    fontSize: '16px',
+    color: colors.shades.charcoalBlue,
+    fontWeight:'600'
+  },
   '& .allocateBtn': {
     width: '86px',
     height: '30px',
     textTransform: 'capitalize',
     marginRight: '-20px',
-    backgroundColor: '#d1b0f3',
+    backgroundColor: 'rgba(89, 0, 179, 0.15)',
     color: colors.primary.metallicViolet,
   },
   '& .allocateBtnGreen': {
@@ -286,7 +299,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
     height: '30px',
     textTransform: 'capitalize',
     marginRight: '-20px',
-    backgroundColor: '#9ff2c4', color: '#2DAF68'
+    backgroundColor: 'rgba(40, 199, 111, 0.15)', color: '#2DAF68'
 
   },
   '& .action': {
@@ -295,17 +308,19 @@ const Wrapper = styled(Box)(({ theme }) => ({
     display: 'flex',
     justifyContent: 'center',
     height: '40px',
-    backgroundColor: '#d1b0f3',
+    backgroundColor: 'rgba(89, 0, 179, 0.15)',
     color: colors.primary.metallicViolet,
     alignItems: 'center',
     borderRadius: '5px',
     marginTop: '-5px',
+    cursor:'pointer'
   },
   '& .navigationContainer': {
     display: 'flex',
     justifyContent: 'space-between',
     marginTop: '30px',
     width: '250px',
+    marginBottom:'40px'
   },
   '& .nav': {
     height: '42px',
@@ -324,6 +339,8 @@ const Wrapper = styled(Box)(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     border: '1px solid #E8E8E8',
+    backgroundColor:'rgba(89, 0, 179, 1)',
+    color:'#fff'
   },
   '& .AssetHeading': {
     display: 'none',
@@ -364,7 +381,6 @@ const Wrapper = styled(Box)(({ theme }) => ({
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
-      // display:'block',
       alignItems: 'center',
     },
   },
@@ -378,11 +394,12 @@ const Wrapper = styled(Box)(({ theme }) => ({
     display: 'flex',
     justifyContent: 'center',
     height: '30px',
-    backgroundColor: '#d1b0f3',
+    backgroundColor: 'rgba(89, 0, 179, 0.15)',
     color: colors.primary.metallicViolet,
     alignItems: 'center',
     borderRadius: '5px',
     marginLeft: '8px',
+    cursor:'pointer'
   },
   '& .cardsHolder': {
     display: 'none',
@@ -401,6 +418,33 @@ const Wrapper = styled(Box)(({ theme }) => ({
   },
   "& .box1": { padding: "13px", flex: 1, cursor: "pointer" },
   "& .box2": { backgroundColor: '#F5F5F5', padding: '13px', flex: 1 },
-  "& .box3": { padding: '13px', flex: 1 }
+  "& .box3": { padding: '13px', flex: 1 },
+  "& .actionPopUp":{
+    width:'174px',
+    height:'162px',
+    position:'absolute',
+    right:'6%',
+    marginTop:'65px',
+    display:'flex',
+    flexDirection:'column',
+    backgroundColor:'#fff',
+    border:'1px solid #ECECEC',
+    borderRadius:'5px'
+  },
+  "& .whitebg":{
+    padding:'8px',
+    flex:1,
+  },
+  "& .greybg":{
+    padding:'8px',
+    flex:1,
+    backgroundColor:'rgba(245, 245, 245, 1)'
+  },
+  "& .poptext":{
+    fontFamily:customTheme.typography.fontFamily.main,
+    fontWeight:customTheme.typography.fontWeights.medium,
+    fontSize:'14px',
+    color:'#52575C'
+  }
 
 }));

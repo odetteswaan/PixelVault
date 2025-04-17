@@ -127,11 +127,11 @@ const Wrapper = styled(Box)(({ theme }) => ({
         height: '30px',
         textTransform: 'capitalize',
         borderRadius: '5px',
-        backgroundColor: '#d1b0f3',
+        backgroundColor: 'rgba(89, 0, 179, 0.15)',
         fontFamily: customTheme.typography.fontFamily.main,
         fontWeight: customTheme.typography.fontWeights.medium,
         fontSize: '14px',
-        colors: colors.primary.metallicViolet
+        color: 'rgba(89, 0, 179, 1)'
     },
     "& .Returned": {
         width: '86px',
@@ -141,7 +141,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
         fontFamily: customTheme.typography.fontFamily.main,
         fontWeight: customTheme.typography.fontWeights.medium,
         fontSize: '14px',
-        backgroundColor: '#fad7aa', color: '#E05552'
+        backgroundColor: 'rgba(224, 85, 82, 0.15)', color: '#E05552'
     },
     "& .headingContainer": {
         display: 'none',

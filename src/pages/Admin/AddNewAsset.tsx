@@ -8,10 +8,16 @@ import {
 } from '@mui/material';
 import { KeyboardArrowRight } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Receipt from 'src/assets/receipt-add.svg'
 import AddImage from 'src/assets/gallery-add.svg'
+import * as React from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
 const AddNewAsset = () => {
+  const [value, setValue] = React.useState<Dayjs | null>(dayjs());
+  const [warranty,setWarranty]= React.useState<Dayjs | null>(dayjs());
   const CustomTextField = styled(TextField)(() => ({
     '& .MuiOutlinedInput-root': {
       height: '55px',
@@ -37,7 +43,7 @@ const AddNewAsset = () => {
               Drag & Drop Asset Invoice
             </Typography>
             <Typography className="OR">OR</Typography>
-            <Button className="InvoiceBtn">Brows Invoice</Button>
+            <Button className="InvoiceBtn">Browse Invoice</Button>
           </Box>
           <Box className="assetImageContainer">
             <Box className="assetCard">
@@ -150,33 +156,35 @@ const AddNewAsset = () => {
               <Typography className="fieldText">
                 Enter Purchased Date
               </Typography>
-              <CustomTextField
-                variant="outlined"
-                fullWidth
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <CalendarMonthIcon color="disabled" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  value={value}
+                  onChange={(newValue) => setValue(newValue)}
+                  slotProps={{
+                    textField: {
+
+                      fullWidth: true,
+                    },
+                  }}
+                />
+              </LocalizationProvider>
             </Grid>
             <Grid size={{ lg: 12, md: 12, sm: 12, xl: 6 }} className="Grid">
               <Typography className="fieldText">
                 Enter Warranty End Date
               </Typography>
-              <CustomTextField
-                variant="outlined"
-                fullWidth
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <CalendarMonthIcon className='calendarIconColor' />
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  value={warranty}
+                  onChange={(warranty) => setWarranty(warranty)}
+                  slotProps={{
+                    textField: {
+
+                      fullWidth: true,
+                    },
+                  }}
+                />
+              </LocalizationProvider>
             </Grid>
             <Grid size={{ lg: 12, md: 12, sm: 12, xl: 6 }} className="Grid">
               <Typography className="fieldText">Purchased From</Typography>
@@ -268,6 +276,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
     backgroundColor: '#FCFCFD',
     border: '1px solid #ECECEC',
     borderRadius: '5px',
+    marginBottom:'40px',
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
