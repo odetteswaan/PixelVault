@@ -1,4 +1,4 @@
-import { Box, IconButton, Modal, Button, Typography, styled } from "@mui/material"
+import { Box, IconButton, Modal, Button, Typography, styled ,ButtonGroup} from "@mui/material"
 import { customTheme } from "src/themes/theme";
 import CloseIcon from '@mui/icons-material/Close';
 import Bold from 'src/assets/bold.svg'
@@ -7,8 +7,13 @@ import Link from 'src/assets/link.svg'
 import Ident1 from 'src/assets/ident1.svg'
 import Ident2 from 'src/assets/ident2.svg'
 import Ident3 from 'src/assets/ident3.svg'
-
+import { useRef } from "react";
 const ReplyPopUp = (props: { open: boolean, onClose: () => void }) => {
+  const editorRef = useRef<HTMLDivElement | null>(null);
+  const handleFormat = (command: string) => {
+    document.execCommand(command, false, undefined);
+    editorRef.current?.focus();
+  };
   return (
     <Modal
       open={props.open}
@@ -55,16 +60,40 @@ const ReplyPopUp = (props: { open: boolean, onClose: () => void }) => {
           <Box className="Box">
             <Typography className="fieldName">Write your reply</Typography>
             <Box className="Reply">
-              <Box className="imageContainer">
-                <img src={Bold} alt="" />
-                <img src={Italic} alt="" />
-                <img src={Link} alt="" />
-                <img src={Ident1} alt="" />
-                <img src={Ident2} alt="" />
-                <img src={Ident3} alt="" />
+            <ButtonGroup variant="outlined" >
+        <Button onClick={() => handleFormat('bold')} className="btnNoBorder">
+          <img src={Bold} alt="" />
+        </Button>
+        <Button onClick={() => handleFormat('italic')} className="btnNoBorder">
+         <img src={Italic} alt="" />
+        </Button>
+        <Button onClick={() => {
+    const url = prompt('Enter the URL');
+    if (url) {
+      document.execCommand('createLink', false, url);
+      editorRef.current?.focus();
+    }
+  }} className="btnNoBorder">
+         <img src={Link} alt="" />
+        </Button>
+        <Button onClick={() => handleFormat('insertOrderedList')} className="btnNoBorder">
+          <img src={Ident1} alt="" />
+        </Button>
+        <Button onClick={() => handleFormat('insertOrderedList')} className="btnNoBorder">
+          <img src={Ident2}/>
+        </Button>
+        <Button onClick={() => handleFormat('insertUnorderedList')} className="btnNoBorder">
+          <img src={Ident3}/>
+        </Button>
 
-              </Box>
-              <div contentEditable={true} className="textArea"></div>
+      </ButtonGroup>
+      <div
+        ref={editorRef}
+        contentEditable
+        suppressContentEditableWarning
+        className="textArea"
+      >Type something here...
+      </div>
             </Box>
           </Box>
           <Box className="btnContainer">
@@ -81,10 +110,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
   "& .iconColor": { color: '#d2d2d2' },
   "& .btnContainer": { width: "100%", display: 'flex', justifyContent: 'center' },
   "& .imageContainer": { width: '100%', height: '30px', borderBottom: "1px solid #ECECEC", padding: '5px', display: 'flex', gap: '15px' },
-  "& .Reply": { width: '100%', height: '120px', border: "1px solid #ECECEC", borderRadius: '5px' },
-  "& .textArea": {
-    height: '90px'
-  },
+  "& .Reply": { width: '100%', height: '120px', border: "2px solid #ECECEC", borderRadius: '5px' },
   "& .horizontalRule": {
     width: '100%', border: '1px solid #ECECEC'
   },
@@ -105,7 +131,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
       width: '350px',
       height: '600px',
-      overflow: 'auto'
+      overflow: 'none'
     }
   },
   "& .headingContainer": {
@@ -149,7 +175,10 @@ const Wrapper = styled(Box)(({ theme }) => ({
     fontFamily: customTheme.typography.fontFamily.main,
     fontWeight: customTheme.typography.fontWeights.bold,
     fontSize: '14px',
-    color: '#616B7A'
+    color: '#616B7A',
+    [theme.breakpoints.down('md')]:{
+      fontSize:'9px'
+    }
   },
   "& .saveBtn": {
     width: '80%', height: '50px',
@@ -160,6 +189,17 @@ const Wrapper = styled(Box)(({ theme }) => ({
     fontWeight: customTheme.typography.fontWeights.medium,
     fontSize: '16px',
     color: '#fff'
+  },
+  "& .btnNoBorder":{
+    border:'none'
+  },
+  "& .textArea":{
+    fontFamily:'urbanist',
+    outline: 'none',
+    fontSize:'12px',
+    borderTop:'1px solid #ECECEC',
+    height:'88px',
+    overflow:'auto'
   }
 }))
 export default ReplyPopUp
