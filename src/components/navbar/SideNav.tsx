@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Box, IconButton, styled, useMediaQuery } from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { colors } from 'src/themes/colors';
@@ -16,7 +17,7 @@ import AllEmployee from '../../assets/sidenavLogos/AllEmployees.svg';
 import ActiveEmployeesImg from '../../assets/sidenavLogos/ActiveEmployeesImg.svg';
 import Logout from 'src/pages/Logout/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useState } from 'react';
+import RaiseTicketModal from 'src/pages/IssuesRaised/RaiseTicket';
 
 const StyledContainer = styled(Box)(() => ({
   position: 'fixed',
@@ -156,16 +157,24 @@ function SideNav() {
   const navigate = useNavigate();
 
   const [openLogout, setOpenLogout] = useState(false);
+  const [openTicketModal, setOpenTicketModal] = useState(false);
 
   const handleOpen = (name: string) => {
     if (name === 'logout') {
       setOpenLogout(true);
+    } else if (name === 'Raise New Ticket') {
+      setOpenTicketModal(true);
     }
   };
 
   const handleClose = () => {
     navigate(-1);
     setOpenLogout(false);
+  };
+
+  const handleTicketClose = () => {
+    navigate('/dashboard');
+    setOpenTicketModal(false);
   };
 
   return (
@@ -227,6 +236,12 @@ function SideNav() {
         </StyledContainer>
       )}
       {openLogout && <Logout open={openLogout} close={handleClose} />}
+      {openTicketModal && (
+        <RaiseTicketModal
+          open={openTicketModal}
+          handleClose={handleTicketClose}
+        />
+      )}
     </>
   );
 }

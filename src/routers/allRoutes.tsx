@@ -14,6 +14,8 @@ import Dashboard from 'src/pages/Dashboard/Employee/Dashboard';
 import MainLayout from 'src/components/layout/MainLayout';
 import AllAllocatedAssets from 'src/pages/AssetAllocationLogs/AllAllocatedAssets';
 import AllIssues from 'src/pages/IssuesRaised/AllIssues';
+import RequestNewAsset from 'src/pages/AssetAllocationLogs/RequestNewAsset';
+
 import AddNewAsset from 'src/pages/Admin/AddNewAsset';
 import AllAssets from 'src/pages/Admin/AllAssets';
 import RaisedTickets from 'src/pages/Admin/RaisedTickets';
@@ -37,6 +39,8 @@ const allRoutes = createBrowserRouter(
             <Route path={`/${paths.dashboard}`} element={<Dashboard />} />
             <Route path={`/${paths.assets}`} element={<AllAllocatedAssets />} />
             <Route path={`/${paths.issues}`} element={<AllIssues />} />
+            <Route path={`/${paths.newTicket}`} element={<Dashboard />} />
+            <Route path={`/${paths.requestAsset}`} element={<RequestNewAsset />} />
             <Route path={`/${paths.logout}`} element={<Dashboard />} />
           </Route>
         </Route>

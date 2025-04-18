@@ -3,9 +3,10 @@ import { styled } from '@mui/material/styles';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 import SideNav from './SideNav';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Search from './Search';
 import NotificationDropdown from './NotificationDropdown';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 const TopNavContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -22,7 +23,9 @@ const TopNavContainer = styled(Box)(({ theme }) => ({
 
 const LeftSection = styled(Box)({
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: '10px',
 });
 
 const RightSection = styled(Box)(({ theme }) => ({
@@ -34,6 +37,17 @@ const RightSection = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     position: 'relative',
+  },
+}));
+const BackButton = styled(KeyboardBackspaceIcon)(() => ({
+  border: `1px solid ${colors.greys.lightGrey}`,
+  borderRadius: '50%',
+  padding: '10px',
+  width: '50px',
+  height: '50px',
+  cursor: 'pointer',
+  '&:hover': {
+    backgroundColor: colors.primary.grayishWhite,
   },
 }));
 
@@ -57,6 +71,7 @@ const StyledAvathar = styled(Avatar)({
 function TopNav() {
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -69,17 +84,51 @@ function TopNav() {
     }
   };
 
+  const getHeaderAndSubheading = () => {
+    switch (location.pathname) {
+      case '/issues-raised':
+        return {
+          header: 'Issues Raised ',
+          showBackButton: true,
+        };
+      case '/Assets':
+        return {
+          header: 'Asset Allocation Logs',
+          showBackButton: true,
+        };
+      case '/request-asset':
+        return {
+          header: 'New Asset Request',
+          showBackButton: true,
+        };
+      default:
+        return {
+          header: `${getGreeting()}, Camero 🤩`,
+          showBackButton: false,
+        };
+    }
+  };
+
+  const { header, showBackButton } = getHeaderAndSubheading();
+
   const handleProfileClick = () => {
     navigate('/user-profile');
   };
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <TopNavContainer>
       <LeftSection>
-        <Header>{`${getGreeting()}, Camero 🤩`}</Header>
-        <SubHeading>
-          It’s a great day to optimise your asset management for greater
-          efficiency and growth.
-        </SubHeading>
+        {showBackButton && <BackButton onClick={handleGoBack} />}
+        <Box>
+          <Header> {header}</Header>
+          <SubHeading>
+            It’s a great day to optimise your asset management for greater
+            efficiency and growth.
+          </SubHeading>
+        </Box>
       </LeftSection>
 
       <RightSection>
