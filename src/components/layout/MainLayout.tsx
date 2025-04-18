@@ -11,7 +11,7 @@ const MainContainer = styled(Box)({
 });
 
 const TopnavContainer = styled(Box)(({ theme }) => ({
-  padding: '1% 3%',
+  padding: '1% 2%',
   borderBottom: `1px solid ${colors.greys.lightGrey}`,
   position: 'sticky',
   top: 0,

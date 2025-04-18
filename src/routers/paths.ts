@@ -10,6 +10,8 @@ export const paths = {
   dashboard: 'dashboard',
   assets: 'assets',
   issues: 'issues-raised',
+  newTicket: 'raise-ticket',
+  requestAsset: 'request-asset',
   logout: 'logout',
   addNewAsset:'add-new-asset',
   allAssets:'assets',

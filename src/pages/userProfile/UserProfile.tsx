@@ -1,5 +1,5 @@
 import { Box, styled } from '@mui/material';
-import Profile from './Profile';
+import Profile from 'src/components/userProfile/Profile';
 import { customTheme } from 'src/themes/theme';
 
 const UserProfileContainer = styled(Box)({

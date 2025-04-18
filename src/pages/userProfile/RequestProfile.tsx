@@ -1,5 +1,5 @@
 import TopNav from 'src/components/navbar/TopNav';
-import Profile from './Profile';
+import Profile from 'src/components/userProfile/Profile';
 import { Box, Typography, styled } from '@mui/material';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';

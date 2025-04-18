@@ -144,7 +144,9 @@ function Profile() {
     <MainContainer>
       <StyledProfile>My Profile</StyledProfile>
       <FormContainer>
-        <UserDetails />
+        <Box sx={{ width: '20%' }}>
+          <UserDetails />
+        </Box>
         <StyledFormBox>
           <Grid container spacing={2}>
             <Grid size={{xs:12,sm:6}}>

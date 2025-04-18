@@ -25,6 +25,8 @@ export const colors = {
     charcoalGray: '#5B5858',
     slatGrey: '#323A47',
     slateGrey: '#8A96A8',
+    grayishBlue: '#616B7A',
+    SteelBlue: '#8A92A633',
   },
   headers: {
     black: '#000000',

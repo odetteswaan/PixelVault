@@ -4,7 +4,7 @@ import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 
 const ProfileContainer = styled(Box)(({ theme }) => ({
-  width: '20%',
+  width: '100%',
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',
