@@ -6,18 +6,27 @@ import {
   TextField,
   InputAdornment,
 } from '@mui/material';
+import { useRef, useState } from 'react';
 import { KeyboardArrowRight } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
-import Receipt from 'src/assets/receipt-add.svg'
-import AddImage from 'src/assets/gallery-add.svg'
+import Receipt from 'src/assets/receipt-add.svg';
+import AddImage from 'src/assets/gallery-add.svg';
 import * as React from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 const AddNewAsset = () => {
+  const inputRef1 = useRef<HTMLInputElement | null>(null);
+  const inputRef2 = useRef<HTMLInputElement | null>(null);
+  const inputRef3 = useRef<HTMLInputElement | null>(null);
+  const inputRef4 = useRef<HTMLInputElement | null>(null);
+  const [image1, setImage1] = useState<File | null>(null);
+  const [image2, setImage2] = useState<File | null>(null);
+  const [image3, setImage3] = useState<File | null>(null);
+  const [image4, setImage4] = useState<File | null>(null);
   const [value, setValue] = React.useState<Dayjs | null>(dayjs());
-  const [warranty,setWarranty]= React.useState<Dayjs | null>(dayjs());
+  const [warranty, setWarranty] = React.useState<Dayjs | null>(dayjs());
   const CustomTextField = styled(TextField)(() => ({
     '& .MuiOutlinedInput-root': {
       height: '55px',
@@ -33,6 +42,27 @@ const AddNewAsset = () => {
       },
     },
   }));
+  const handleAssetImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    key: number
+  ) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (key === 1) {
+        setImage1(file);
+      } else if (key === 2) {
+        setImage2(file);
+      } else if (key === 3) {
+        setImage3(file);
+      } else {
+        setImage4(file);
+      }
+    }
+  };
+  const handleImageClick = (ref: React.RefObject<HTMLInputElement>) => {
+    ref.current?.click();
+  };
   return (
     <Wrapper>
       <Box className="mainContainer">
@@ -47,41 +77,105 @@ const AddNewAsset = () => {
           </Box>
           <Box className="assetImageContainer">
             <Box className="assetCard">
-              <Box className="imageContainer">
-                <img
-                  src={AddImage}
-                  alt="assetImage"
+              <Box
+                className="imageContainer"
+                onClick={() => handleImageClick(inputRef1)}
+              >
+                {image1 ? (
+                  <img
+                    src={URL.createObjectURL(image1)}
+                    alt="assetImage"
+                    className="width"
+                  />
+                ) : (
+                  <img src={AddImage} alt="assetImage" />
+                )}
+                <input
+                  type="file"
+                  ref={inputRef1}
+                  className="none"
+                  onChange={(e) => handleAssetImageChange(e, 1)}
                 />
-                <Typography className="uploadImageText">
+                <Typography
+                  className={'uploadImageText ' + `${image1 ? 'none' : ''}`}
+                >
                   Upload Asset Image
                 </Typography>
               </Box>
-              <Box className="imageContainer">
-                <img
-                  src={AddImage}
-                  alt="assetImage"
+              <Box
+                className="imageContainer"
+                onClick={() => handleImageClick(inputRef2)}
+              >
+                {image2 ? (
+                  <img
+                    src={URL.createObjectURL(image2)}
+                    alt="assetImage"
+                    className="width"
+                  />
+                ) : (
+                  <img src={AddImage} alt="assetImage" />
+                )}
+                <input
+                  type="file"
+                  className="none"
+                  ref={inputRef2}
+                  onChange={(e) => handleAssetImageChange(e, 2)}
                 />
-                <Typography className="uploadImageText">
+                <Typography
+                  className={'uploadImageText ' + `${image2 ? 'none' : ''}`}
+                >
                   Upload Asset Image
                 </Typography>
               </Box>
             </Box>
             <Box className="subImage">
-              <Box className="imageContainer">
-                <img
-                  src={AddImage}
-                  alt="assetImage"
+              <Box
+                className="imageContainer"
+                onClick={() => handleImageClick(inputRef3)}
+              >
+                {image3 ? (
+                  <img
+                    src={URL.createObjectURL(image3)}
+                    alt="assetImage"
+                    className="width"
+                  />
+                ) : (
+                  <img src={AddImage} alt="assetImage" />
+                )}
+                <input
+                  type="file"
+                  ref={inputRef3}
+                  onChange={(e) => handleAssetImageChange(e, 3)}
+                  className="none"
                 />
-                <Typography className="uploadImageText">
+                <Typography
+                  className={'uploadImageText ' + `${image3 ? 'none' : ''}`}
+                >
                   Upload Asset Image
                 </Typography>
               </Box>
-              <Box className="imageContainer">
-                <img
-                  src={AddImage}
-                  alt="assetImage"
+              <Box
+                className="imageContainer"
+                onClick={() => handleImageClick(inputRef4)}
+              >
+                {image4 ? (
+                  <img
+                    src={URL.createObjectURL(image4)}
+                    alt="assetImage"
+                    className="width"
+                  />
+                ) : (
+                  <img src={AddImage} alt="assetImage" />
+                )}
+                <input
+                  type="file"
+                  ref={inputRef4}
+                  onChange={(e) => handleAssetImageChange(e, 4)}
+                  className="none"
                 />
-                <Typography className="uploadImageText">
+                <Typography
+                  className={'uploadImageText ' + `${image4 ? 'none' : ''}`}
+                >
                   Upload Asset Image
                 </Typography>
               </Box>
@@ -91,20 +185,18 @@ const AddNewAsset = () => {
         <Box className="fieldContainer">
           <Grid container rowSpacing={3} columnSpacing={4}>
             <Grid size={12}>
-              <Typography className='cardHeading'>
-                Add New Asset
-              </Typography>
+              <Typography className="cardHeading">Add New Asset</Typography>
             </Grid>
             <Grid size={12}>
-              <hr className='horizontalRule' />
+              <hr className="horizontalRule" />
             </Grid>
             <Grid size={12}>
               <Box>
                 <Typography className="fieldText">Assets Name</Typography>
-                <CustomTextField variant="outlined" fullWidth />
+                <CustomTextField variant="outlined" fullWidth required />
               </Box>
             </Grid>
-            <Grid size={{ lg: 12, md: 12, sm: 12, xl: 6 }} className="Grid" >
+            <Grid size={{ lg: 12, md: 12, sm: 12, xl: 6 }} className="Grid">
               <Typography className="fieldText">Select Asset Type</Typography>
               <CustomTextField
                 variant="outlined"
@@ -112,13 +204,13 @@ const AddNewAsset = () => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <KeyboardArrowRight className='iconColor' />
+                      <KeyboardArrowRight className="iconColor" />
                     </InputAdornment>
                   ),
                 }}
               />
             </Grid>
-            <Grid size={{ lg: 12, md: 12, sm: 12, xl: 6 }} className='Grid'>
+            <Grid size={{ lg: 12, md: 12, sm: 12, xl: 6 }} className="Grid">
               <Typography className="fieldText">Select Asset Brand</Typography>
               <CustomTextField
                 variant="outlined"
@@ -126,7 +218,7 @@ const AddNewAsset = () => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <KeyboardArrowRight className='iconColor' />
+                      <KeyboardArrowRight className="iconColor" />
                     </InputAdornment>
                   ),
                 }}
@@ -162,7 +254,6 @@ const AddNewAsset = () => {
                   onChange={(newValue) => setValue(newValue)}
                   slotProps={{
                     textField: {
-
                       fullWidth: true,
                     },
                   }}
@@ -179,7 +270,6 @@ const AddNewAsset = () => {
                   onChange={(warranty) => setWarranty(warranty)}
                   slotProps={{
                     textField: {
-
                       fullWidth: true,
                     },
                   }}
@@ -219,27 +309,28 @@ const AddNewAsset = () => {
   );
 };
 const Wrapper = styled(Box)(({ theme }) => ({
-  "& .calendarIconColor": { color: '#2C3E50' },
-  "& .horizontalRule": { width: '100%', border: '1px solid #E2E2E5' },
-  "& .dimensionBox": {
-    height: '30px', width: '30px'
+  '& .calendarIconColor': { color: '#2C3E50' },
+  '& .horizontalRule': { width: '100%', border: '1px solid #E2E2E5' },
+  '& .dimensionBox': {
+    height: '30px',
+    width: '30px',
   },
-  "& .iconColor": {
-    color: 'black'
+  '& .iconColor': {
+    color: 'black',
   },
-  "& .cardHeading": {
+  '& .cardHeading': {
     fontWeight: 600,
     fontSize: '18px',
     fontFamily: 'Urbanist',
     color: '#000104',
   },
-  "& .subImage": {
+  '& .subImage': {
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     marginTop: '15px',
   },
-  "& .assetCard": {
+  '& .assetCard': {
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
@@ -276,7 +367,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
     backgroundColor: '#FCFCFD',
     border: '1px solid #ECECEC',
     borderRadius: '5px',
-    marginBottom:'40px',
+    marginBottom: '40px',
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
@@ -315,7 +406,8 @@ const Wrapper = styled(Box)(({ theme }) => ({
     fontSize: '16px',
     color: 'white',
     textTransform: 'capitalize',
-    border: 'none', "&:hover": { backgroundColor: '#5900B3', }
+    border: 'none',
+    '&:hover': { backgroundColor: '#5900B3' },
   },
   '& .assetImageContainer': {
     marginTop: '40px',
@@ -339,6 +431,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
       height: '100px',
     },
   },
+
   '& .uploadImageText': {
     fontFamily: 'Urbanist',
     fontWeight: 600,
@@ -364,12 +457,20 @@ const Wrapper = styled(Box)(({ theme }) => ({
     fontWeight: 500,
     fontSize: '16px',
     color: 'white',
-    textTransform: 'capitalize', "&:hover": { backgroundColor: '#5900B3', }
+    textTransform: 'capitalize',
+    '&:hover': { backgroundColor: '#5900B3' },
   },
-  "& .Grid": {
+  '& .Grid': {
     [theme.breakpoints.down('lg')]: {
-      width: '100%'
-    }
-  }
+      width: '100%',
+    },
+  },
+  '& .width': {
+    width: '100%',
+    height: '100%',
+  },
+  '& .none': {
+    display: 'none',
+  },
 }));
 export default AddNewAsset;

@@ -293,7 +293,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
         justifyContent: 'center',
         backgroundColor: 'rgba(89, 0, 179, 0.15)',
         borderRadius: '5px',
-        cursor:'pointer'
+        cursor: 'pointer'
     },
     '& .btnContainer': {
         width: '95%',
@@ -369,7 +369,8 @@ const Wrapper = styled(Box)(({ theme }) => ({
         fontFamily: customTheme.typography.fontFamily.main,
         fontWeight: customTheme.typography.fontWeights.medium,
         fontSize: "7",
-        color: '#52575C'
+        color: '#52575C',
+        cursor: 'pointer'
     },
     "& .color": { color: '#323A47' }
 }))
