@@ -63,7 +63,7 @@ const TableData = styled(Typography)({
   fontFamily: customTheme.typography.fontFamily.main,
   fontSize: customTheme.typography.fontSizes[10],
   '&.asset-name': {
-    color: '#495464',
+    color: colors.shades.charcoalBlue,
     fontWeight: customTheme.typography.fontWeights.semiBold,
   },
 });

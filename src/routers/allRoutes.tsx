@@ -15,6 +15,7 @@ import AdminDashboard from 'src/pages/Dashboard/Admin/AdminDashboard';
 import MainLayout from 'src/components/layout/MainLayout';
 import AllAllocatedAssets from 'src/pages/AssetAllocationLogs/AllAllocatedAssets';
 import AllIssues from 'src/pages/IssuesRaised/AllIssues';
+import EmployeeList from 'src/pages/employeeList/EmployeeList';
 import EmployeeProfile from 'src/pages/employeeProfile/EmployeeProfile';
 import RequestNewAsset from 'src/pages/AssetAllocationLogs/RequestNewAsset';
 
@@ -62,6 +63,7 @@ const allRoutes = createBrowserRouter(
             <Route path={paths.raisedTickets} element={<RaisedTickets/>}/>
             <Route path={paths.warranty} element={<WarrantyExpiring/>} />
             <Route path={paths.AssetAllocated} element={<EmployeeAssetAllocation/>}/>
+            <Route path={paths.employee} element={<EmployeeList />} />
             <Route path={paths.AssetDetail} element={<AssetDetail/>}/>
           </Route>
         </Route>
