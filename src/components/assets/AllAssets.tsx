@@ -1,7 +1,7 @@
 import { Box, Typography, styled } from '@mui/material';
 import Asset from './Asset';
-import { colors } from '../../../themes/colors';
-import { customTheme } from '../../../themes/theme';
+import { colors } from '../../themes/colors';
+import { customTheme } from '../../themes/theme';
 
 interface AssetProps {
   AssetName: string;

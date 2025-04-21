@@ -1,25 +1,25 @@
-import { Box, styled } from '@mui/material';
-import AllAssets from '../../../components/assets/AllAssets';
-import RecentIssues from './RecentIssues';
-import AllocatedAssets from './AllocatedAssets';
-import mobile from '../../../assets/Mobile.svg';
-import NoAssets from './NoAsset';
+import EmployeeDetails from './EmployeeDetails';
+import AssetDetails from './AssetDetails';
+import RaisedTicketComponent from '../../components/RaisedTicket/RaisedTicketComponent';
+import { styled, Box } from '@mui/material';
+import AllAssets from '../../components/assets/AllAssets';
+import mobile from '../../assets/Mobile.svg';
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  padding: '3%',
+  gap: '20px',
+  justifyContent: 'space-between',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+  },
+}));
 
 const AssetsContainer = styled(Box)({
   padding: '3%',
 });
 
-const IssueContainer = styled(Box)(({ theme }) => ({
-  padding: '0 3% 3% 3%',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  [theme.breakpoints.down('md')]: {
-    flexDirection: 'column',
-    gap: '20px',
-  },
-}));
-document.body.style.overflowX = 'hidden';
 const assets = [
   {
     AssetName: 'Asset 1',
@@ -75,25 +75,19 @@ const assets = [
   },
 ];
 
-function Dashboard() {
+function EmployeeProfile() {
   return (
-    <Box>
-      {assets.length > 0 ? (
-        <>
-          <AssetsContainer>
-            <AllAssets assets={assets} />
-          </AssetsContainer>
-          <IssueContainer>
-            <RecentIssues />
-            <AllocatedAssets />
-          </IssueContainer>
-        </>
-      ) : (
-        <AssetsContainer>
-          <NoAssets />
-        </AssetsContainer>
-      )}
-    </Box>
+    <>
+      <StyledBox>
+        <EmployeeDetails />
+        <AssetDetails />
+      </StyledBox>
+      <AssetsContainer>
+        <AllAssets assets={assets} />
+        <RaisedTicketComponent />
+      </AssetsContainer>
+    </>
   );
 }
-export default Dashboard;
+
+export default EmployeeProfile;
