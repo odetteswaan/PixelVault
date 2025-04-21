@@ -39,5 +39,6 @@ export const colors = {
   body: {
     lightGrey: '#666666',
     white: '#ffffff',
+    whitesmoke:'#F5F5F5',
   },
 };

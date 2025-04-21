@@ -128,7 +128,7 @@ const links =
         },
         {
           name: 'All Employee',
-          path: '/admin/employees',
+          path: '/admin/all-employees',
           activeImg: ActiveEmployeesImg,
           inactiveImg: AllEmployee,
         },
