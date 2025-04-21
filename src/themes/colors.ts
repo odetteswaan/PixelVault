@@ -34,6 +34,7 @@ export const colors = {
     darkBlack: '#1b1b1b',
     lightBlack: '#27272f',
     charcoalBlack: '#000104',
+    Heading: '#232D42',
   },
   body: {
     lightGrey: '#666666',
