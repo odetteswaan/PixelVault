@@ -14,6 +14,7 @@ import Dashboard from 'src/pages/Dashboard/Employee/Dashboard';
 import MainLayout from 'src/components/layout/MainLayout';
 import AllAllocatedAssets from 'src/pages/AssetAllocationLogs/AllAllocatedAssets';
 import AllIssues from 'src/pages/IssuesRaised/AllIssues';
+import EmployeeProfile from 'src/pages/employeeProfile/EmployeeProfile';
 import RequestNewAsset from 'src/pages/AssetAllocationLogs/RequestNewAsset';
 
 import AddNewAsset from 'src/pages/Admin/AddNewAsset';
@@ -53,6 +54,7 @@ const allRoutes = createBrowserRouter(
           <Route element={<MainLayout />} path={paths.adminRoot}>
             <Route index element={<HomePage />} />
             <Route path={paths.counter} element={<CounterPage />} />
+            <Route path={paths.employeeProfile} element={<EmployeeProfile/>} />
             <Route path={`${paths.addNewAsset}`} element={<AddNewAsset/>}/>
             <Route path={paths.allAssets} element={<AllAssets/>}/>
             <Route path={paths.raisedTickets} element={<RaisedTickets/>}/>
