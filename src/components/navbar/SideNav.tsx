@@ -116,7 +116,7 @@ const links =
     : [
         {
           name: 'Dashboard',
-          path: '/dashboard',
+          path: '/admin/dashboard',
           activeImg: ActiveDashboard,
           inactiveImg: Dashboard,
         },
@@ -128,7 +128,7 @@ const links =
         },
         {
           name: 'All Employee',
-          path: '/employee',
+          path: '/admin/employees',
           activeImg: ActiveEmployeesImg,
           inactiveImg: AllEmployee,
         },

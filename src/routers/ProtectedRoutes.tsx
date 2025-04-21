@@ -12,11 +12,7 @@ function ProtectedRoutes({ requiredRole }: { requiredRole?: string }) {
     return <Navigate to="/login" />;
   }
 
-  return (
-    <>
-      {hasAuthenticated ? <Outlet /> : <Navigate to="/login" replace={true} />}
-    </>
-  );
+  return <Outlet />;
 }
 
 export default ProtectedRoutes;

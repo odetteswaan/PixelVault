@@ -1,9 +1,8 @@
 import { Paper, styled, Typography } from '@mui/material';
 import IssuesRaised from 'src/pages/IssuesRaised/IssuesRaised';
-import { Link } from 'react-router-dom';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { customTheme } from '../../../themes/theme';
 import { colors } from '../../../themes/colors';
+import CustomLink from 'src/components/actions/CustomLink';
 
 const MainContainer = styled(Paper)(({ theme }) => ({
   border: `1px solid ${colors.greys.lightGrey}`,
@@ -23,22 +22,6 @@ const Heading = styled(Typography)({
   fontWeight: customTheme.typography.fontWeights.semiBold,
   borderBottom: `1px solid ${colors.greys.frostedGrey}`,
   padding: '10px 0',
-});
-
-const StyledLink = styled(Link)({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  margin: '15px',
-  color: colors.primary.metallicViolet,
-  cursor: 'pointer',
-  fontWeight: customTheme.typography.fontWeights.semiBold,
-  fontSize: customTheme.typography.fontSizes[10],
-  fontFamily: customTheme.typography.fontFamily.main,
-  textDecoration: 'none',
-  '&:hover': {
-    color: colors.primary.metallicViolet,
-  },
 });
 
 const data = [
@@ -61,10 +44,7 @@ function RecentIssues() {
     <MainContainer>
       <Heading>Issues Raised For Asset</Heading>
       <IssuesRaised issues={data} />
-      <StyledLink to="/issues-raised">
-        View All Raised Issues
-        <ArrowForwardIcon />
-      </StyledLink>
+      <CustomLink to="/issues-raised" text=" View All Assets Logs" />
     </MainContainer>
   );
 }

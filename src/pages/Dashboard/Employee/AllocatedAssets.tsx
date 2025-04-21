@@ -1,9 +1,8 @@
 import { Paper, styled, Typography } from '@mui/material';
 import { customTheme } from '../../../themes/theme';
 import { colors } from '../../../themes/colors';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AssetAllocationUI from 'src/pages/AssetAllocationLogs/AssetAllocation';
-import { Link } from 'react-router-dom';
+import CustomLink from 'src/components/actions/CustomLink';
 
 const MainContainer = styled(Paper)(({ theme }) => ({
   border: '1px solid #ECECEC',
@@ -24,22 +23,6 @@ const Heading = styled(Typography)({
   fontWeight: customTheme.typography.fontWeights.semiBold,
   borderBottom: `1px solid ${colors.greys.frostedGrey}`,
   padding: '10px 0',
-});
-
-const StyledLink = styled(Link)({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  margin: '15px',
-  color: colors.primary.metallicViolet,
-  cursor: 'pointer',
-  fontWeight: customTheme.typography.fontWeights.semiBold,
-  fontSize: customTheme.typography.fontSizes[10],
-  fontFamily: customTheme.typography.fontFamily.main,
-  textDecoration: 'none',
-  '&:hover': {
-    color: colors.primary.metallicViolet,
-  },
 });
 
 const data = [
@@ -64,10 +47,7 @@ function AllocatedAssets() {
     <MainContainer>
       <Heading>Asset Allocation Logs</Heading>
       <AssetAllocationUI data={data} headings={headings} />
-      <StyledLink to="/Assets">
-        View All Assets Logs
-        <ArrowForwardIcon />
-      </StyledLink>
+      <CustomLink to="/Assets" text=" View All Assets Logs" />
     </MainContainer>
   );
 }

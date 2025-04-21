@@ -11,6 +11,7 @@ import Signup from 'src/pages/SignUp/Signup';
 import RequestProfile from 'src/pages/userProfile/RequestProfile';
 import UserProfile from 'src/pages/userProfile/UserProfile';
 import Dashboard from 'src/pages/Dashboard/Employee/Dashboard';
+import AdminDashboard from 'src/pages/Dashboard/Admin/AdminDashboard';
 import MainLayout from 'src/components/layout/MainLayout';
 import AllAllocatedAssets from 'src/pages/AssetAllocationLogs/AllAllocatedAssets';
 import AllIssues from 'src/pages/IssuesRaised/AllIssues';
@@ -51,9 +52,10 @@ const allRoutes = createBrowserRouter(
           element={<ProtectedRoutes requiredRole="admin" />}
           path={paths.adminRoot}
         >
-          <Route element={<MainLayout />} path={paths.adminRoot}>
+          <Route element={<MainLayout />}>
             <Route index element={<HomePage />} />
             <Route path={paths.counter} element={<CounterPage />} />
+            <Route path={paths.adminDashboard} element={<AdminDashboard />} />
             <Route path={paths.employeeProfile} element={<EmployeeProfile/>} />
             <Route path={`${paths.addNewAsset}`} element={<AddNewAsset/>}/>
             <Route path={paths.allAssets} element={<AllAssets/>}/>
@@ -61,7 +63,6 @@ const allRoutes = createBrowserRouter(
             <Route path={paths.warranty} element={<WarrantyExpiring/>} />
             <Route path={paths.AssetAllocated} element={<EmployeeAssetAllocation/>}/>
             <Route path={paths.AssetDetail} element={<AssetDetail/>}/>
-            
           </Route>
         </Route>
       </Route>

@@ -1,6 +1,6 @@
 export const paths = {
   root: '/',
-  adminRoot: '/admin',
+  adminRoot: 'admin',
   login: 'login',
   counter: 'counter',
   signup: 'signup',
@@ -14,6 +14,7 @@ export const paths = {
   newTicket: 'raise-ticket',
   requestAsset: 'request-asset',
   logout: 'logout',
+  adminDashboard: 'dashboard',
   addNewAsset:'add-new-asset',
   allAssets:'assets',
   raisedTickets:'tickets',
