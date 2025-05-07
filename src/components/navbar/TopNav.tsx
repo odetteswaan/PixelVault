@@ -101,6 +101,36 @@ function TopNav() {
           header: 'New Asset Request',
           showBackButton: true,
         };
+      case '/admin/all-employees':
+        return {
+          header: 'All Employees',
+          showBackButton: true,
+        };
+      case '/admin/assets':
+        return {
+          header: 'All Assets',
+          showBackButton: true,
+        };
+      case '/admin/add-new-asset':
+        return {
+          header: 'Add New Asset',
+          showBackButton: true,
+        };
+      case '/admin/tickets':
+        return {
+          header: 'Raised Tickets',
+          showBackButton: true,
+        };
+      case '/admin/ticketsWarranty':
+        return {
+          header: 'Warranty Expiring',
+          showBackButton: true,
+        };
+      case '/admin/employee-asset-allocation':
+        return {
+          header: 'Emlployee Asset Allocations',
+          showBackButton: true,
+        };
       default:
         return {
           header: `${getGreeting()}, Camero 🤩`,
@@ -117,6 +147,7 @@ function TopNav() {
   const handleGoBack = () => {
     navigate(-1);
   };
+  const value = localStorage.getItem('role');
 
   return (
     <TopNavContainer>
@@ -125,8 +156,9 @@ function TopNav() {
         <Box>
           <Header> {header}</Header>
           <SubHeading>
-            It’s a great day to optimise your asset management for greater
-            efficiency and growth.
+            {value === 'user'
+              ? "It’s a great day to optimise your asset management for greater efficiency and growth."
+              : "It’s a great day to improve your sales management for better growth."}
           </SubHeading>
         </Box>
       </LeftSection>

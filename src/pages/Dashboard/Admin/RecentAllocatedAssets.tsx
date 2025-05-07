@@ -20,6 +20,7 @@ import { colors } from 'src/themes/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/material/styles';
 import CustomLink from 'src/components/actions/CustomLink';
+import SectionHeading from 'src/components/adminDashboard/SectionHeading';
 
 const CardContainer = styled(Card)(({ theme }) => ({
   backgroundColor: colors.primary.grayishWhite,
@@ -79,6 +80,19 @@ const ValueTypography = styled(Typography)(({ align }) => ({
   fontWeight: 500,
   textAlign: align || 'left',
 }));
+const StyledTableContainer = styled(TableContainer)({
+  boxShadow: 'none',
+});
+const StyledDivider = styled(Divider)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  display: 'block',
+  [theme.breakpoints.up('sm')]: {
+    display: 'none',
+  },
+}));
+const EmployeeName = styled(Typography)({
+  fontWeight: 500,
+});
 
 const allocatedAssets = [
   {
@@ -138,18 +152,16 @@ const RecentAllocatedAssets = () => {
 
   return (
     <CardContainer>
-      <Box display="flex" alignItems="center" mb={2}>
-        <Typography variant="h6">Recent Assets Allocated</Typography>
-      </Box>
-      <Divider sx={{ mb: 2, display: { xs: 'none', sm: 'block' } }} />
+      <SectionHeading title="Recent Assets Allocated" />
+      <StyledDivider />
       {isSmallScreen ? (
         <>
           {allocatedAssets.map((asset, idx) => (
             <StyledAccordion key={idx} disableGutters elevation={0}>
               <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography sx={{ fontWeight: 500 }}>
+                <EmployeeName>
                   {asset.employee}
-                </Typography>
+                </EmployeeName>
               </StyledAccordionSummary>
 
               <StyledAccordionDetails>
@@ -170,7 +182,7 @@ const RecentAllocatedAssets = () => {
           ))}
         </>
       ) : (
-        <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
+        <StyledTableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
@@ -191,7 +203,7 @@ const RecentAllocatedAssets = () => {
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </StyledTableContainer>
       )}
 
       <Box textAlign="center" mt={2}>

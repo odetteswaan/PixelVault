@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import ProtectedRoutes from 'src/routers/ProtectedRoutes';
 import { paths } from 'src/routers/paths';
-import { CounterPage, HomePage, ErrorPage } from 'src/routers/loads/lazyLoads';
+import { CounterPage, ErrorPage } from 'src/routers/loads/lazyLoads';
 import Login from '../pages/login/Login';
 import Signup from 'src/pages/SignUp/Signup';
 import RequestProfile from 'src/pages/userProfile/RequestProfile';
@@ -38,6 +38,7 @@ const allRoutes = createBrowserRouter(
           path={paths.root}
         >
           <Route element={<MainLayout />} path={paths.root}>
+            <Route index element={<UserProfile />} />
             <Route path={`/${paths.userProfile}`} element={<UserProfile />} />
             <Route path={`/${paths.dashboard}`} element={<Dashboard />} />
             <Route path={`/${paths.assets}`} element={<AllAllocatedAssets />} />
@@ -54,9 +55,8 @@ const allRoutes = createBrowserRouter(
           path={paths.adminRoot}
         >
           <Route element={<MainLayout />}>
-            <Route index element={<HomePage />} />
+            <Route index element={<AdminDashboard />} />
             <Route path={paths.counter} element={<CounterPage />} />
-            <Route path={paths.adminDashboard} element={<AdminDashboard />} />
             <Route path={paths.employeeProfile} element={<EmployeeProfile/>} />
             <Route path={`${paths.addNewAsset}`} element={<AddNewAsset/>}/>
             <Route path={paths.allAssets} element={<AllAssets/>}/>
@@ -65,6 +65,7 @@ const allRoutes = createBrowserRouter(
             <Route path={paths.AssetAllocated} element={<EmployeeAssetAllocation/>}/>
             <Route path={paths.employee} element={<EmployeeList />} />
             <Route path={paths.AssetDetail} element={<AssetDetail/>}/>
+            <Route path={paths.logout} element={<AdminDashboard />} />
           </Route>
         </Route>
       </Route>

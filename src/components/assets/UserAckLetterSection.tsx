@@ -4,6 +4,10 @@ import upload from '../../assets/upload.svg';
 import download from '../../assets/download.svg';
 import { customTheme } from "src/themes/theme";
 import { colors } from "src/themes/colors";
+import RaiseTicketModal from "src/pages/IssuesRaised/RaiseTicket";
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
 
 type UserAckLetterSectionProps = {
     uploaded: boolean;
@@ -84,6 +88,17 @@ type UserAckLetterSectionProps = {
   });
 
 function UserAckLetterSection({uploaded,isSmallScreen}: UserAckLetterSectionProps){
+   const navigate = useNavigate();
+   const [openTicketModal, setOpenTicketModal] = useState(false);
+   const handleOpen = (name: string) => {
+     if (name === 'Raise New Ticket') {
+      setOpenTicketModal(true);
+    }
+  };
+  const handleTicketClose = () => {
+    navigate('/dashboard');
+    setOpenTicketModal(false);
+  };
     return(
         <Box>
              {uploaded ? (
@@ -99,7 +114,13 @@ function UserAckLetterSection({uploaded,isSmallScreen}: UserAckLetterSectionProp
                 </AcknowledgmentLink>
               </a>
             </StyledAckContainer>
-            <StyledButton variant="contained">Raise New Ticket</StyledButton>
+            <StyledButton variant="contained"  onClick={() => handleOpen("Raise New Ticket")}>Raise New Ticket</StyledButton>
+            {openTicketModal && (
+        <RaiseTicketModal
+          open={openTicketModal}
+          handleClose={handleTicketClose}
+        />
+      )}
           </StyledButtonContainer>
         ) : (
           <ActionContainer>
