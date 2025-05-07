@@ -37,6 +37,24 @@ const Container = styled(Box)(({ theme }) => ({
   },
 }));
 
+const StyledTable = styled(Table)({
+  flex: 1,
+  minWidth: 200,
+});
+
+const StatusWrapper = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+});
+
+const StatusDot = styled(Box)(({ bgcolor, theme }) => ({
+  width: 10,
+  height: 10,
+  borderRadius: '50%',
+  backgroundColor: bgcolor,
+  marginRight: theme.spacing(1),
+}));
+
 const TicketChart: React.FC = () => {
   const [totalTickets] = useState<number>(46);
   const [data] = useState<number[]>([10, 30, 6]);
@@ -56,7 +74,7 @@ const TicketChart: React.FC = () => {
             width={200}
             height={200}
           />
-          <Table size="small" sx={{ flex: 1, minWidth: 200 }}>
+          <StyledTable size="small">
             <TableHead>
               <TableRow>
                 <TableCell>
@@ -74,18 +92,10 @@ const TicketChart: React.FC = () => {
               {labels.map((label, index) => (
                 <TableRow key={index}>
                   <TableCell>
-                    <Box display="flex" alignItems="center">
-                      <Box
-                        sx={{
-                          width: 10,
-                          height: 10,
-                          bgcolor: colors[index],
-                          borderRadius: '50%',
-                          mr: 1,
-                        }}
-                      />
+                    <StatusWrapper>
+                    <StatusDot bgcolor={colors[index]} />
                       {label}
-                    </Box>
+                    </StatusWrapper>
                   </TableCell>
                   <TableCell>{data[index]}</TableCell>
                   <TableCell>
@@ -94,7 +104,7 @@ const TicketChart: React.FC = () => {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+          </StyledTable>
         </Container>
       </CardContent>
     </CardContainer>

@@ -3,6 +3,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import NoAsset from 'src/assets/NoAsset.svg';
 import { customTheme } from '../../../themes/theme';
 import { colors } from '../../../themes/colors';
+import { useNavigate } from 'react-router-dom';
 
 const NoAssetsContainer = styled(Box)(() => ({
   width: '100%',
@@ -61,6 +62,12 @@ const RequestButton = styled(Button)({
 });
 
 const NoAssets = () => {
+  const navigate = useNavigate();
+
+  const handleRequestClick = () => {
+    navigate('/request-asset');
+  };
+
   return (
     <NoAssetsContainer>
       <ContentBox>
@@ -68,7 +75,7 @@ const NoAssets = () => {
         <StyledBox>
           <AssetImage src={NoAsset} alt="noAsset" />
         </StyledBox>
-        <RequestButton variant="contained">
+        <RequestButton variant="contained" onClick={handleRequestClick}>
           Request New Asset <AddCircleOutlineIcon />
         </RequestButton>
       </ContentBox>

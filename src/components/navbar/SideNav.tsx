@@ -96,7 +96,7 @@ const links =
         },
         {
           name: 'Raise New Ticket',
-          path: '/newTicket',
+          path: '/raise-ticket',
           activeImg: ActiveRiseTicket,
           inactiveImg: RiseTicket,
         },
@@ -146,7 +146,7 @@ const links =
         },
         {
           name: 'logout',
-          path: '/logout',
+          path: '/admin/logout',
           activeImg: LogoutIcon,
           inactiveImg: LogoutIcon,
         },
@@ -191,7 +191,7 @@ function SideNav() {
                 <StyledListItem
                   key={link.path}
                   to={link.path}
-                  onClick={() => handleOpen(link.name)}
+                  onClick={(e) => handleOpen(link.name,e)}
                 >
                   {({ isActive }) => (
                     <>

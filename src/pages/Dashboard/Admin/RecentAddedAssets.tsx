@@ -14,6 +14,27 @@ const CardContainer = styled(Card)(({ theme }) => ({
     width: '100%',
   },
 }));
+const AssetCard = styled(Card)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  boxShadow: 'none',
+  border: '1px solid #e0e0e0',
+  borderRadius: '8px',
+}));
+
+const AssetIconBox = styled(Box)({
+  width: 40,
+  height: 40,
+  backgroundColor: '#f1f1f1',
+  borderRadius: '8px',
+});
+
+const AssetTitle = styled(Typography)({
+  fontWeight: 600,
+});
+
+const RightText = styled(Typography)({
+  textAlign: 'right',
+});
 
 const assets = [
   {
@@ -42,56 +63,39 @@ const assets = [
 const RecentAddedAssets = () => {
   return (
     <CardContainer>
-      <SectionHeading title=" Warranty Expiring" />
+      <SectionHeading title=" Recent Assets Added" />
       {assets.map((asset) => (
-        <Card
-          key={asset.id}
-          sx={{
-            mb: 2,
-            boxShadow: 'none',
-            border: '1px solid #e0e0e0',
-            borderRadius: '8px',
-          }}
-        >
+        <AssetCard key={asset.id}>
           <CardContent>
             <Grid container spacing={2}>
               <Grid size={{ xs: 2 }}>
-                <Box
-                  sx={{
-                    width: 40,
-                    height: 40,
-                    backgroundColor: '#f1f1f1',
-                    borderRadius: '8px',
-                  }}
-                ></Box>
+                <AssetIconBox/>
               </Grid>
               <Grid size={{ xs: 5 }}>
-                <Typography variant="body1" fontWeight={600}>
+                <AssetTitle variant="body1">
                   {asset.title}
-                </Typography>
+                </AssetTitle>
                 <Typography variant="body2" color="text.secondary">
                   Brand: {asset.brand}
                 </Typography>
               </Grid>
               <Grid size={{ xs: 5 }}>
-                <Typography
+                <RightText
                   variant="body2"
                   color="text.secondary"
-                  textAlign="right"
                 >
                   {asset.date}
-                </Typography>
-                <Typography
+                </RightText>
+                <RightText
                   variant="body2"
                   color="text.secondary"
-                  textAlign="right"
                 >
                   Device: {asset.device}
-                </Typography>
+                </RightText>
               </Grid>
             </Grid>
           </CardContent>
-        </Card>
+        </AssetCard>
       ))}
       <CustomLink to="/abc" text=" View All Assets" />
     </CardContainer>
