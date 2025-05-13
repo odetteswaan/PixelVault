@@ -88,7 +88,7 @@ const AssetsWarranty = () => {
           </CardContent>
         </Card>
       ))}
-      <CustomLink to="/abc" text=" View All Assets" />
+      <CustomLink to="/admin/ticketsWarranty" text=" View All Assets" />
     </CardContainer>
   );
 };

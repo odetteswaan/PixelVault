@@ -191,7 +191,7 @@ function SideNav() {
                 <StyledListItem
                   key={link.path}
                   to={link.path}
-                  onClick={(e) => handleOpen(link.name,e)}
+                  onClick={() => handleOpen(link.name)}
                 >
                   {({ isActive }) => (
                     <>

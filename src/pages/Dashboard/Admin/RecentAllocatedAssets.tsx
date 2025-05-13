@@ -207,7 +207,7 @@ const RecentAllocatedAssets = () => {
       )}
 
       <Box textAlign="center" mt={2}>
-        <CustomLink to="/abc" text="View All Assets Allocated" />
+        <CustomLink to="/admin/assets" text="View All Assets Allocated" />
       </Box>
     </CardContainer>
   );

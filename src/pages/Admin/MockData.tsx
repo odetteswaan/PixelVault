@@ -1,7 +1,7 @@
 import Mobile from "src/assets/Mobile.svg"
 import Phone from 'src/assets/phone.svg'
 import Laptop from 'src/assets/laptop.svg'
-
+export const token="eyJhbGciOiJIUzI1NiJ9.eyJlbXBfaWQiOjEsImV4cCI6MTc0NzE1NDMzOX0.uzGm3OFPVULUn2OfbsAEW7qACwYCGpsBQ1V8rLcT_-A"
 
 export const TableHeading = ['No', 'Assets Name', 'Asset Type', 'Brand', 'Purchase Date', 'Warranty Date', 'Status', 'Action']
 
