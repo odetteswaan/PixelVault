@@ -55,7 +55,7 @@ const allRoutes = createBrowserRouter(
           path={paths.adminRoot}
         >
           <Route element={<MainLayout />}>
-            <Route index element={<AdminDashboard />} />
+            <Route path={paths.dashboard} element={<AdminDashboard />} />
             <Route path={paths.counter} element={<CounterPage />} />
             <Route path={paths.employeeProfile} element={<EmployeeProfile/>} />
             <Route path={`${paths.addNewAsset}`} element={<AddNewAsset/>}/>

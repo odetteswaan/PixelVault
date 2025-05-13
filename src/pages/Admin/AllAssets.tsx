@@ -2,17 +2,23 @@ import { Box, styled, Typography, Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
-import { TableHeading, TableData } from './MockData';
-import { useState } from 'react';
+import { TableHeading, token } from './MockData';
+import { useState, useEffect } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
+import { assetType } from 'src/types/Assets.type';
+import AllocateAssetModal from '../employeeList/AllocateAsset';
+import { baseUrl, getAssets,assetDetail,deallocate} from 'src/config';
 const AllAssets = () => {
   const [currentNav, setCurrentNav] = useState(1);
   const [display, setDisplay] = useState(NaN);
-  const [option, setOptions] = useState(NaN)
-  const Navigate = useNavigate()
+  const [option, setOptions] = useState(NaN);
+  const [Assets, setAssets] = useState<assetType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const[allocateModal,setModal]=useState(false)
+  const Navigate = useNavigate();
   const handleIncrement = () => {
     if (currentNav < 3) {
       setCurrentNav(currentNav + 1);
@@ -25,23 +31,73 @@ const AllAssets = () => {
   };
   const setIndex = (index: number) => {
     if (option === index) {
-      setOptions(NaN)
+      setOptions(NaN);
+    } else {
+      setOptions(index);
     }
-    else {
-      setOptions(index)
-    }
+  };
+  const EditPage = (id: number) => {
+    localStorage.setItem('productId', id.toString())
+    Navigate('/admin/asset-detail');
+  };
+  useEffect(() => {
+    axios
+      .get(`${baseUrl}${getAssets}`, {
+        headers: {
+          token:
+            token
+        },
+      })
+      .then((data) => {
+        setAssets(data.data);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  const handleDeleteAsset = (id: number) => {
+
+    axios.get(`${baseUrl}${assetDetail(id)}`, {
+      headers: {
+        token: token
+      }
+    }).then(() => {
+      axios.delete(`${baseUrl}${assetDetail(id)}`, {
+        headers: { token: token }
+      }).then(() => {
+        window.location.reload()
+      }).catch(err => console.log(err))
+    })
+      .catch(err => console.log(err))
   }
-  const EditPage = () => {
-    Navigate('/admin/asset-detail')
+  const handleDealloacte=(id:number)=>{
+    const body={
+      "asset_id":id
+    }
+        axios.delete(`${baseUrl}${deallocate}`,{
+          headers:{
+            token:token
+          },
+        data:body
+        }).then(()=>{
+          window.location.reload()
+        }).catch(()=>alert("Failed to deallocate asset. Please try again."))
+  }
+  if (loading) {
+    return <p>...Loading please wait</p>;
   }
   return (
     <Wrapper>
       <Box className="btnContainer">
-        <Button startIcon={<AddCircleOutlineIcon />} className="addBtn" onClick={()=>Navigate('/admin/add-new-asset')}>
+        <Button
+          startIcon={<AddCircleOutlineIcon />}
+          className="addBtn"
+          onClick={() => Navigate('/admin/add-new-asset')}
+        >
           Add New Asset
         </Button>
       </Box>
-      <Box className="mainContainer" >
+      {allocateModal&&<AllocateAssetModal open={allocateModal} onClose={()=>setModal(false)}/>}
+      <Box className="mainContainer">
         <Box className="tableContainer">
           <Box className="table">
             <Box className="tableHeading">
@@ -52,40 +108,73 @@ const AllAssets = () => {
               ))}
             </Box>
             <hr className="hr" />
-            {TableData.map((item, index) => (
+            {Assets?.map((item, index) => (
               <>
                 <Box className="tablerow">
-                  <Typography className="sNo">{item.id}</Typography>
-                  <Typography className="sNoBold" >
-                    {item.name}
-                  </Typography>
-                  <Typography className="sNo">{item.type}</Typography>
+                  <Typography className="sNo" >{index+1}</Typography>
+                  <Typography className="sNoBold" style={{width:'105px'}}>{item.name}</Typography>
+                  <Typography className="sNo">{item.asset_type}</Typography>
                   <Typography className="sNo">{item.brand}</Typography>
-                  <Typography className="sNo">{item.date}</Typography>
-                  <Typography className="sNo">{item.date}</Typography>
-                  <Button onClick={() => setIndex(index)}
+                  <Typography className="sNo">{item.purchase_date}</Typography>
+                  <Typography className="sNo">
+                    {item.warranty_end_date}
+                  </Typography>
+                  <Button
+                    onClick={() => setIndex(index)}
                     variant="contained"
-                    className={item.status === 'Available'
-                      ? "allocateBtnGreen" : "allocateBtn"} >
-                    {item.status}
+                    className={
+                      item.allocation_status === 'available'
+                        ? 'allocateBtnGreen'
+                        : 'allocateBtn'
+                    }
+                  >
+                    {item.allocation_status === 'available'
+                      ? 'Available'
+                      : 'Allocated'}
                   </Button>
                   <Box className="action">⋮</Box>
-                  <Box className={`${option === index ? 'popupWindow' : 'none'}`}>
-                    <Box className="box1" onClick={EditPage}>Edit Detail</Box>
-                    <Box className="box2"><Typography>Assign Now</Typography></Box>
-                    <Box className="box3"> <Typography>Delete</Typography></Box>
-                    <Box className="box2"><Typography>Dealloacte</Typography></Box>
+                  <Box
+                    className={`${option === index ? 'popupWindow' : 'none'}`}
+                  >
+                    <Box className="box1" onClick={() => EditPage(item.id)}>
+                      Edit Detail
+                    </Box>
+                    {item.allocation_status==='available'&& 
+                    <Button  variant="text"
+                    disableRipple
+                    disableElevation className='unstyleBtn' >
+                    <Box className="box2" onClick={()=>setModal(true)}>
+                     <Typography>Assign Now</Typography>
+                    </Box>
+                    </Button>
+                    }
+                  <Button onClick={() => handleDeleteAsset(item.id)} variant="text"
+                      disableRipple
+                      disableElevation className='unstyleBtn' >
+                      <Box className="box3" >
+                        <Typography>Delete</Typography>
+                      </Box>
+                    </Button>
+
+                    {item.allocation_status==='allocated'&&<Box className="box2">
+
+                       <Button  variant="text" onClick={()=>handleDealloacte(item.id)}
+                    disableRipple
+                    disableElevation className='unstyleBtn' >
+                    <Box className="box2">
+                     <Typography>Dealloacte</Typography>
+                    </Box>
+                    </Button>
+                    </Box>}
                   </Box>
                 </Box>
-                <hr
-                  className={`hr ${item.id === '8' ? 'none' : ''}`}
-                />
+                <hr className="horizontal" />
               </>
             ))}
           </Box>
         </Box>
         <Box className="cardsHolder">
-          {TableData.map((item, index) => (
+          {Assets.map((item, index) => (
             <Box className="AssetContiner">
               <Box className="AssetHeading">
                 <Typography className="cardHeading">{item.name}</Typography>
@@ -96,11 +185,14 @@ const AllAssets = () => {
                 )}
               </Box>
               <Box
-                className={`${display === index ? 'AssetContent' : 'AssetContentNone'}`}>
+                className={`${display === index ? 'AssetContent' : 'AssetContentNone'}`}
+              >
                 <Box className="Container">
                   <Box className="contentContainer">
                     <Typography className="cardHeading">Asset Type</Typography>
-                    <Typography className="cardContent">{item.type}</Typography>
+                    <Typography className="cardContent">
+                      {item.asset_type}
+                    </Typography>
                   </Box>
                   <Box className="contentContainer">
                     <Typography className="cardHeading">Brand</Typography>
@@ -109,39 +201,64 @@ const AllAssets = () => {
                     </Typography>
                   </Box>
                 </Box>
-                <hr className='horizontal' />
+                <hr className="horizontal" />
                 <Box className="Container">
                   <Box className="contentContainer">
                     <Typography className="cardHeading">
                       Purchased Date
                     </Typography>
-                    <Typography className="cardContent">{item.date}</Typography>
+                    <Typography className="cardContent">
+                      {item.purchase_date}
+                    </Typography>
                   </Box>
                   <Box className="contentContainer">
                     <Typography className="cardHeading">
                       Warranty Date
                     </Typography>
-                    <Typography className="cardContent">{item.date}</Typography>
+                    <Typography className="cardContent">
+                      {item.warranty_end_date}
+                    </Typography>
                   </Box>
                 </Box>
-                <hr className='horizontal' />
+                <hr className="horizontal" />
                 <Box className="Container">
                   <Box className="contentContainer">
                     <Typography className="cardHeading">Status</Typography>
-                    <Button onClick={() => setIndex(index)}
-                      className={item.status === 'Available' ? "allocateBtnGreen" : "allocateBtn"} >
-                      {item.status}
+                    <Button
+                      onClick={() => setIndex(index)}
+                      className={
+                        item.allocation_status === 'available'
+                          ? 'allocateBtnGreen'
+                          : 'allocateBtn'
+                      }
+                    >
+                      {item.allocation_status === 'available'
+                        ? 'Available'
+                        : 'Allocated'}
                     </Button>
                   </Box>
                   <Box className="contentContainer">
                     <Typography className="cardHeading">Action</Typography>
-                    <Box className="actionNew" onClick={() => setIndex(index)}>⋮</Box>
-                    <Box className={`${option===index?'actionPopUp':'none'}`}>
-                         <Box className="whitebg"><Typography className='poptext' onClick={EditPage}>Edit Detail</Typography></Box>
-                         <Box className="greybg"><Typography className='poptext'>Assign now</Typography></Box>
-                         <Box className="whitebg"><Typography className='poptext'>Delete</Typography></Box>
-                         <Box className="greybg"><Typography className='poptext'>Deallocate</Typography></Box>
-
+                    <Box className="actionNew" onClick={() => setIndex(index)}>
+                      ⋮
+                    </Box>
+                    <Box
+                      className={`${option === index ? 'actionPopUp' : 'none'}`}
+                    >
+                      <Box className="whitebg">
+                        <Typography className="poptext" onClick={() => EditPage(item.id)}>
+                          Edit Detail
+                        </Typography>
+                      </Box>
+                      <Box className="greybg">
+                        <Typography className="poptext">Assign now</Typography>
+                      </Box>
+                      <Box className="whitebg">
+                        <Typography className="poptext">Delete</Typography>
+                      </Box>
+                      <Box className="greybg">
+                        <Typography className="poptext">Deallocate</Typography>
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
@@ -150,14 +267,13 @@ const AllAssets = () => {
           ))}
         </Box>
       </Box>
-      <Box className="btnContainerMargin" >
+      <Box className="btnContainerMargin">
         <Box className="navigationContainer">
           <Box className="nav" onClick={handleDecrement}>
             {'<'}
           </Box>
           {[1, 2, 3].map((i) => (
-            <Box
-              className={currentNav == i ? "navDifferentBg" : 'nav'} >
+            <Box className={currentNav == i ? 'navDifferentBg' : 'nav'}>
               {i}
             </Box>
           ))}
@@ -173,20 +289,20 @@ const AllAssets = () => {
 export default AllAssets;
 
 const Wrapper = styled(Box)(({ theme }) => ({
-  "& .display": {
-    display: 'block'
+  '& .display': {
+    display: 'block',
   },
-  "& .fontWeight": { fontWeight: 800 },
+  '& .fontWeight': { fontWeight: 800 },
 
-  "& .horizontal": {
+  '& .horizontal': {
     width: '100%',
-    borderBottom: '1px solid #E2E2E5',
+    border: '1px solid #E2E2E5',
     marginTop: '15px',
   },
-  "& .none": {
-    display: 'none'
+  '& .none': {
+    display: 'none',
   },
-  "& .mainContainer": {
+  '& .mainContainer': {
     width: '100%',
     display: 'flex',
     justifyContent: 'center',
@@ -221,7 +337,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
     justifyContent: 'flex-end',
     marginTop: '30px',
     [theme.breakpoints.down('md')]: {
-      marginBottom: '50px'
+      marginBottom: '50px',
     },
   },
   '& .addBtn': {
@@ -235,8 +351,8 @@ const Wrapper = styled(Box)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
       width: '174px',
       height: '42px',
-    }
-    , "&:hover": { backgroundColor: 'colors.primary.metallicViolet', }
+    },
+    '&:hover': { backgroundColor: 'colors.primary.metallicViolet' },
   },
   '& .tableContainer': {
     width: '91%',
@@ -284,7 +400,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
     fontFamily: customTheme.typography.fontFamily.main,
     fontSize: '16px',
     color: colors.shades.charcoalBlue,
-    fontWeight:'600'
+    fontWeight: '600',
   },
   '& .allocateBtn': {
     width: '86px',
@@ -299,8 +415,8 @@ const Wrapper = styled(Box)(({ theme }) => ({
     height: '30px',
     textTransform: 'capitalize',
     marginRight: '-20px',
-    backgroundColor: 'rgba(40, 199, 111, 0.15)', color: '#2DAF68'
-
+    backgroundColor: 'rgba(40, 199, 111, 0.15)',
+    color: '#2DAF68',
   },
   '& .action': {
     width: '40px',
@@ -313,14 +429,14 @@ const Wrapper = styled(Box)(({ theme }) => ({
     alignItems: 'center',
     borderRadius: '5px',
     marginTop: '-5px',
-    cursor:'pointer'
+    cursor: 'pointer',
   },
   '& .navigationContainer': {
     display: 'flex',
     justifyContent: 'space-between',
     marginTop: '30px',
     width: '250px',
-    marginBottom:'40px'
+    marginBottom: '40px',
   },
   '& .nav': {
     height: '42px',
@@ -339,8 +455,8 @@ const Wrapper = styled(Box)(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     border: '1px solid #E8E8E8',
-    backgroundColor:'rgba(89, 0, 179, 1)',
-    color:'#fff'
+    backgroundColor: 'rgba(89, 0, 179, 1)',
+    color: '#fff',
   },
   '& .AssetHeading': {
     display: 'none',
@@ -372,7 +488,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
       borderRadius: '5px',
       borderTop: 'none',
       padding: '18px 14px 18px 14px',
-      display: 'none'
+      display: 'none',
     },
   },
   '& .AssetContiner': {
@@ -399,7 +515,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
     alignItems: 'center',
     borderRadius: '5px',
     marginLeft: '8px',
-    cursor:'pointer'
+    cursor: 'pointer',
   },
   '& .cardsHolder': {
     display: 'none',
@@ -412,39 +528,64 @@ const Wrapper = styled(Box)(({ theme }) => ({
       gap: '15px',
     },
   },
-  "& .popupWindow": {
-    width: '225px', height: '210px', backgroundColor: 'white',
-    position: 'absolute', right: '8%', marginTop: '22px', zIndex: 1, border: '1px solid #8D939A', borderRadius: '7px', display: 'flex', flexDirection: 'column'
+  '& .popupWindow': {
+    width: '225px',
+    height: '210px',
+    backgroundColor: 'white',
+    position: 'absolute',
+    right: '8%',
+    marginTop: '22px',
+    zIndex: 1,
+    border: '1px solid #8D939A',
+    borderRadius: '7px',
+    display: 'flex',
+    flexDirection: 'column',
   },
-  "& .box1": { padding: "13px", flex: 1, cursor: "pointer" },
-  "& .box2": { backgroundColor: '#F5F5F5', padding: '13px', flex: 1 },
-  "& .box3": { padding: '13px', flex: 1 },
-  "& .actionPopUp":{
-    width:'174px',
-    height:'162px',
-    position:'absolute',
-    right:'6%',
-    marginTop:'65px',
-    display:'flex',
-    flexDirection:'column',
-    backgroundColor:'#fff',
-    border:'1px solid #ECECEC',
-    borderRadius:'5px'
+  '& .box1': { padding: '13px', flex: 1, cursor: 'pointer' },
+  '& .box2': { padding: '13px', flex: 1 },
+  '& .box3': { padding: '13px', flex: 1, cursor: 'pointer' },
+  "& .box1:hover,& .box2:hover,& .box3:hover":{backgroundColor:"#F5F5F5"},
+  '& .actionPopUp': {
+    width: '174px',
+    height: '162px',
+    position: 'absolute',
+    right: '6%',
+    marginTop: '65px',
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#fff',
+    border: '1px solid #ECECEC',
+    borderRadius: '5px',
   },
-  "& .whitebg":{
-    padding:'8px',
-    flex:1,
+  '& .whitebg': {
+    padding: '8px',
+    flex: 1,
   },
-  "& .greybg":{
-    padding:'8px',
-    flex:1,
-    backgroundColor:'rgba(245, 245, 245, 1)'
+  '& .greybg': {
+    padding: '8px',
+    flex: 1,
+    backgroundColor: 'rgba(245, 245, 245, 1)',
   },
-  "& .poptext":{
-    fontFamily:customTheme.typography.fontFamily.main,
-    fontWeight:customTheme.typography.fontWeights.medium,
-    fontSize:'14px',
-    color:'#52575C'
-  }
+  '& .poptext': {
+    fontFamily: customTheme.typography.fontFamily.main,
+    fontWeight: customTheme.typography.fontWeights.medium,
+    fontSize: '14px',
+    color: '#52575C',
+  },
+  "& .unstyleBtn":{
+    all: 'unset',
+    background: 'none',
+    padding: 0,
+    margin: 0,
+    border: 'none',
+    font: 'inherit',
+    color: 'inherit',
+    cursor: 'pointer',
+    flex:2,
+    "&:hover":{
+      backgroundColor:'#f5f5f5'
+    }
+  },
+
 
 }));

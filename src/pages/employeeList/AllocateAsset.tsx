@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent ,useEffect} from 'react';
 import {
   Modal,
   Box,
@@ -6,18 +6,30 @@ import {
   IconButton,
   TextField,
   Button,
-  styled,
+  styled,List,ListItem,
+  MenuItem
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import UploadIcon from '@mui/icons-material/AddPhotoAlternate';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
-
+import axios from 'axios';
+import { token } from '../Admin/MockData';
+import { Employee } from 'src/types/Employee.type';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import  { Dayjs } from 'dayjs';
+import { useNavigate } from 'react-router-dom';
+import { baseUrl,asset_allocations,assetbyname,emailByQuery} from 'src/config';
 interface AllocateAssetModalProps {
   open: boolean;
   onClose: () => void;
 }
-
+interface AssetType {
+  id:number,
+  name:string
+}
 const StyledModal = styled(Modal)({
   display: 'flex',
   justifyContent: 'center',
@@ -113,20 +125,89 @@ const TitleText = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   marginBottom: theme.spacing(2),
 }));
-
+const CustomListItem=styled(ListItem)(()=>({
+"&:hover":{
+backgroundColor:'#f5f5f5'
+}
+}))
 const AllocateAssetModal: React.FC<AllocateAssetModalProps> = ({ open, onClose }) => {
   const [file, setFile] = useState<File | null>(null);
-
+  const [userList,setUsers]=useState<{users:Employee[]}|null>(null)
+  const [userDetails,setDetails]=useState<Employee|null>(null)
+  const [availableAssets,setAssets]=useState<{assets:AssetType[]}|null>(null)
+  const [assetName,setName]=useState<string>()
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
+  const [asset_id,setId]=useState<number>()
+  const Navigate=useNavigate()
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
     }
   };
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    return true;
-  };
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const formData=new FormData()
+    if(asset_id!==undefined){
+      formData.append('asset_id',asset_id.toString())
+    }
+      if(userDetails){
+         formData.append('user_id',userDetails?.id.toString())
+        }
+        const date=selectedDate?.toString().split(' ').splice(1,3).join(' ')
+      if(date){
+        formData.append('assigned_date',date)
+      }
+      if(file){
+        formData.append('acknowledgment',file)
+      }
+      axios.post(`${baseUrl}${asset_allocations}`,formData,{
+        headers:{
+          token:token
+        }
+      }).then(()=>{
+        Navigate('/admin/assets')
 
+      }).catch(err=>console.log(err)
+
+      )
+
+  };
+const handleChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
+const value=e.target.value;
+if(value.length<3){
+  setUsers(null)
+}
+else{
+
+  axios.get(`${baseUrl}${emailByQuery(value)}`,{
+    headers:{
+      token:token
+    }
+  }).then(result=>{
+    setUsers(result.data)
+  }).catch(()=>{
+  })
+}
+}
+useEffect(()=>{
+axios.get(`${baseUrl}${assetbyname}`,{
+  headers:{
+    token:token
+  }
+}).then(res=>{
+  setAssets(res.data)
+}).catch(err=>console.log(err))
+},[])
+const setValues=(user:Employee)=>{
+setDetails(user)
+setUsers(null)
+}
+const handleAssetName=(event: React.ChangeEvent<HTMLInputElement>)=>{
+setName(event.target.value)
+}
+const handleAsset=(item:{name:string,id:number})=>{
+setId(item.id)
+}
   return (
     <StyledModal open={open} onClose={onClose}>
       <ModalContainer>
@@ -140,22 +221,33 @@ const AllocateAssetModal: React.FC<AllocateAssetModalProps> = ({ open, onClose }
         </TitleBox>
         <form onSubmit={handleFormSubmit}>
         <StyledLabel>
+        Enter Employee Email Address
+       </StyledLabel>
+       <StyledTextField
+         fullWidth
+         variant="outlined"
+         margin="normal"
+         value={userDetails?.email}
+         onChange={handleChange}
+         required
+       />
+       {userList!==null&&<List style={{width:'100%',maxHeight:'200px',overflow:'auto'}}>
+      {userList?.users.map(i=>(
+        <CustomListItem onClick={()=>setValues(i)}>
+            {i.email}
+        </CustomListItem>
+      ))}
+
+       </List>}
+        <StyledLabel>
          Enter Employee Name
         </StyledLabel>
         <StyledTextField
           fullWidth
           variant="outlined"
-          defaultValue="Corina McCoy"
+          value={userDetails?.name}
           margin="normal"
-        />
-         <StyledLabel>
-         Enter Employee Email Address
-        </StyledLabel>
-        <StyledTextField
-          fullWidth
-          variant="outlined"
-          defaultValue="jerry73@aol.com"
-          margin="normal"
+          required
         />
          <StyledLabel>
          Enter Employee ID
@@ -163,8 +255,9 @@ const AllocateAssetModal: React.FC<AllocateAssetModalProps> = ({ open, onClose }
         <StyledTextField
           fullWidth
           variant="outlined"
-          defaultValue="10010"
           margin="normal"
+          value={userDetails?.emp_id}
+          required
         />
          <StyledLabel>
          Select the Asset
@@ -172,18 +265,35 @@ const AllocateAssetModal: React.FC<AllocateAssetModalProps> = ({ open, onClose }
         <StyledTextField
           fullWidth
           variant="outlined"
-          defaultValue='MackBook Pro 16"'
           margin="normal"
-        />
+          select
+          value={assetName}
+          onChange={handleAssetName}
+          required
+        >
+{availableAssets?.assets.map(item=>(
+  <MenuItem key={item.id} value={item.name} onClick={()=>handleAsset(item)}>{item.name}
+  </MenuItem>
+))}
+
+        </StyledTextField>
          <StyledLabel>
          Assign On
         </StyledLabel>
-        <StyledTextField
-          fullWidth
-          variant="outlined"
-          defaultValue="2025-05-15"
-          margin="normal"
-        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DatePicker
+        value={selectedDate}
+        onChange={(newValue) => setSelectedDate(newValue)}
+        defaultValue={null}
+        slotProps={{
+          textField: {
+            fullWidth: true,
+            margin: 'normal',
+            required:true
+          },
+        }}
+      />
+    </LocalizationProvider>
 
         <label htmlFor="upload-file">
           <FileUploadBox>

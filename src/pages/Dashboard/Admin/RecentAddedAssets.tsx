@@ -97,7 +97,7 @@ const RecentAddedAssets = () => {
           </CardContent>
         </AssetCard>
       ))}
-      <CustomLink to="/abc" text=" View All Assets" />
+      <CustomLink to="/admin/assets" text=" View All Assets" />
     </CardContainer>
   );
 };
