@@ -9,8 +9,11 @@ import {
 } from '@mui/material';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UserDetails from './UserDetails';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from 'src/redux/store';
+import { getUserDetails, updateUser } from 'src/redux/userProfile/userProfileSlice';
 
 const MainContainer = styled(Box)(({ theme }) => ({
   background: colors.primary.grayishWhite,
@@ -110,20 +113,30 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 }));
 
 function Profile() {
+  const empDetails = useSelector((state: RootState) => state.login.user);
+  const userDetails = useSelector((state: RootState) => state.user.userDetails);
   const [formState, setFormState] = useState({
-    fullName: '',
-    mobileNumber: '',
-    officeEmail: '',
-    personalEmail: '',
-    employeeId: '',
+    full_name: userDetails?.full_name || '',
+    mobile: userDetails?.mobile || '',
+    official_email: userDetails?.official_email || '',
+    personal_email: userDetails?.personal_email || '',
+    emp_id: userDetails?.emp_id || '',
     companyName: 'Actual pixel',
-    state: '',
-    city: '',
-    address: '',
-    pinCode: '',
+    state: userDetails?.state || '',
+    city: userDetails?.city || '',
+    address: userDetails?.address || '',
+    pin_code: userDetails?.pin_code || '',
+    profile_image_url: userDetails?.profile_image_url || '',
+    designation: userDetails?.designation || '',
   });
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   const [isEditing, setIsEditing] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    if (empDetails && empDetails.id) {
+      dispatch(getUserDetails(empDetails.id));
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormState({
@@ -133,8 +146,16 @@ function Profile() {
     setIsEditing(true);
   };
 
-  const handleUpdate = () => {
-    setIsEditing(false);
+  const handleUpdate = async () => {
+    if (empDetails?.id) {
+      const updatedUserPayload = {
+        id: empDetails.id,
+        formState
+      };
+      await dispatch(updateUser(updatedUserPayload));
+      await dispatch(getUserDetails(empDetails.id));
+      setIsEditing(false);
+    }
   };
   const handleCancel = () => {
     setIsEditing(false);
@@ -144,95 +165,105 @@ function Profile() {
     <MainContainer>
       <StyledProfile>My Profile</StyledProfile>
       <FormContainer>
-        <Box sx={{ width: '20%' }}>
+        <Box>
           <UserDetails />
         </Box>
         <StyledFormBox>
           <Grid container spacing={2}>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <StyledLabel>Full Name</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
-                name="fullName"
+                name="full_name"
+                value={formState.full_name}
               />
             </Grid>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <StyledLabel>Mobile Number</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
-                name="mobileNumber"
+                name="mobile"
+                value={formState.mobile}
               />
             </Grid>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <StyledLabel>Office Email ID</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
-                name="officeEmail"
+                name="office_email"
+                value={formState.official_email}
                 disabled
               />
             </Grid>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <StyledLabel>Personal Email ID</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
-                name="personalEmail"
+                name="personal_email"
+                value={formState.personal_email}
               />
             </Grid>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <StyledLabel>Employee ID</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
-                name="employeeId"
+                name="emp_id"
+                value={formState.emp_id}
                 disabled
               />
             </Grid>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <StyledLabel>Company Name</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
+                value={formState.companyName}
                 disabled
               />
             </Grid>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <StyledLabel>State</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
                 name="state"
+                value={formState.state}
               />
             </Grid>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <StyledLabel>City</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
                 name="city"
+                value={formState.city}
               />
             </Grid>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <StyledLabel>Address</StyledLabel>
               <StyledTextfield
                 multiline={!isSmallScreen}
                 rows={2}
                 onChange={handleChange}
                 name="address"
+                value={formState.address}
               />
             </Grid>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <StyledLabel>Pin Code</StyledLabel>
               <StyledTextfield
                 size={isSmallScreen ? 'medium' : 'small'}
                 onChange={handleChange}
-                name="pinCode"
+                name="pin_code"
+                value={formState.pin_code}
               />
             </Grid>
             {isEditing && (
-              <Grid size={{xs:12}}>
+              <Grid size={{ xs: 12 }}>
                 <ButtonContainer>
                   <Button
                     onClick={handleCancel}

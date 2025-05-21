@@ -1,6 +1,9 @@
 import { Box, Button, Modal, styled, Typography } from '@mui/material';
 import { customTheme } from 'src/themes/theme';
 import { colors } from 'src/themes/colors';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/login/loginSlice';
+import { useNavigate } from 'react-router-dom';
 
 const ModalWrapper = styled(Box)(() => ({
   position: 'fixed',
@@ -75,6 +78,12 @@ const ButtonContainer = styled(Box)({
 });
 
 function Logout({ open, close }: { open: boolean; close: () => void }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+  }
   return (
     <Modal
       open={open}
@@ -96,7 +105,7 @@ function Logout({ open, close }: { open: boolean; close: () => void }) {
             <Button variant="outlined" className="cancel-btn" onClick={close}>
               Cancel
             </Button>
-            <Button variant="contained" className="logout-btn">
+            <Button variant="contained" className="logout-btn" onClick={handleLogout}>
               Logout
             </Button>
           </ButtonContainer>

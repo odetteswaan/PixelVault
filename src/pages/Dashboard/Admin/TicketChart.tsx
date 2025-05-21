@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -14,6 +14,8 @@ import { colors as themeColors } from 'src/themes/colors';
 
 import DonutChart from 'src/components/adminDashboard/DonutChart';
 import SectionHeading from 'src/components/adminDashboard/SectionHeading';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/redux/store';
 
 const CardContainer = styled(Card)(({ theme }) => ({
   backgroundColor:themeColors.primary.grayishWhite ,
@@ -47,7 +49,11 @@ const StatusWrapper = styled(Box)({
   alignItems: 'center',
 });
 
-const StatusDot = styled(Box)(({ bgcolor, theme }) => ({
+interface StatusDotProps {
+  bgcolor: string;
+}
+
+const StatusDot = styled(Box)<StatusDotProps>(({ bgcolor, theme }) => ({
   width: 10,
   height: 10,
   borderRadius: '50%',
@@ -56,10 +62,23 @@ const StatusDot = styled(Box)(({ bgcolor, theme }) => ({
 }));
 
 const TicketChart: React.FC = () => {
+  const dashboardStatus = useSelector((state: RootState) => state.admin.data);
+  const ticketsRaised = dashboardStatus?.tickets_raised;
+
   const [totalTickets] = useState<number>(46);
-  const [data] = useState<number[]>([10, 30, 6]);
+  const [data,setData] = useState<number[]>([0, 0, 0]);
   const [labels] = useState<string[]>(['Raised', 'Resolved', 'In Progress']);
   const [colors] = useState<string[]>(['#2979ff', '#4caf50', '#ffb300']);
+  useEffect(() => {
+    if (ticketsRaised) {
+      const newValues = [
+        ticketsRaised.raised,
+        ticketsRaised.resolved,
+        ticketsRaised.in_progress,
+      ];
+      setData(newValues);
+    }
+  }, [ticketsRaised]);
 
   return (
     <CardContainer>

@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
 function ProtectedRoutes({ requiredRole }: { requiredRole?: string }) {
-  const hasAuthenticated = true;
-  const role = 'admin';
-  localStorage.setItem('role', role);
+  const token = localStorage.getItem('token'); 
+  const hasAuthenticated = Boolean(token);
+  const role = localStorage.getItem('role');
   if (!hasAuthenticated) {
     return <Navigate to="/login" />;
   }

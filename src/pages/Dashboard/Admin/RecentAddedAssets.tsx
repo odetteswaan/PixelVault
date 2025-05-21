@@ -3,6 +3,8 @@ import { styled } from '@mui/material/styles';
 import CustomLink from 'src/components/actions/CustomLink';
 import { colors } from 'src/themes/colors';
 import SectionHeading from 'src/components/adminDashboard/SectionHeading';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/redux/store';
 
 const CardContainer = styled(Card)(({ theme }) => ({
   backgroundColor: colors.primary.grayishWhite,
@@ -36,44 +38,23 @@ const RightText = styled(Typography)({
   textAlign: 'right',
 });
 
-const assets = [
-  {
-    id: 1,
-    title: 'iPhone 15 pro max',
-    brand: 'Apple',
-    device: 'iPhone',
-    date: 'May 8, 2024 4:48 pm',
-  },
-  {
-    id: 2,
-    title: 'Oppo Reno 3 pro',
-    brand: 'Oppo',
-    device: 'Mobile phone',
-    date: 'May 8, 2024 4:48 pm',
-  },
-  {
-    id: 3,
-    title: 'MacBook Pro 16”',
-    brand: 'Apple',
-    device: 'MacBook',
-    date: 'May 8, 2024 4:48 pm',
-  },
-];
 
 const RecentAddedAssets = () => {
+  const dashboardStatus = useSelector((state: RootState) => state.admin.data);
+  const assets = dashboardStatus?.recent_assets_added;
   return (
     <CardContainer>
       <SectionHeading title=" Recent Assets Added" />
-      {assets.map((asset) => (
+      {assets && assets.map((asset) => (
         <AssetCard key={asset.id}>
           <CardContent>
             <Grid container spacing={2}>
               <Grid size={{ xs: 2 }}>
-                <AssetIconBox/>
+                <AssetIconBox />
               </Grid>
               <Grid size={{ xs: 5 }}>
                 <AssetTitle variant="body1">
-                  {asset.title}
+                  {asset.name}
                 </AssetTitle>
                 <Typography variant="body2" color="text.secondary">
                   Brand: {asset.brand}
@@ -84,13 +65,20 @@ const RecentAddedAssets = () => {
                   variant="body2"
                   color="text.secondary"
                 >
-                  {asset.date}
+                  {new Date(asset.updated_at).toLocaleString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                  }).replace(',', '').toLowerCase()}
                 </RightText>
                 <RightText
                   variant="body2"
                   color="text.secondary"
                 >
-                  Device: {asset.device}
+                  Device: {asset.asset_type}
                 </RightText>
               </Grid>
             </Grid>
