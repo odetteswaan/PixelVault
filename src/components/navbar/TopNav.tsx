@@ -7,6 +7,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Search from './Search';
 import NotificationDropdown from './NotificationDropdown';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { RootState } from 'src/redux/store';
+import { useSelector } from 'react-redux';
 
 const TopNavContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -72,6 +74,8 @@ function TopNav() {
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const location = useLocation();
+  const userDetails = useSelector((state: RootState) => state.user.userDetails);
+  const profile = userDetails?.profile_image_url
 
   const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -133,7 +137,7 @@ function TopNav() {
         };
       default:
         return {
-          header: `${getGreeting()}, Camero 🤩`,
+          header: `${getGreeting()}, ${userDetails?.full_name} 🤩`,
           showBackButton: false,
         };
     }
@@ -167,7 +171,7 @@ function TopNav() {
         <Search />
         <NotificationDropdown />
         <StyledAvathar>
-          <Avatar onClick={handleProfileClick} />
+          <Avatar onClick={handleProfileClick} src={`${profile}`} />
         </StyledAvathar>
         {isSmallScreen && <SideNav />}
       </RightSection>

@@ -7,6 +7,10 @@ import TicketChart from 'src/pages/Dashboard/Admin/TicketChart';
 import AllAssets from 'src/pages/Dashboard/Admin/AllAssets';
 import AllocatedAssets from 'src/pages/Dashboard/Admin/AllocatedAssets';
 import AssetsWarranty from './AssetsWarranty';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'src/redux/store';
+import { fetchDashboardData } from 'src/redux/admin/adminSlice';
 
 const MainContainer = styled(Box)({
   width: '100%',
@@ -22,6 +26,14 @@ const SubContainer = styled(Box)(({ theme }) => ({
 }));
 
 function AdminDashboard() {
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      dispatch(fetchDashboardData(token));
+    }
+  }, [dispatch]);
+
   return (
     <MainContainer>
       <DashboardStatus></DashboardStatus>

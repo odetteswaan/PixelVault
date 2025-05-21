@@ -22,6 +22,9 @@ import logo from '../../assets/Actual-pixel-logo.svg';
 import MobileLogo from '../../assets/Mobile-logo.svg';
 import ForgotPassword from '../ForgotPassword/ForgotPassword';
 import { useNavigate, NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginUser } from 'src/redux/login/loginSlice';
+import { AppDispatch } from 'src/redux/store';
 
 const Container = styled(Box)(({ theme }) => ({
   height: '100vh',
@@ -268,10 +271,34 @@ function Login() {
     return isValid;
   };
 
+  const dispatch = useDispatch<AppDispatch>();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (validateForm()) {
-      return true;
+      let loginCredentials;
+
+      if (emailRegex.test(formData.email)) {
+        loginCredentials = {
+          official_email: formData.email,
+          password: formData.password,
+        };
+      } else {
+        loginCredentials = {
+          emp_id: formData.email,
+          password: formData.password,
+        };
+      }
+      dispatch(loginUser(loginCredentials)).then((res) => {
+        if (res.meta.requestStatus === 'fulfilled') {
+          const role = localStorage.getItem('role');
+          if (role == 'admin') {
+            navigate('/admin/dashboard');
+          }
+          else if (role == 'user') {
+            navigate('/');
+          }
+        }
+      });
     }
   };
 

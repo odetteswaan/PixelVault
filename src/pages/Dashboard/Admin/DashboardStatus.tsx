@@ -1,5 +1,7 @@
 import { Grid, Typography, Box } from '@mui/material';
 import { styled } from '@mui/system';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/redux/store';
 
 const Container = styled(Grid)({
   border: '1px solid #ECECEC',
@@ -20,12 +22,13 @@ const StyledValue = styled(Typography)({
 });
 
 const DashboardStatus = () => {
+  const dashboardStatus = useSelector((state: RootState) => state.admin.data);
   const stats = [
-    { title: 'Total Assets', value: 377, color: '#E2AC02' },
-    { title: 'Assets in Stock', value: 127, color: '#A779D3' },
-    { title: 'New Asset Request', value: 56, color: '#F07F41' },
-    { title: 'New Issue Raised', value: 32, color: '#2F8CC1' },
-    { title: 'Total Assets Cost', value: '₹3,567', color: '#145AFE' },
+    { title: 'Total Assets', value: dashboardStatus?.total_assets, color: '#E2AC02' },
+    { title: 'Assets in Stock', value: dashboardStatus?.assets_in_stock, color: '#A779D3' },
+    { title: 'New Asset Request', value: dashboardStatus?.new_asset_requests, color: '#F07F41' },
+    { title: 'New Issue Raised', value: dashboardStatus?.tickets_raised.in_progress, color: '#2F8CC1' },
+    { title: 'Total Assets Cost', value: dashboardStatus?.total_amount, color: '#145AFE' },
   ];
 
   return (

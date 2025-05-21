@@ -3,6 +3,8 @@ import { TextField, Button, Typography, Box, styled } from '@mui/material';
 import PasswordWithdraw from '../../assets/Passwordwithdraw.svg';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
+import axios from 'axios';
+import { baseUrl, forgotPasswordEndPoint } from 'src/config';
 
 interface EnterEmailProps {
   email: string;
@@ -110,6 +112,12 @@ const EnterEmail: React.FC<EnterEmailProps> = ({
       setError('Please enter a valid email');
       return error;
     }
+    const enteredEmail = {
+      "official_email": email
+    }
+    axios.post(`${baseUrl}${forgotPasswordEndPoint}`, enteredEmail).then(res => {
+      console.log(res);
+    }).catch(error => console.error(error));
     setError('');
     onSendOtp();
   };

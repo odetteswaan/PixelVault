@@ -12,7 +12,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -21,6 +20,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/material/styles';
 import CustomLink from 'src/components/actions/CustomLink';
 import SectionHeading from 'src/components/adminDashboard/SectionHeading';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/redux/store';
 
 const CardContainer = styled(Card)(({ theme }) => ({
   backgroundColor: colors.primary.grayishWhite,
@@ -94,50 +95,13 @@ const EmployeeName = styled(Typography)({
   fontWeight: 500,
 });
 
-const allocatedAssets = [
-  {
-    no: 1,
-    employee: 'Seamans Furniture',
-    device: 'MacBook Pro',
-    date: '22 May 2024',
-    id: '100010',
-  },
-  {
-    no: 2,
-    employee: 'Kimberly Mastrangelo',
-    device: 'iPhone 13',
-    date: '15 May 2024',
-    id: '100011',
-  },
-  {
-    no: 3,
-    employee: 'Mary Freund',
-    device: 'HP Pavilion',
-    date: '19 May 2024',
-    id: '100012',
-  },
-  {
-    no: 4,
-    employee: 'Rodger Struck',
-    device: 'MacBook Air',
-    date: '20 May 2024',
-    id: '100013',
-  },
-  {
-    no: 5,
-    employee: 'Mary Freund',
-    device: 'Samsung Galaxy S21',
-    date: '21 May 2024',
-    id: '100014',
-  },
-];
 
 const LabelValue = ({
   label,
   value,
 }: {
   label: string;
-  value: string;
+  value: string | number | null;
   align?: 'left' | 'center' | 'right';
 }) => (
   <Box>
@@ -149,24 +113,25 @@ const LabelValue = ({
 const RecentAllocatedAssets = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-
+  const dashboardStatus = useSelector((state: RootState) => state.admin.data);
+  const RecentAllocated = dashboardStatus?.recent_assets_allocated;
   return (
     <CardContainer>
       <SectionHeading title="Recent Assets Allocated" />
       <StyledDivider />
       {isSmallScreen ? (
         <>
-          {allocatedAssets.map((asset, idx) => (
+          {RecentAllocated && RecentAllocated.map((asset, idx) => (
             <StyledAccordion key={idx} disableGutters elevation={0}>
               <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <EmployeeName>
-                  {asset.employee}
+                  {asset?.user?.full_name}
                 </EmployeeName>
               </StyledAccordionSummary>
 
               <StyledAccordionDetails>
                 <StyledBox>
-                  <LabelValue label="Device" value={asset.device} />
+                  <LabelValue label="Device" value={asset.asset_type} />
                   <LabelValue
                     label="Employee ID"
                     value={asset.id}
@@ -175,14 +140,14 @@ const RecentAllocatedAssets = () => {
                 </StyledBox>
                 <Divider sx={{ my: 1 }} />
                 <Box>
-                  <LabelValue label="Date" value={asset.date} />
+                  <LabelValue label="Date" value={asset.allocation_date} />
                 </Box>
               </StyledAccordionDetails>
             </StyledAccordion>
           ))}
         </>
       ) : (
-        <StyledTableContainer component={Paper}>
+        <StyledTableContainer>
           <Table>
             <TableHead>
               <TableRow>
@@ -193,12 +158,12 @@ const RecentAllocatedAssets = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allocatedAssets.map((asset) => (
-                <TableRow key={asset.no}>
-                  <TableCell>{asset.no}</TableCell>
-                  <TableCell>{asset.employee}</TableCell>
-                  <TableCell>{asset.device}</TableCell>
-                  <TableCell>{asset.date}</TableCell>
+              {RecentAllocated && RecentAllocated.map((asset) => (
+                <TableRow key={asset.id}>
+                  <TableCell>{asset.id}</TableCell>
+                  <TableCell>{asset?.user?.full_name}</TableCell>
+                  <TableCell>{asset.asset_type}</TableCell>
+                  <TableCell>{asset.allocation_date}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

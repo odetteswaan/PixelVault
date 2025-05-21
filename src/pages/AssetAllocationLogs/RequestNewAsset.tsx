@@ -14,6 +14,13 @@ import {
 import UserDetails from '../../components/userProfile/UserDetails';
 import { customTheme } from '../../themes/theme';
 import { colors } from '../../themes/colors';
+import {
+  addressPlaceholder,
+  emailPlaceholder,
+  employIdPlaceholder,
+  fullNamePlaceholder,
+  mobileNumberPlaceholder,
+} from 'src/config';
 
 const MainContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -104,7 +111,6 @@ const StyledSubmitButton = styled(Button)(() => ({
 function RequestNewAsset() {
   const [assetType, setAssetType] = useState('');
   const [laptopType, setLaptopType] = useState('');
-
   const handleAssetTypeChange = (event: SelectChangeEvent<string>) => {
     setAssetType(event.target.value);
   };
@@ -126,55 +132,65 @@ function RequestNewAsset() {
           width: '60%',
         }}
       >
-        <Typography variant="h6" gutterBottom>
-          Details
-        </Typography>
-        <Divider sx={{ my: 2 }} />
-        <Grid container spacing={3} sx={{ textAlign: 'center' }}>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <UserDetails />
+        <form onSubmit={handleSubmit}>
+          <Typography variant="h6" gutterBottom>
+            Details
+          </Typography>
+          <Divider sx={{ my: 2 }} />
+          <Grid container spacing={3} sx={{ textAlign: 'center' }}>
+            <Grid size={{ xs: 12, md: 4 }}>
+              <UserDetails />
+            </Grid>
+            <Grid size={{ xs: 12, md: 8 }}>
+              <StyledLabel>Full Name</StyledLabel>
+              <StyledTextField
+                placeholder={fullNamePlaceholder}
+                fullWidth
+                size="small"
+              />
+              <StyledLabel>Office Email ID</StyledLabel>
+              <StyledTextField
+                placeholder={emailPlaceholder}
+                fullWidth
+                size="small"
+              />
+              <StyledLabel>Employee ID</StyledLabel>
+              <StyledTextField
+                placeholder={employIdPlaceholder}
+                fullWidth
+                size="small"
+              />
+              <StyledLabel>Mobile Number</StyledLabel>
+              <StyledTextField
+                placeholder={mobileNumberPlaceholder}
+                fullWidth
+                size="small"
+              />
+              <StyledLabel>Personal Email ID</StyledLabel>
+              <StyledTextField
+                placeholder={emailPlaceholder}
+                fullWidth
+                size="small"
+              />
+              <StyledLabel>Address</StyledLabel>
+              <StyledTextField
+                placeholder={addressPlaceholder}
+                multiline
+                fullWidth
+                rows={3}
+                sx={{ mb: 2 }}
+              />
+              <ButtonBox>
+                <Button variant="outlined" className="cancel-btn">
+                  Cancel
+                </Button>
+                <Button variant="contained" className="update-btn">
+                  Update
+                </Button>
+              </ButtonBox>
+            </Grid>
           </Grid>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <StyledLabel>Full Name</StyledLabel>
-            <StyledTextField
-              defaultValue="Camero Jorden"
-              fullWidth
-              size="small"
-            />
-            <StyledLabel>Office Email ID</StyledLabel>
-            <StyledTextField
-              defaultValue="camero.jorden@company.com"
-              fullWidth
-              size="small"
-            />
-            <StyledLabel>Employee ID</StyledLabel>
-            <StyledTextField defaultValue="1004320" fullWidth size="small" />
-            <StyledLabel>Mobile Number</StyledLabel>
-            <StyledTextField defaultValue="9876543210" fullWidth size="small" />
-            <StyledLabel>Personal Email ID</StyledLabel>
-            <StyledTextField
-              defaultValue="camero.jorden@gmail.com"
-              fullWidth
-              size="small"
-            />
-            <StyledLabel>Address</StyledLabel>
-            <StyledTextField
-              defaultValue="KSD Enclave Kondapur\nHyderabad, Telangana, 500050"
-              multiline
-              fullWidth
-              rows={3}
-              sx={{ mb: 2 }}
-            />
-            <ButtonBox>
-              <Button variant="outlined" className="cancel-btn">
-                Cancel
-              </Button>
-              <Button variant="contained" className="update-btn">
-                Update
-              </Button>
-            </ButtonBox>
-          </Grid>
-        </Grid>
+        </form>
       </CustomBox>
       <CustomBox
         sx={{
