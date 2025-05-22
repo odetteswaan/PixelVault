@@ -1,7 +1,7 @@
 import { Box, styled, useMediaQuery } from '@mui/material';
-import SideNav from '../navbar/SideNav';
+import SideNav from 'src/components/navbar/SideNav';
 import { colors } from 'src/themes/colors';
-import TopNav from '../navbar/TopNav';
+import TopNav from 'src/components/navbar/TopNav';
 import { Outlet } from 'react-router-dom';
 
 const MainContainer = styled(Box)({

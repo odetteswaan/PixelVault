@@ -9,8 +9,8 @@ import {
   Accordion
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import tickSquare from '../../assets/tickSquare.svg';
-import closeSquare from '../../assets/closeSquare.svg';
+import tickSquare from 'src/assets/tickSquare.svg';
+import closeSquare from 'src/assets/closeSquare.svg';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { customTheme } from 'src/themes/theme';
 import { colors } from 'src/themes/colors';
@@ -18,9 +18,9 @@ import { baseUrl,employeeStatus } from 'src/config';
 import { useEffect,useState } from 'react';
 import { EmployeeStatus } from 'src/types/Employee.type';
 import axios from 'axios';
-import { token } from '../Admin/MockData';
-import AcceptModal from '../Admin/AcceptModal';
-import RejectModal from '../Admin/RejectModal';
+import { token } from 'src/pages/Admin/MockData';
+import AcceptModal from 'src/pages/Admin/AcceptModal';
+import RejectModal from 'src/pages/Admin/RejectModal';
 
 const TableContainer = styled('div')({
   border:"1px solid #ECECEC",

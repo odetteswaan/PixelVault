@@ -16,7 +16,7 @@ import UploadIcon from '@mui/icons-material/AddPhotoAlternate';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 import axios from 'axios';
-import { token } from '../Admin/MockData';
+import { token } from 'src/pages/Admin/MockData';
 import { Employee } from 'src/types/Employee.type';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';

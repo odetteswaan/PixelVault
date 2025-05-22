@@ -9,8 +9,8 @@ import {
   styled,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { customTheme } from '../../themes/theme';
-import { colors } from '../../themes/colors';
+import { customTheme } from 'src/themes/theme';
+import { colors } from 'src/themes/colors';
 import { useRef, useState } from 'react';
 import JoditEditor from 'jodit-react';
 

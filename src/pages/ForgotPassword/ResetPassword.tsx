@@ -12,7 +12,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
-import UpdatePassword from '../../assets/UpdatePassword.svg';
+import UpdatePassword from 'src/assets/UpdatePassword.svg';
 
 interface ResetPasswordProps {
   newPassword: string;

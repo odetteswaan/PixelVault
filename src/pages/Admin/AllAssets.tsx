@@ -9,7 +9,7 @@ import { KeyboardArrowDown } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { assetType } from 'src/types/Assets.type';
-import AllocateAssetModal from '../employeeList/AllocateAsset';
+import AllocateAssetModal from 'src/pages/employeeList/AllocateAsset';
 import { baseUrl, getAssets,assetDetail,deallocate} from 'src/config';
 import Loader from 'src/components/loader/Loader';
 const AllAssets = () => {

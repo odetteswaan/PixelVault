@@ -1,7 +1,7 @@
 import { Box, Typography, styled } from '@mui/material';
 import Asset from './Asset';
-import { colors } from '../../themes/colors';
-import { customTheme } from '../../themes/theme';
+import { colors } from 'src/themes/colors';
+import { customTheme } from 'src/themes/theme';
 
 
 const StyledHeading = styled(Typography)({
@@ -20,7 +20,7 @@ const StyledContainer = styled(Box)({
   gap: '20px',
 });
 
-function AllAssets() {
+const AllAssets=()=>{
   return (
     <Box>
       <StyledHeading>All Assets Allocated</StyledHeading>

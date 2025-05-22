@@ -1,5 +1,5 @@
 import { Box, styled, Typography, Button } from '@mui/material';
-import SuccessImage from '../../assets/SuccessImage.svg';
+import SuccessImage from 'src/assets/SuccessImage.svg';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 

@@ -1,7 +1,7 @@
 import { Box, Button, styled, Typography } from "@mui/material";
-import AcknowledgementLetter from '../../assets/Acknowledgement_letter.svg';
-import upload from '../../assets/upload.svg';
-import download from '../../assets/download.svg';
+import AcknowledgementLetter from 'src/assets/Acknowledgement_letter.svg';
+import upload from 'src/assets/upload.svg';
+import download from 'src/assets/download.svg';
 import { customTheme } from "src/themes/theme";
 import { colors } from "src/themes/colors";
 import RaiseTicketModal from "src/pages/IssuesRaised/RaiseTicket";

@@ -1,6 +1,6 @@
 import { Paper, styled, Typography } from '@mui/material';
-import { customTheme } from '../../../themes/theme';
-import { colors } from '../../../themes/colors';
+import { customTheme } from 'src/themes/theme';
+import { colors } from 'src/themes/colors';
 import AssetAllocationUI from 'src/pages/AssetAllocationLogs/AssetAllocation';
 import CustomLink from 'src/components/actions/CustomLink';
 

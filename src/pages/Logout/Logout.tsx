@@ -2,7 +2,7 @@ import { Box, Button, Modal, styled, Typography } from '@mui/material';
 import { customTheme } from 'src/themes/theme';
 import { colors } from 'src/themes/colors';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../redux/login/loginSlice';
+import { logout } from 'src/redux/login/loginSlice';
 import { useNavigate } from 'react-router-dom';
 
 const ModalWrapper = styled(Box)(() => ({

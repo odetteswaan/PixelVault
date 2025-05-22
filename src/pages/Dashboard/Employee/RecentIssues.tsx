@@ -1,7 +1,7 @@
 import { Paper, styled, Typography } from '@mui/material';
 import IssuesRaised from 'src/pages/IssuesRaised/IssuesRaised';
-import { customTheme } from '../../../themes/theme';
-import { colors } from '../../../themes/colors';
+import { customTheme } from 'src/themes/theme';
+import { colors } from 'src/themes/colors';
 import CustomLink from 'src/components/actions/CustomLink';
 
 const MainContainer = styled(Paper)(({ theme }) => ({

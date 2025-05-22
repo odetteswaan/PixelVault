@@ -10,7 +10,7 @@ import { colors } from "src/themes/colors";
 import { baseUrl,approveUsers } from "src/config";
 import { EmployeeStatus } from "src/types/Employee.type";
 import axios from "axios";
-import { token } from "../Admin/MockData";
+import { token } from "src/pages/Admin/MockData";
 
 const EmployeeWrapper = styled(Box)({
    border:"1px solid #ECECEC",

@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import notificationLogo from '../../assets/notification-bing.svg';
+import notificationLogo from 'src/assets/notification-bing.svg';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 

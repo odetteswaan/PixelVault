@@ -1,7 +1,7 @@
 import { Box, Typography, styled, useMediaQuery } from '@mui/material';
-import Logo from '../../assets/Mobile.svg';
-import { customTheme } from '../../themes/theme';
-import { colors } from '../../themes/colors';
+import Logo from 'src/assets/Mobile.svg';
+import { customTheme } from 'src/themes/theme';
+import { colors } from 'src/themes/colors';
 
 type AssetStatus = string;
 

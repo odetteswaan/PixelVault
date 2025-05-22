@@ -1,8 +1,8 @@
 import { Box, styled } from '@mui/material';
-import AllAssets from '../../../components/assets/AllAssets';
+import AllAssets from 'src/components/assets/AllAssets';
 import RecentIssues from './RecentIssues';
 import AllocatedAssets from './AllocatedAssets';
-import mobile from '../../../assets/Mobile.svg';
+import mobile from 'src/assets/Mobile.svg';
 import NoAssets from './NoAsset';
 
 const AssetsContainer = styled(Box)({

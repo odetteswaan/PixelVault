@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { assestDetailType, AssetAssignment } from 'src/types/Assets.type';
 import { baseUrl, assetDetail, assetHistory, deallocate } from 'src/config';
-import AllocateAssetModal from '../employeeList/AllocateAsset';
+import AllocateAssetModal from 'src/pages/employeeList/AllocateAsset';
 import Loader from 'src/components/loader/Loader';
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
   width: 120,

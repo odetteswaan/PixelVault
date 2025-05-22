@@ -1,7 +1,7 @@
 import { Box, styled, Typography, Paper, IconButton } from "@mui/material";
-import file from '../../assets/file.svg';
-import tickSquare from '../../assets/tickSquare.svg';
-import closeSquare from '../../assets/closeSquare.svg';
+import file from 'src/assets/file.svg';
+import tickSquare from 'src/assets/tickSquare.svg';
+import closeSquare from 'src/assets/closeSquare.svg';
 
 type UserAckLetterSectionProps = {
     uploaded: boolean;

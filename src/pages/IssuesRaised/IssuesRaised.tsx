@@ -8,8 +8,8 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { customTheme } from '../../themes/theme';
-import { colors } from '../../themes/colors';
+import { customTheme } from 'src/themes/theme';
+import { colors } from 'src/themes/colors';
 
 type AssetStatus = string;
 

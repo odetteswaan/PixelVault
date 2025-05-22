@@ -1,8 +1,8 @@
 import { Box, Button, Typography, styled } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import NoAsset from 'src/assets/NoAsset.svg';
-import { customTheme } from '../../../themes/theme';
-import { colors } from '../../../themes/colors';
+import { customTheme } from 'src/themes/theme';
+import { colors } from 'src/themes/colors';
 import { useNavigate } from 'react-router-dom';
 
 const NoAssetsContainer = styled(Box)(() => ({

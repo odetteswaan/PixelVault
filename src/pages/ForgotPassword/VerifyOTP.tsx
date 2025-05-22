@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Button, Typography, Box, styled, TextField } from '@mui/material';
-import OtpVerification from '../../assets/OtpVerification.svg';
+import OtpVerification from 'src/assets/OtpVerification.svg';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 
