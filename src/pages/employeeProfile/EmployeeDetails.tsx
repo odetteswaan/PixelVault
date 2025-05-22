@@ -13,9 +13,9 @@ import {
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
-import message from "../../assets/message.svg";
-import User from "../../assets/User.svg";
-import Call from "../../assets/Call.svg";
+import message from "src/assets/message.svg";
+import User from "src/assets/user.svg";
+import Call from "src/assets/Call.svg";
 import { useEffect, useState } from "react";
 import { assestDetailType } from "src/types/Assets.type";
 import axios from "axios";
