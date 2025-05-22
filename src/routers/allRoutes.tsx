@@ -55,6 +55,7 @@ const allRoutes = createBrowserRouter(
           path={paths.adminRoot}
         >
           <Route element={<MainLayout />}>
+            <Route path={paths.adminProfile} element={<UserProfile/>} />
             <Route path={paths.dashboard} element={<AdminDashboard />} />
             <Route path={paths.counter} element={<CounterPage />} />
             <Route path={paths.employeeProfile} element={<EmployeeProfile/>} />
