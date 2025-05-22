@@ -1,6 +1,6 @@
 import { Box,Typography, styled, useMediaQuery } from '@mui/material';
-import { customTheme } from '../../themes/theme';
-import { colors } from '../../themes/colors';
+import { customTheme } from 'src/themes/theme';
+import { colors } from 'src/themes/colors';
 import UserAckLetterSection from './UserAckLetterSection';
 import ViewAckLetterAdmin from './ViewAckLetterAdmin';
 import { useEffect ,useState} from 'react';

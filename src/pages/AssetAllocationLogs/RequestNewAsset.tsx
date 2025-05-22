@@ -11,9 +11,9 @@ import {
   styled,
   SelectChangeEvent,
 } from '@mui/material';
-import UserDetails from '../../components/userProfile/UserDetails';
-import { customTheme } from '../../themes/theme';
-import { colors } from '../../themes/colors';
+import UserDetails from 'src/components/userProfile/UserDetails';
+import { customTheme } from 'src/themes/theme';
+import { colors } from 'src/themes/colors';
 import {
   addressPlaceholder,
   emailPlaceholder,

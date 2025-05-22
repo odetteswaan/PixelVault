@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { customTheme } from '../../themes/theme';
-import { colors } from '../../themes/colors';
+import { customTheme } from 'src/themes/theme';
+import { colors } from 'src/themes/colors';
 import { ArrowForward } from '@mui/icons-material';
 const StyledLink = styled(Link)({
   display: 'flex',

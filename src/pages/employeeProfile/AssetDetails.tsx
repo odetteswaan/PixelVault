@@ -10,8 +10,8 @@ import {
   CardContent,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { colors } from '../../themes/colors';
-import { customTheme } from '../../themes/theme';
+import { colors } from 'src/themes/colors';
+import { customTheme } from 'src/themes/theme';
 import { styled } from '@mui/system';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 

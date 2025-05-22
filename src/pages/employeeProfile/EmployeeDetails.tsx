@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import { assestDetailType } from "src/types/Assets.type";
 import axios from "axios";
 import { baseUrl, userAssets } from "src/config";
-import { token } from "../Admin/MockData";
+import { token } from "src/pages/Admin/MockData";
 
 
 const StyledCard = styled(Box)(({theme})=>({

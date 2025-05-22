@@ -1,8 +1,8 @@
 import EmployeeDetails from './EmployeeDetails';
 import AssetDetails from './AssetDetails';
-import RaisedTicketComponent from '../../components/RaisedTicket/RaisedTicketComponent';
+import RaisedTicketComponent from 'src/components/RaisedTicket/RaisedTicketComponent';
 import { styled, Box } from '@mui/material';
-import AllAssets from '../../components/assets/AllAssets';
+import AllAssets from 'src/components/assets/AllAssets';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',

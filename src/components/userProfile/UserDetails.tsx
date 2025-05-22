@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, styled, Typography } from '@mui/material';
-import editImage from '../../assets/EditImage.svg';
+import editImage from 'src/assets/EditImage.svg';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 import { useDispatch, useSelector } from 'react-redux';

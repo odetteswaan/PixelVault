@@ -16,9 +16,9 @@ import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import HomeImage from '../../assets/HomeImage.svg';
-import logo from '../../assets/Actual-pixel-logo.svg';
-import MobileLogo from '../../assets/Mobile-logo.svg';
+import HomeImage from 'src/assets/HomeImage.svg';
+import logo from 'src/assets/Actual-pixel-logo.svg';
+import MobileLogo from 'src/assets/Mobile-logo.svg';
 
 interface FormErrors {
   employeeId?: string;

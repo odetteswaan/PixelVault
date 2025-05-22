@@ -6,7 +6,7 @@ import {
 import ProtectedRoutes from 'src/routers/ProtectedRoutes';
 import { paths } from 'src/routers/paths';
 import { CounterPage, ErrorPage } from 'src/routers/loads/lazyLoads';
-import Login from '../pages/login/Login';
+import Login from 'src/pages/login/Login';
 import Signup from 'src/pages/SignUp/Signup';
 import RequestProfile from 'src/pages/userProfile/RequestProfile';
 import UserProfile from 'src/pages/userProfile/UserProfile';

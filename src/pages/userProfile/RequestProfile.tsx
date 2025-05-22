@@ -3,7 +3,7 @@ import Profile from 'src/components/userProfile/Profile';
 import { Box, Typography, styled } from '@mui/material';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
-import Logo from '../../assets/Actual-pixel-logo.svg';
+import Logo from 'src/assets/Actual-pixel-logo.svg';
 
 const MainContainer = styled(Box)(() => ({
   display: 'flex',
