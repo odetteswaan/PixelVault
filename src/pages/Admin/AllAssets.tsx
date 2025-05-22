@@ -11,24 +11,23 @@ import axios from 'axios';
 import { assetType } from 'src/types/Assets.type';
 import AllocateAssetModal from '../employeeList/AllocateAsset';
 import { baseUrl, getAssets,assetDetail,deallocate} from 'src/config';
+import Loader from 'src/components/loader/Loader';
 const AllAssets = () => {
-  const [currentNav, setCurrentNav] = useState(1);
   const [display, setDisplay] = useState(NaN);
   const [option, setOptions] = useState(NaN);
   const [Assets, setAssets] = useState<assetType[]>([]);
   const [loading, setLoading] = useState(true);
   const[allocateModal,setModal]=useState(false)
   const Navigate = useNavigate();
-  const handleIncrement = () => {
-    if (currentNav < 3) {
-      setCurrentNav(currentNav + 1);
-    }
-  };
-  const handleDecrement = () => {
-    if (currentNav >= 2) {
-      setCurrentNav(currentNav - 1);
-    }
-  };
+
+  const itemsPerPage = 8;
+const [currentPage, setCurrentPage] = useState(1);
+
+const totalPages = Math.ceil(Assets.length / itemsPerPage);
+const arr = Array.from({ length: totalPages }, (_, i) => i + 1);
+const startIndex = (currentPage - 1) * itemsPerPage;
+const endIndex = startIndex + itemsPerPage;
+const currentItems = Assets.slice(startIndex, endIndex);
   const setIndex = (index: number) => {
     if (option === index) {
       setOptions(NaN);
@@ -82,8 +81,18 @@ const AllAssets = () => {
           window.location.reload()
         }).catch(()=>alert("Failed to deallocate asset. Please try again."))
   }
+  const  formatDate=(inputDate: string):string=> {
+  const date = new Date(inputDate);
+
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  };
+    return date.toLocaleDateString('en-GB', options);
+}
   if (loading) {
-    return <p>...Loading please wait</p>;
+    return <Loader/>
   }
   return (
     <Wrapper>
@@ -91,7 +100,7 @@ const AllAssets = () => {
         <Button
           startIcon={<AddCircleOutlineIcon />}
           className="addBtn"
-          onClick={() => Navigate('/admin/add-new-asset')}
+          onClick={() => {localStorage.setItem('edit','false');Navigate('/admin/add-new-asset')}}
         >
           Add New Asset
         </Button>
@@ -101,25 +110,27 @@ const AllAssets = () => {
         <Box className="tableContainer">
           <Box className="table">
             <Box className="tableHeading">
+              <Typography>No</Typography>
               {TableHeading.map((item) => (
-                <Typography className="tableheadingText" key={item}>
+                <Typography className="tableheadingText" key={item}  >
                   {item}
                 </Typography>
               ))}
             </Box>
-            <hr className="hr" />
-            {Assets?.map((item, index) => (
+            {currentItems?.map((item, index) => (
               <>
+              <hr className="horizontal" />
                 <Box className="tablerow">
-                  <Typography className="sNo" >{index+1}</Typography>
-                  <Typography className="sNoBold" style={{width:'105px'}}>{item.name}</Typography>
-                  <Typography className="sNo">{item.asset_type}</Typography>
-                  <Typography className="sNo">{item.brand}</Typography>
-                  <Typography className="sNo">{item.purchase_date}</Typography>
-                  <Typography className="sNo">
-                    {item.warranty_end_date}
+                  <Typography className="serialNumber" >{index+1}</Typography>
+                  <Typography className="sNoBold" >{item.name}</Typography>
+                  <Typography className="sNo" >{item.asset_type}</Typography>
+                  <Typography className="sNo" >{item.brand}</Typography>
+                  <Typography className="sNo" >{formatDate(item.purchase_date)}</Typography>
+                  <Typography className="sNo" >
+                    {formatDate(item.warranty_end_date)}
                   </Typography>
-                  <Button
+                  <Box  className="btnContainerStyle">
+                  <Button 
                     onClick={() => setIndex(index)}
                     variant="contained"
                     className={
@@ -132,6 +143,8 @@ const AllAssets = () => {
                       ? 'Available'
                       : 'Allocated'}
                   </Button>
+
+                  </Box>
                   <Box className="action">⋮</Box>
                   <Box
                     className={`${option === index ? 'popupWindow' : 'none'}`}
@@ -162,19 +175,18 @@ const AllAssets = () => {
                     disableRipple
                     disableElevation className='unstyleBtn' >
                     <Box className="box2">
-                     <Typography>Dealloacte</Typography>
+                     <Typography>Deallocate</Typography>
                     </Box>
                     </Button>
                     </Box>}
                   </Box>
                 </Box>
-                <hr className="horizontal" />
               </>
             ))}
           </Box>
         </Box>
         <Box className="cardsHolder">
-          {Assets.map((item, index) => (
+          {currentItems.map((item, index) => (
             <Box className="AssetContiner">
               <Box className="AssetHeading">
                 <Typography className="cardHeading">{item.name}</Typography>
@@ -208,7 +220,7 @@ const AllAssets = () => {
                       Purchased Date
                     </Typography>
                     <Typography className="cardContent">
-                      {item.purchase_date}
+                      {formatDate(item.purchase_date)}
                     </Typography>
                   </Box>
                   <Box className="contentContainer">
@@ -216,7 +228,7 @@ const AllAssets = () => {
                       Warranty Date
                     </Typography>
                     <Typography className="cardContent">
-                      {item.warranty_end_date}
+                      {formatDate(item.warranty_end_date)}
                     </Typography>
                   </Box>
                 </Box>
@@ -250,13 +262,13 @@ const AllAssets = () => {
                           Edit Detail
                         </Typography>
                       </Box>
-                      <Box className="greybg">
+                      <Box className={item.allocation_status === 'available'?'greybg':'none'} onClick={()=>setModal(true)}>
                         <Typography className="poptext">Assign now</Typography>
                       </Box>
-                      <Box className="whitebg">
+                      <Box className="whitebg"onClick={() => handleDeleteAsset(item.id)} >
                         <Typography className="poptext">Delete</Typography>
                       </Box>
-                      <Box className="greybg">
+                      <Box className={item.allocation_status !== 'available'?'greybg':'none'} onClick={()=>handleDealloacte(item.id)} >
                         <Typography className="poptext">Deallocate</Typography>
                       </Box>
                     </Box>
@@ -269,17 +281,18 @@ const AllAssets = () => {
       </Box>
       <Box className="btnContainerMargin">
         <Box className="navigationContainer">
-          <Box className="nav" onClick={handleDecrement}>
+          <Button className="nav"  disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)}>
             {'<'}
-          </Box>
-          {[1, 2, 3].map((i) => (
-            <Box className={currentNav == i ? 'navDifferentBg' : 'nav'}>
+          </Button>
+          {arr.map((i) => (
+            <Box className={currentPage == i ? 'navDifferentBg' : 'nav'} onClick={()=>setCurrentPage(i)}>
               {i}
             </Box>
           ))}
-          <Box className="nav" onClick={handleIncrement}>
+          <Button className="nav" disabled={currentPage === totalPages}
+      onClick={() => setCurrentPage(prev => prev + 1)}>
             {'>'}
-          </Box>
+          </Button>
         </Box>
       </Box>
     </Wrapper>
@@ -385,6 +398,9 @@ const Wrapper = styled(Box)(({ theme }) => ({
     fontWeight: customTheme.typography.fontWeights.semiBold,
     fontSize: '18px',
     color: colors.shades.charcoalBlue,
+    display:'flex',
+    justifyContent:'center',
+    width:'121px'
   },
   '& .tablerow': {
     display: 'flex',
@@ -395,18 +411,24 @@ const Wrapper = styled(Box)(({ theme }) => ({
     fontFamily: customTheme.typography.fontFamily.main,
     fontSize: '16px',
     color: colors.shades.charcoalBlue,
+    display:'flex',
+    justifyContent:'start',
+    width:'120px'
   },
   '& .sNoBold': {
     fontFamily: customTheme.typography.fontFamily.main,
     fontSize: '16px',
     color: colors.shades.charcoalBlue,
     fontWeight: '600',
+    display:'flex',
+    justifyContent:'start',
+    width:'120px'
   },
   '& .allocateBtn': {
     width: '86px',
     height: '30px',
     textTransform: 'capitalize',
-    marginRight: '-20px',
+    //marginRight: '-20px',
     backgroundColor: 'rgba(89, 0, 179, 0.15)',
     color: colors.primary.metallicViolet,
   },
@@ -414,13 +436,13 @@ const Wrapper = styled(Box)(({ theme }) => ({
     width: '86px',
     height: '30px',
     textTransform: 'capitalize',
-    marginRight: '-20px',
+    //marginRight: '-20px',
     backgroundColor: 'rgba(40, 199, 111, 0.15)',
     color: '#2DAF68',
   },
   '& .action': {
     width: '40px',
-    marginLeft: '-20px',
+    //marginLeft: '-20px',
     display: 'flex',
     justifyContent: 'center',
     height: '40px',
@@ -435,8 +457,8 @@ const Wrapper = styled(Box)(({ theme }) => ({
     display: 'flex',
     justifyContent: 'space-between',
     marginTop: '30px',
-    width: '250px',
     marginBottom: '40px',
+    gap:'5px'
   },
   '& .nav': {
     height: '42px',
@@ -547,7 +569,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
   "& .box1:hover,& .box2:hover,& .box3:hover":{backgroundColor:"#F5F5F5"},
   '& .actionPopUp': {
     width: '174px',
-    height: '162px',
+    //height: '162px',
     position: 'absolute',
     right: '6%',
     marginTop: '65px',
@@ -586,6 +608,11 @@ const Wrapper = styled(Box)(({ theme }) => ({
       backgroundColor:'#f5f5f5'
     }
   },
-
+"& .serialNumber":{
+  fontFamily:customTheme.typography.fontFamily.main,
+  fontSize:'16px',
+  color:'#495464'
+},
+"& .btnContainerStyle":{width:'120px',display:'flex',justifyContent:'start'}
 
 }));

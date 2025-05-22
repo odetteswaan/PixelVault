@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Divider, IconButton, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Pagination from "src/components/pagination/Pagination";
 import { styled } from '@mui/material/styles';
@@ -7,7 +7,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AllocateAssetModal from "./AllocateAsset";
 import { customTheme } from "src/themes/theme";
 import { colors } from "src/themes/colors";
-
+import { baseUrl,approveUsers } from "src/config";
+import { EmployeeStatus } from "src/types/Employee.type";
+import axios from "axios";
+import { token } from "../Admin/MockData";
 
 const EmployeeWrapper = styled(Box)({
    border:"1px solid #ECECEC",
@@ -146,7 +149,7 @@ const ActiveEmployees = () => {
    const [menuIndex, setMenuIndex] = useState(null);
    const [currentPage, setCurrentPage] = useState(1);
    const [modalOpen, setModalOpen] = useState<boolean>(false);
-   
+   const[approvedEmployees,setAllocation]=useState<EmployeeStatus[]|null>(null)
    const Employees = [
       { name: 'Judith Rodriguez', email: 'Daniel_hamilton@aol.com', id: '10010', date: '22 May 2024' },
       { name: 'Kimberly Mostrangelo', email: 'k_pacheco@gmail.com', id: '10011', date: '26 May 2024' },
@@ -157,7 +160,15 @@ const ActiveEmployees = () => {
       { name: 'Rodger Struck', email: 'dennis16@gmail.com', id: '10016', date: '31 May 2024' },
       { name: 'Mary Freund', email: 'k.p@aol.com', id: '10017', date: '16 May 2024' },
    ];
-
+useEffect(()=>{
+axios.get(`${baseUrl}${approveUsers}`,{
+  headers:{
+    token:token
+  }
+}).then(res=>{
+  setAllocation(res.data)
+}).catch(()=>console.log('Some error Occured'))
+},[])
    const employeesPerPage = 4;
    const totalPages = Math.ceil(Employees.length / employeesPerPage);
 
@@ -175,11 +186,21 @@ const ActiveEmployees = () => {
       setCurrentPage(page);
    };
 
-   const currentEmployees = Employees.slice(
+   const currentEmployees = approvedEmployees?.slice(
       (currentPage - 1) * employeesPerPage,
       currentPage * employeesPerPage
    );
+const  formatDate=(inputDate: string):string=> {
+  const date = new Date(inputDate);
 
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  };
+
+  return date.toLocaleDateString('en-GB', options);
+}
    const LabelValue = ({
       label,
       value,
@@ -198,26 +219,26 @@ const ActiveEmployees = () => {
       <>
       {isSmallScreen ? (
         <>
-          {Employees.map((employee, idx) => (
+          {currentEmployees?.map((employee, idx) => (
             <StyledAccordion key={idx} disableGutters elevation={0}>
               <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <StyledName>
-                  {employee.name}
+                  {employee.full_name}
                 </StyledName>
               </StyledAccordionSummary>
 
               <StyledAccordionDetails>
                 <StyledBox>
-                  <LabelValue label="User Email ID" value={employee.email} />
+                  <LabelValue label="User Email ID" value={employee.official_email} />
                   <LabelValue
                     label="Employee ID"
-                    value={employee.id}
+                    value={employee.emp_id}
                     align="right"
                   />
                 </StyledBox>
                 <Divider sx={{ my: 1 }} />
                 <StyledBox>
-                  <LabelValue label="Joining Date" value={employee.date} />
+                  <LabelValue label="Joining Date" value={formatDate(employee.created_at)} />
                   <StyledIconButton onClick={(e) => handleMenuOpen(e, employee.id)}>
                            <MoreVertIcon />
                         </StyledIconButton>
@@ -251,13 +272,13 @@ const ActiveEmployees = () => {
                </TableRow>
             </TableHead>
             <TableBody>
-               {currentEmployees.map((Employee, i) => (
+               {currentEmployees?.map((Employee, i) => (
                   <StyledTableRow key={i}>
                      <StyledValueCell >{(currentPage - 1) * employeesPerPage + (i + 1)}</StyledValueCell>
-                     <StyledName>{Employee.name}</StyledName>
-                     <StyledValueCell>{Employee.email}</StyledValueCell>
-                     <StyledValueCell>{Employee.id}</StyledValueCell>
-                     <StyledValueCell>{Employee.date}</StyledValueCell>
+                     <StyledName>{Employee.full_name}</StyledName>
+                     <StyledValueCell>{Employee.official_email}</StyledValueCell>
+                     <StyledValueCell>{Employee.emp_id}</StyledValueCell>
+                     <StyledValueCell>{formatDate(Employee.created_at)}</StyledValueCell>
                      <StyledValueCell>
                         <StyledIconButton onClick={(e) => handleMenuOpen(e, i)}>
                            <MoreVertIcon />

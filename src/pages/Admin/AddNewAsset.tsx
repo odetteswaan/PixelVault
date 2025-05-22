@@ -6,7 +6,7 @@ import {
   TextField,
   MenuItem,
 } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { KeyboardArrowRight } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
 import Receipt from 'src/assets/receipt-add.svg';
@@ -21,7 +21,9 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { token } from './MockData';
-import { baseUrl,addAsset } from 'src/config';
+import { baseUrl, addAsset, assetDetail } from 'src/config';
+import { assetType } from 'src/types/Assets.type';
+import Loader from 'src/components/loader/Loader';
 const AddNewAsset = () => {
   const inputRef1 = useRef<HTMLInputElement | null>(null);
   const inputRef2 = useRef<HTMLInputElement | null>(null);
@@ -33,13 +35,45 @@ const AddNewAsset = () => {
   const [image3, setImage3] = useState<File | null>(null);
   const [image4, setImage4] = useState<File | null>(null);
   const [invoice, setInvoice] = useState<File | null>(null);
+  const [assetData, setAssetData] = useState<assetType>();
+  const [isLoading, setLoading] = useState(true);
+  
+  const edit=localStorage.getItem('edit')
   const [invoiceState, setInvoiceState] = useState({
-    img1: false,
-    img2: false,
-    img3: false,
-    img4: false,
+
     pdf: false,
   });
+  if (edit === 'true') {
+    useEffect(() => {
+      const productId = localStorage.getItem('productId');
+      if (productId) {
+        axios
+          .get(`${baseUrl}${assetDetail(productId)}`, {
+            headers: {
+              token: token,
+            },
+          })
+          .then((res) => {
+            setAssetData(res.data);
+            setLoading(false);
+            const invoicearr=res.data.invoice.split('/')
+            const fileName = invoicearr[invoicearr.length-1];
+            const file = new File([], fileName, {
+              type: 'text/plain',
+            });
+            setInvoice(file)
+            setInvoiceState({...invoiceState,pdf:true})
+            console.log(file);
+          })
+          .catch((err) => console.log(err));
+      }
+    }, []);
+  }
+else{
+ useEffect(()=>{
+setLoading(false)
+ },[])
+}
   const [showValid, setValid] = useState(false);
   const Navigate = useNavigate();
   const validationSchema = Yup.object({
@@ -63,47 +97,27 @@ const AddNewAsset = () => {
     Processor: Yup.string().required('Please Enter Processor Name'),
     Graphics: Yup.string().required('Please Graphics of Assets'),
   });
-  const initialValues = {
-    AssetName: '',
-    AssetType: '',
-    AssetBrand: '',
-    Color: '',
-    Ram: '',
-    Storage: '',
-    OS: '',
-    serialNumber: '',
-    purchasedDate: '',
-    warrantyDate: '',
-    PurchasedFrom: '',
-    purchasedType: '',
-    Cost: '',
-    Processor: '',
-    Graphics: '',
-  };
-  const assetTypes = [
-    'MacBook Pro',
-    'MacBook Air',
-    'iMac',
-    'Dell Laptop',
-    'HP Desktop',
-    'iPad',
-    'iPhone',
-    'Printer',
-    'Monitor',
-  ];
 
-  const assetBrands = [
-    'Apple',
-    'Dell',
-    'HP',
-    'Lenovo',
-    'Microsoft',
-    'Asus',
-    'Acer',
-    'Samsung',
-    'LG',
-    'Sony',
-  ];
+  const initialValues = {
+    AssetName: assetData ? assetData.name : '',
+    AssetType: assetData ? assetData.asset_type : '',
+    AssetBrand: assetData ? assetData.brand : '',
+    Color: assetData ? assetData.color : '',
+    Ram: assetData ? assetData.ram : '',
+    Storage: assetData ? assetData.storage : '',
+    OS: assetData ? assetData.os.toString() : '',
+    serialNumber: assetData ? assetData.serial_number : '',
+    purchasedDate: assetData ? assetData.purchase_date : '',
+    warrantyDate: assetData ? assetData.warranty_end_date : '',
+    PurchasedFrom: assetData ? assetData.purchased_from : '',
+    purchasedType: assetData ? assetData.purchased_type : '',
+    Cost: assetData ? assetData.asset_cost.toString() : '',
+    Processor: assetData ? assetData.processor.toString() : '',
+    Graphics: assetData ? assetData.graphics : '',
+  };
+  const assetTypes = ['Windows Laptop', 'MacBook', 'iPhone', 'Android Phone'];
+
+  const assetBrands = ['Apple', 'Dell', 'Samsung'];
 
   const CustomTextField = styled(TextField)(() => ({
     '& .MuiOutlinedInput-root': {
@@ -120,7 +134,6 @@ const AddNewAsset = () => {
       },
     },
   }));
-
   const handleAssetImageChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     key: number
@@ -130,16 +143,16 @@ const AddNewAsset = () => {
       const file = files[0];
       if (key === 1) {
         setImage1(file);
-        setInvoiceState({ ...invoiceState, img1: true });
+        setInvoiceState({ ...invoiceState});
       } else if (key === 2) {
         setImage2(file);
-        setInvoiceState({ ...invoiceState, img2: true });
+        setInvoiceState({ ...invoiceState});
       } else if (key === 3) {
         setImage3(file);
-        setInvoiceState({ ...invoiceState, img3: true });
+        setInvoiceState({ ...invoiceState});
       } else if (key == 4) {
         setImage4(file);
-        setInvoiceState({ ...invoiceState, img4: true });
+        setInvoiceState({ ...invoiceState});
       } else if (key == 5) {
         setInvoice(file);
         setInvoiceState({ ...invoiceState, pdf: true });
@@ -149,31 +162,18 @@ const AddNewAsset = () => {
   const handleImageClick = (ref: React.RefObject<HTMLInputElement | null>) => {
     ref.current?.click();
   };
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <Wrapper>
       <Formik
         validationSchema={validationSchema}
         initialValues={initialValues}
         onSubmit={(values) => {
-          console.log(values)
+          console.log(values);
           setValid(true);
-          if (
-            invoiceState.img1 &&
-            invoiceState.img2 &&
-            invoiceState.img3 &&
-            invoiceState.img4 &&
-            invoiceState.pdf
-          ) {
-            const formData = new FormData();
-            formData.append('asset[name]', values.AssetName);
-            formData.append('asset[asset_type]', values.AssetType);
-            formData.append('asset[brand]', values.AssetBrand);
-            formData.append('asset[color]', values.Color);
-            formData.append('asset[ram]', values.Ram);
-            formData.append('asset[storage]', values.Storage);
-            formData.append('asset[os]', values.OS);
-            formData.append('asset[serial_number]', values.serialNumber);
-            // formData.append('asset[purchased_date]',)
+          if (invoiceState.pdf) {
             const nextpurchasedDate = dayjs(values.purchasedDate)
               .add(1, 'day')
               .toString()
@@ -186,36 +186,71 @@ const AddNewAsset = () => {
               .split(' ')
               .splice(1, 3)
               .join(' ');
-            formData.append('asset[purchase_date]', nextpurchasedDate);
-            formData.append('asset[warranty_end_date]', nextWarrantyDate);
-            formData.append('asset[purchased_from]', values.PurchasedFrom);
-            formData.append('asset[purchased_type]', values.purchasedType);
-            formData.append('asset[asset_cost]', values.Cost);
-            formData.append('asset[images][]', image1 ? image1 : '');
-            formData.append('asset[images][]', image2 ? image2 : '');
-            formData.append('asset[images][]', image3 ? image3 : '');
-            formData.append('asset[images][]', image4 ? image4 : '');
-            formData.append('asset[invoice]', invoice ? invoice : '');
-            formData.append('asset[processor]',values.Processor)
-            formData.append('assets[graphic_card]',values.Graphics)
-            //formData.append('asset[allocation_status]',null)
+            if (edit === 'true') {
+              const productId = localStorage.getItem('productId');
+              const body = {
+                id: productId,
+                name: values.AssetName,
+                asset_type: values.AssetType,
+                brand: values.AssetBrand,
+                color: values.Color,
+                ram: values.Ram,
+                storage: values.Storage,
+                os: values.OS,
+                serial_number: values.serialNumber,
+                purchase_date: nextpurchasedDate,
+                warranty_end_date: nextWarrantyDate,
+                purchased_from: values.PurchasedFrom,
+                purchased_type: values.purchasedType,
+                processor: values.Processor,
+                asset_cost: values.Cost,
+                invoice: invoice,
 
-            axios
-              .post(
-                `${baseUrl}${addAsset}`,
-                formData,
-                {
+              };
+              axios
+                .patch(`${baseUrl}${assetDetail(productId)}`, body, {
                   headers: {
-                    token:
-                      token,
+                    token: token,
+                  },
+                })
+                .then(() => {
+                  Navigate('/admin/assets');
+                })
+                .catch(() => alert('error in updating Asset'));
+            } else {
+              const formData = new FormData();
+              formData.append('asset[name]', values.AssetName);
+              formData.append('asset[asset_type]', values.AssetType);
+              formData.append('asset[brand]', values.AssetBrand);
+              formData.append('asset[color]', values.Color);
+              formData.append('asset[ram]', values.Ram);
+              formData.append('asset[storage]', values.Storage);
+              formData.append('asset[os]', values.OS);
+              formData.append('asset[serial_number]', values.serialNumber);
+              formData.append('asset[purchase_date]', nextpurchasedDate);
+              formData.append('asset[warranty_end_date]', nextWarrantyDate);
+              formData.append('asset[purchased_from]', values.PurchasedFrom);
+              formData.append('asset[purchased_type]', values.purchasedType);
+              formData.append('asset[asset_cost]', values.Cost);
+              formData.append('asset[images][]', image1 ? image1 : '');
+              formData.append('asset[images][]', image2 ? image2 : '');
+              formData.append('asset[images][]', image3 ? image3 : '');
+              formData.append('asset[images][]', image4 ? image4 : '');
+              formData.append('asset[invoice]', invoice ? invoice : '');
+              formData.append('asset[processor]', values.Processor);
+              formData.append('assets[graphic_card]', values.Graphics);
+              axios
+                .post(`${baseUrl}${addAsset}`, formData, {
+                  headers: {
+                    token: token,
                     'Content-type': 'multipart/form-data',
                   },
-                }
-              )
-              .then(() => {
-                Navigate('/admin/assets');
-              })
-              .catch((err) => console.log(err));
+                })
+                .then(() => {
+                  Navigate('/admin/assets');
+                })
+                .catch((err) => console.log(err));
+            }
           }
         }}
       >
@@ -288,19 +323,6 @@ const AddNewAsset = () => {
                       >
                         Upload Asset Image
                       </Typography>
-                      {showValid
-                        ? !invoiceState.img1 && (
-                            <Typography
-                              sx={{
-                                margin: '5px',
-                                fontSize: '10px',
-                                color: 'red',
-                              }}
-                            >
-                              Upload Asset Image
-                            </Typography>
-                          )
-                        : ''}
                     </Box>
                     <Box
                       className="imageContainer"
@@ -329,19 +351,6 @@ const AddNewAsset = () => {
                       >
                         Upload Asset Image
                       </Typography>
-                      {showValid
-                        ? !invoiceState.img2 && (
-                            <Typography
-                              sx={{
-                                margin: '5px',
-                                fontSize: '10px',
-                                color: 'red',
-                              }}
-                            >
-                              Upload Asset Image
-                            </Typography>
-                          )
-                        : ''}
                     </Box>
                   </Box>
                   <Box className="subImage">
@@ -372,19 +381,6 @@ const AddNewAsset = () => {
                       >
                         Upload Asset Image
                       </Typography>
-                      {showValid
-                        ? !invoiceState.img3 && (
-                            <Typography
-                              sx={{
-                                margin: '5px',
-                                fontSize: '10px',
-                                color: 'red',
-                              }}
-                            >
-                              Upload Asset Image
-                            </Typography>
-                          )
-                        : ''}
                     </Box>
                     <Box
                       className="imageContainer"
@@ -413,19 +409,6 @@ const AddNewAsset = () => {
                       >
                         Upload Asset Image
                       </Typography>
-                      {showValid
-                        ? !invoiceState.img4 && (
-                            <Typography
-                              sx={{
-                                margin: '5px',
-                                fontSize: '10px',
-                                color: 'red',
-                              }}
-                            >
-                              Upload Asset Image
-                            </Typography>
-                          )
-                        : ''}
                     </Box>
                   </Box>
                 </Box>
@@ -434,7 +417,7 @@ const AddNewAsset = () => {
                 <Grid container rowSpacing={3} columnSpacing={4}>
                   <Grid size={12}>
                     <Typography className="cardHeading">
-                      Add New Asset
+                     {edit==='true'? 'Edit Asset':'Add New Asset'}
                     </Typography>
                   </Grid>
                   <Grid size={12}>
@@ -644,6 +627,7 @@ const AddNewAsset = () => {
                         }
                         name="warrantyDate"
                         defaultValue={null}
+                        minDate={dayjs(values.purchasedDate)}
                         slotProps={{
                           textField: {
                             fullWidth: true,
@@ -695,7 +679,11 @@ const AddNewAsset = () => {
                       )}
                       value={values.purchasedType}
                       helperText={<ErrorMessage name="purchasedType" />}
-                    />
+                      select
+                    >
+                      <MenuItem value={'New'}>New</MenuItem>
+                      <MenuItem value={'Refurbished'}>Refurbished</MenuItem>
+                    </CustomTextField>
                   </Grid>
                   <Grid
                     size={{ lg: 12, md: 12, sm: 12, xl: 6 }}

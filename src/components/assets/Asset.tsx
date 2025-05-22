@@ -3,21 +3,11 @@ import { customTheme } from '../../themes/theme';
 import { colors } from '../../themes/colors';
 import UserAckLetterSection from './UserAckLetterSection';
 import ViewAckLetterAdmin from './ViewAckLetterAdmin';
-
-interface AssetProps {
-  AssetName: string;
-  image: string;
-  DeviceType: string;
-  AssignedDate: string;
-  Processor: string;
-  Graphics: string;
-  Memory: string;
-  SerialNumber: string;
-  OS: string;
-  Model: string;
-  uploaded: boolean;
-}
-
+import { useEffect ,useState} from 'react';
+import axios from 'axios';
+import { baseUrl, userAssets } from 'src/config';
+import { token } from 'src/pages/Admin/MockData';
+import { assestDetailType } from 'src/types/Assets.type';
 const AssetContainer = styled(Box)(({ theme }) => ({
   width: '100vw',
   maxWidth: '600px',
@@ -122,63 +112,73 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 
-function Asset({ asset }: { asset: AssetProps }) {
-  const {
-    AssetName,
-    image,
-    DeviceType,
-    AssignedDate,
-    Processor,
-    Graphics,
-    Memory,
-    SerialNumber,
-    OS,
-    Model,
-    uploaded,
-  } = asset;
-
-  const systemConfiguration = [
-    { label: 'Processor', value: Processor },
-    { label: 'Graphics', value: Graphics },
-    { label: 'Memory', value: Memory },
-    { label: 'Serial Number', value: SerialNumber },
-    { label: 'OS', value: OS },
-    { label: 'Model', value: Model },
-  ];
+function Asset() {
+  const [userAsset,setAssets]=useState<assestDetailType[]|null>(null)
+const userId=localStorage.getItem('userId')
+  useEffect(()=>{
+axios.get(`${baseUrl}${userAssets(userId)}`,{headers:{token:token  
+}}).then(res=>{
+  setAssets(res.data)
+}).catch(err=>console.log(err))
+  })
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   const role = localStorage.getItem('role');
   return (
+    <>
+    {userAsset?.map((item)=>(
+
     <AssetContainer>
       <StyledBox>
         <FlexBox>
           <ImageContainer>
-            <AssetImage src={image} alt="Asset" />
+            <AssetImage src={item.images[0]} alt="Asset" />
           </ImageContainer>
           <InfoBox>
-            <Title>{AssetName}</Title>
-            <DeviceInfo>Device: {DeviceType}</DeviceInfo>
-            <DeviceInfo>{AssignedDate}</DeviceInfo>
+            <Title>{item.name}</Title>
+            <DeviceInfo>Device: {item.asset_type}</DeviceInfo>
+            <DeviceInfo>{item.allocation_date}</DeviceInfo>
           </InfoBox>
         </FlexBox>
         {role === 'user' ? (
-          <UserAckLetterSection uploaded={uploaded} isSmallScreen={isSmallScreen}/>
+          <UserAckLetterSection uploaded={true} isSmallScreen={isSmallScreen}/>
         ) : role === 'admin' ? (
-          <ViewAckLetterAdmin uploaded={uploaded} isSmallScreen={isSmallScreen}/>
+          <ViewAckLetterAdmin uploaded={true} isSmallScreen={isSmallScreen}/>
         ) : null}
        
       </StyledBox>
       <Box>
         <SectionTitle>System Configuration</SectionTitle>
         <ConfigBox>
-          {systemConfiguration.map((item) => (
-            <ConfigItem key={item.label}>
-              <ConfigLabel>{item.label}</ConfigLabel>
-              <ConfigValue>{item.value}</ConfigValue>
+         
+            <ConfigItem key={item.id}>
+              <ConfigLabel>Processor</ConfigLabel>
+              <ConfigValue>{item.processor}</ConfigValue>
             </ConfigItem>
-          ))}
+            <ConfigItem key={item.id}>
+              <ConfigLabel>Graphics</ConfigLabel>
+              <ConfigValue>{item.graphics}</ConfigValue>
+            </ConfigItem>
+            <ConfigItem key={item.id}>
+              <ConfigLabel>Memory</ConfigLabel>
+              <ConfigValue>{item.storage}</ConfigValue>
+            </ConfigItem>
+            <ConfigItem key={item.id}>
+              <ConfigLabel>Serial Number</ConfigLabel>
+              <ConfigValue>{item.serial_number}</ConfigValue>
+            </ConfigItem>
+            <ConfigItem key={item.id}>
+              <ConfigLabel>OS</ConfigLabel>
+              <ConfigValue>{item.os}</ConfigValue>
+            </ConfigItem>
+            <ConfigItem key={item.id}>
+              <ConfigLabel>Model</ConfigLabel>
+              <ConfigValue>{item.brand}</ConfigValue>
+            </ConfigItem>
         </ConfigBox>
       </Box>
     </AssetContainer>
+    ))}
+    </>
   );
 }
 

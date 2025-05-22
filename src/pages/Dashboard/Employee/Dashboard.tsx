@@ -81,7 +81,7 @@ function Dashboard() {
       {assets.length > 0 ? (
         <>
           <AssetsContainer>
-            <AllAssets assets={assets} />
+            <AllAssets/>
           </AssetsContainer>
           <IssueContainer>
             <RecentIssues />

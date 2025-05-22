@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent ,useEffect} from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import {
   Modal,
   Box,
@@ -6,8 +6,10 @@ import {
   IconButton,
   TextField,
   Button,
-  styled,List,ListItem,
-  MenuItem
+  styled,
+  List,
+  ListItem,
+  MenuItem,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import UploadIcon from '@mui/icons-material/AddPhotoAlternate';
@@ -19,16 +21,21 @@ import { Employee } from 'src/types/Employee.type';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import  { Dayjs } from 'dayjs';
-import { useNavigate } from 'react-router-dom';
-import { baseUrl,asset_allocations,assetbyname,emailByQuery} from 'src/config';
+import { Dayjs } from 'dayjs';
+import { useNavigate ,useLocation} from 'react-router-dom';
+import {
+  baseUrl,
+  asset_allocations,
+  assetbyname,
+  emailByQuery,
+} from 'src/config';
 interface AllocateAssetModalProps {
   open: boolean;
   onClose: () => void;
 }
 interface AssetType {
-  id:number,
-  name:string
+  id: number;
+  name: string;
 }
 const StyledModal = styled(Modal)({
   display: 'flex',
@@ -57,7 +64,7 @@ const TitleBox = styled(Box)({
   justifyContent: 'space-between',
   alignItems: 'center',
   borderBottom: `1px solid ${colors.greys.frostedGrey}`,
-  marginBottom:"20px"
+  marginBottom: '20px',
 });
 
 const StyledLabel = styled(Typography)(() => ({
@@ -70,7 +77,7 @@ const StyledLabel = styled(Typography)(() => ({
 
 const StyledTextField = styled(TextField)(() => ({
   marginBottom: '15px',
-  marginTop:"5px",
+  marginTop: '5px',
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
       borderColor: colors.greys.SteelBlue,
@@ -125,195 +132,203 @@ const TitleText = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   marginBottom: theme.spacing(2),
 }));
-const CustomListItem=styled(ListItem)(()=>({
-"&:hover":{
-backgroundColor:'#f5f5f5'
-}
-}))
-const AllocateAssetModal: React.FC<AllocateAssetModalProps> = ({ open, onClose }) => {
+const CustomListItem = styled(ListItem)(() => ({
+  '&:hover': {
+    backgroundColor: '#f5f5f5',
+  },
+}));
+const AllocateAssetModal: React.FC<AllocateAssetModalProps> = ({
+  open,
+  onClose,
+}) => {
   const [file, setFile] = useState<File | null>(null);
-  const [userList,setUsers]=useState<{users:Employee[]}|null>(null)
-  const [userDetails,setDetails]=useState<Employee|null>(null)
-  const [availableAssets,setAssets]=useState<{assets:AssetType[]}|null>(null)
-  const [assetName,setName]=useState<string>()
+  const [userList, setUsers] = useState<{ users: Employee[] } | null>(null);
+  const [userDetails, setDetails] = useState<Employee | null>(null);
+  const [availableAssets, setAssets] = useState<{ assets: AssetType[] } | null>(
+    null
+  );
+  const [assetName, setName] = useState<string>();
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
-  const [asset_id,setId]=useState<number>()
-  const Navigate=useNavigate()
+  const [asset_id, setId] = useState<number>();
+  const Navigate = useNavigate();
+  const location=useLocation()
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
     }
   };
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const formData=new FormData()
-    if(asset_id!==undefined){
-      formData.append('asset_id',asset_id.toString())
+    event.preventDefault();
+    const formData = new FormData();
+    if (asset_id !== undefined) {
+      formData.append('asset_id', asset_id.toString());
     }
-      if(userDetails){
-         formData.append('user_id',userDetails?.id.toString())
+    if (userDetails) {
+      formData.append('user_id', userDetails?.id.toString());
+    }
+    const date = selectedDate?.toString().split(' ').splice(1, 3).join(' ');
+    if (date) {
+      formData.append('assigned_date', date);
+    }
+    if (file) {
+      formData.append('acknowledgment', file);
+    }
+    axios
+      .post(`${baseUrl}${asset_allocations}`, formData, {
+        headers: {
+          token: token,
+        },
+      })
+      .then(() => {
+        if(location.pathname=='/admin/assets'){
+          window.location.reload()
         }
-        const date=selectedDate?.toString().split(' ').splice(1,3).join(' ')
-      if(date){
-        formData.append('assigned_date',date)
-      }
-      if(file){
-        formData.append('acknowledgment',file)
-      }
-      axios.post(`${baseUrl}${asset_allocations}`,formData,{
-        headers:{
-          token:token
+        else{
+          Navigate('/admin/assets');
         }
-      }).then(()=>{
-        Navigate('/admin/assets')
-
-      }).catch(err=>console.log(err)
-
-      )
-
+      })
+      .catch((err) => console.log(err));
   };
-const handleChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
-const value=e.target.value;
-if(value.length<3){
-  setUsers(null)
-}
-else{
-
-  axios.get(`${baseUrl}${emailByQuery(value)}`,{
-    headers:{
-      token:token
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length < 3) {
+      setUsers(null);
+    } else {
+      axios
+        .get(`${baseUrl}${emailByQuery(value)}`, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((result) => {
+          setUsers(result.data);
+        })
+        .catch(() => {});
     }
-  }).then(result=>{
-    setUsers(result.data)
-  }).catch(()=>{
-  })
-}
-}
-useEffect(()=>{
-axios.get(`${baseUrl}${assetbyname}`,{
-  headers:{
-    token:token
-  }
-}).then(res=>{
-  setAssets(res.data)
-}).catch(err=>console.log(err))
-},[])
-const setValues=(user:Employee)=>{
-setDetails(user)
-setUsers(null)
-}
-const handleAssetName=(event: React.ChangeEvent<HTMLInputElement>)=>{
-setName(event.target.value)
-}
-const handleAsset=(item:{name:string,id:number})=>{
-setId(item.id)
-}
+  };
+  useEffect(() => {
+    axios
+      .get(`${baseUrl}${assetbyname}`, {
+        headers: {
+          token: token,
+        },
+      })
+      .then((res) => {
+        setAssets(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  const setValues = (user: Employee) => {
+    setDetails(user);
+    setUsers(null);
+  };
+  const handleAssetName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+  const handleAsset = (item: { name: string; id: number }) => {
+    setId(item.id);
+  };
   return (
     <StyledModal open={open} onClose={onClose}>
       <ModalContainer>
-      <TitleBox>
-      <TitleText variant="h6">
-          Allocate New Asset
-        </TitleText>
-        <IconButton onClick={onClose} edge="end">
-          <StyledCloseIcon />
-        </IconButton>
+        <TitleBox>
+          <TitleText variant="h6">Allocate New Asset</TitleText>
+          <IconButton onClick={onClose} edge="end">
+            <StyledCloseIcon />
+          </IconButton>
         </TitleBox>
         <form onSubmit={handleFormSubmit}>
-        <StyledLabel>
-        Enter Employee Email Address
-       </StyledLabel>
-       <StyledTextField
-         fullWidth
-         variant="outlined"
-         margin="normal"
-         value={userDetails?.email}
-         onChange={handleChange}
-         required
-       />
-       {userList!==null&&<List style={{width:'100%',maxHeight:'200px',overflow:'auto'}}>
-      {userList?.users.map(i=>(
-        <CustomListItem onClick={()=>setValues(i)}>
-            {i.email}
-        </CustomListItem>
-      ))}
-
-       </List>}
-        <StyledLabel>
-         Enter Employee Name
-        </StyledLabel>
-        <StyledTextField
-          fullWidth
-          variant="outlined"
-          value={userDetails?.name}
-          margin="normal"
-          required
-        />
-         <StyledLabel>
-         Enter Employee ID
-        </StyledLabel>
-        <StyledTextField
-          fullWidth
-          variant="outlined"
-          margin="normal"
-          value={userDetails?.emp_id}
-          required
-        />
-         <StyledLabel>
-         Select the Asset
-        </StyledLabel>
-        <StyledTextField
-          fullWidth
-          variant="outlined"
-          margin="normal"
-          select
-          value={assetName}
-          onChange={handleAssetName}
-          required
-        >
-{availableAssets?.assets.map(item=>(
-  <MenuItem key={item.id} value={item.name} onClick={()=>handleAsset(item)}>{item.name}
-  </MenuItem>
-))}
-
-        </StyledTextField>
-         <StyledLabel>
-         Assign On
-        </StyledLabel>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker
-        value={selectedDate}
-        onChange={(newValue) => setSelectedDate(newValue)}
-        defaultValue={null}
-        slotProps={{
-          textField: {
-            fullWidth: true,
-            margin: 'normal',
-            required:true
-          },
-        }}
-      />
-    </LocalizationProvider>
-
-        <label htmlFor="upload-file">
-          <FileUploadBox>
-            <UploadIcon color="primary" />
-            <Typography fontSize="14px">
-              Upload Asset Allocation Acknowledgement Letter
-            </Typography>
-          </FileUploadBox>
-          <input
-            type="file"
-            id="upload-file"
-            hidden
-            onChange={handleFileChange}
+          <StyledLabel>Enter Employee Email Address</StyledLabel>
+          <StyledTextField
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            value={userDetails?.email}
+            onChange={handleChange}
+            required
           />
-        </label>
-        {file && <p>Selected File: {file.name}</p>}
+          {userList !== null && (
+            <List
+              style={{ width: '100%', maxHeight: '200px', overflow: 'auto' }}
+            >
+              {userList?.users.map((i) => (
+                <CustomListItem onClick={() => setValues(i)}>
+                  {i.email}
+                </CustomListItem>
+              ))}
+            </List>
+          )}
+          <StyledLabel>Enter Employee Name</StyledLabel>
+          <StyledTextField
+            fullWidth
+            variant="outlined"
+            value={userDetails?.name}
+            margin="normal"
+            required
+          />
+          <StyledLabel>Enter Employee ID</StyledLabel>
+          <StyledTextField
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            value={userDetails?.emp_id}
+            required
+          />
+          <StyledLabel>Select the Asset</StyledLabel>
+          <StyledTextField
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            select
+            value={assetName}
+            onChange={handleAssetName}
+            required
+          >
+            {availableAssets?.assets.map((item) => (
+              <MenuItem
+                key={item.id}
+                value={item.name}
+                onClick={() => handleAsset(item)}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
+          </StyledTextField>
+          <StyledLabel>Assign On</StyledLabel>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              value={selectedDate}
+              onChange={(newValue) => setSelectedDate(newValue)}
+              defaultValue={null}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: 'normal',
+                  required: true,
+                },
+              }}
+            />
+          </LocalizationProvider>
 
-        <SaveButton fullWidth variant="contained" type='submit'>
-          Save Details
-        </SaveButton>
+          <label htmlFor="upload-file">
+            <FileUploadBox>
+              <UploadIcon color="primary" />
+              <Typography fontSize="14px">
+                Upload Asset Allocation Acknowledgement Letter
+              </Typography>
+            </FileUploadBox>
+            <input
+              type="file"
+              id="upload-file"
+              hidden
+              onChange={handleFileChange}
+            />
+          </label>
+          {file && <p>Selected File: {file.name}</p>}
+
+          <SaveButton fullWidth variant="contained" type="submit">
+            Save Details
+          </SaveButton>
         </form>
       </ModalContainer>
     </StyledModal>

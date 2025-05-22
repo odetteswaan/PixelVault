@@ -3,23 +3,6 @@ import Asset from './Asset';
 import { colors } from '../../themes/colors';
 import { customTheme } from '../../themes/theme';
 
-interface AssetProps {
-  AssetName: string;
-  image: string;
-  DeviceType: string;
-  AssignedDate: string;
-  Processor: string;
-  Graphics: string;
-  Memory: string;
-  SerialNumber: string;
-  OS: string;
-  Model: string;
-  uploaded: boolean;
-}
-
-interface AllAssetsProps {
-  assets: AssetProps[];
-}
 
 const StyledHeading = styled(Typography)({
   fontFamily: customTheme.typography.fontFamily.main,
@@ -37,14 +20,14 @@ const StyledContainer = styled(Box)({
   gap: '20px',
 });
 
-function AllAssets({ assets }: AllAssetsProps) {
+function AllAssets() {
   return (
     <Box>
       <StyledHeading>All Assets Allocated</StyledHeading>
       <StyledContainer>
-        {assets.map((asset, index) => (
-          <Asset key={index} asset={asset}></Asset>
-        ))}
+        
+          <Asset></Asset>
+        
       </StyledContainer>
     </Box>
   );
