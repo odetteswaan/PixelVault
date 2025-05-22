@@ -14,7 +14,13 @@ import closeSquare from '../../assets/closeSquare.svg';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { customTheme } from 'src/themes/theme';
 import { colors } from 'src/themes/colors';
-
+import { baseUrl,employeeStatus } from 'src/config';
+import { useEffect,useState } from 'react';
+import { EmployeeStatus } from 'src/types/Employee.type';
+import axios from 'axios';
+import { token } from '../Admin/MockData';
+import AcceptModal from '../Admin/AcceptModal';
+import RejectModal from '../Admin/RejectModal';
 
 const TableContainer = styled('div')({
   border:"1px solid #ECECEC",
@@ -137,16 +143,32 @@ const ValueTypography = styled(Typography)(({ align }) => ({
 const SignupRequests = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const Employees = [
-    { name: 'Saomars Furniture', email: 'Daniel_hamilton@aol.com', id: '10010', date: '22 May 2024', status: 'Approved' },
-    { name: 'Kimberly Mostrangelo', email: 'k_pacheco@gmail.com', id: '10011', date: '26 May 2024', status: 'NotApproved' },
-    { name: 'Rodger Struck', email: 'dennis6t@gmail.com', id: '10012', date: '27 May 2024', status: 'Approved' },
-    { name: 'Mary Freund', email: 'Daniel_hamilton@aol.com', id: '10013', date: '04 Jun 2024', status: 'Approved' },
-    { name: 'Rodger Struck', email: 'k_pacheco@gmail.com', id: '10014', date: '09 May 2024', status: 'NotApproved'},
-    { name: 'Mary Freund', email: 'dennis16@gmail.com', id: '10015', date: '12 May 2024', status: 'NotApproved' },
-  ];
+  const[showAcceptModal,setModal]=useState(false)
+  const[showRejectModal,setRejectModal]=useState(false)
+  const [userId,setUserId]=useState<string|number>('')
+const  formatDate=(inputDate: string):string=> {
+  const date = new Date(inputDate);
 
-  const renderStatusActions = (status: string) => {
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  };
+
+  return date.toLocaleDateString('en-GB', options);
+}
+  const[pendingEmployess,setPendingEmployee]=useState<EmployeeStatus[]|null>(null)
+useEffect(()=>{
+axios.get(`${baseUrl}${employeeStatus('pending')}`,{
+  headers:{
+    token:token
+  }
+}).then(res=>{
+  console.log(res.data)
+  setPendingEmployee(res.data)
+}).catch(()=>console.log('an error occured'))
+},[])
+  const renderStatusActions = (status: string,id:string|number) => {
     if (status == 'Approved') {
       return (
         <StyledButton variant="contained">
@@ -158,13 +180,13 @@ const SignupRequests = () => {
         <StyledIconGroup>
           <ActionClose>
             <IconButton color="error">
-              <StyledImage src={closeSquare} alt="Cancel" />
+              <StyledImage src={closeSquare} alt="Cancel" onClick={()=>{{setUserId(id);setRejectModal(true)}}}/>
             </IconButton>
           </ActionClose>
   
           <ActionOpen>
-            <IconButton color="success">
-              <StyledImage  src={tickSquare} alt="Check"/>
+            <IconButton color="success" >
+              <StyledImage  src={tickSquare} alt="Check" onClick={()=>{{setUserId(id);setModal(true)}}}/>
             </IconButton>
           </ActionOpen>
         </StyledIconGroup>
@@ -191,28 +213,30 @@ const SignupRequests = () => {
       <StyledText variant="subtitle1">
         Signup Request
       </StyledText>
+      {showAcceptModal&&<AcceptModal open={showAcceptModal} handleClose={()=>setModal(false)} userId={userId}/>}
+      {showRejectModal&&<RejectModal open={showRejectModal} handleClose={()=>setRejectModal(false)} userId={userId}/>}
       {isSmallScreen ? <>
-          {Employees.map((employee, idx) => (
+          {pendingEmployess?.map((employee, idx) => (
             <StyledAccordion key={idx} disableGutters elevation={0}>
               <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <StyledName>
-                  {employee.name}
+                  {employee.full_name}
                 </StyledName>
               </StyledAccordionSummary>
 
               <StyledAccordionDetails>
                 <StyledBox>
-                  <LabelValue label="User Email ID" value={employee.email} />
+                  <LabelValue label="User Email ID" value={employee.official_email} />
                   <LabelValue
                     label="Employee ID"
-                    value={employee.id}
+                    value={employee.emp_id}
                     align="right"
                   />
                 </StyledBox>
                 <Divider sx={{ my: 1 }} />
                 <StyledBox>
-                  <LabelValue label="Request Date" value={employee.date} />
-                  {renderStatusActions(employee.status)}
+                  <LabelValue label="Request Date" value={formatDate(employee.created_at)} />
+                  {renderStatusActions(employee.status,employee.id)}
                 </StyledBox>
               </StyledAccordionDetails>
             </StyledAccordion>
@@ -231,15 +255,15 @@ const SignupRequests = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {Employees.map((row, i) => (
+          {pendingEmployess?.map((row, i) => (
             <StyledTableRow key={i}>
               <StyledValueCell>{i + 1}</StyledValueCell>
-              <StyledName sx={{fontSize:"16px"}}>{row.name}</StyledName>
-              <StyledValueCell>{row.email}</StyledValueCell>
-              <StyledValueCell>{row.id}</StyledValueCell>
-              <StyledValueCell>{row.date}</StyledValueCell>
+              <StyledName sx={{fontSize:"16px"}}>{row.full_name}</StyledName>
+              <StyledValueCell>{row.official_email}</StyledValueCell>
+              <StyledValueCell>{row.emp_id}</StyledValueCell>
+              <StyledValueCell>{formatDate(row.created_at)}</StyledValueCell>
               <StyledValueCell>
-                {renderStatusActions(row.status)}
+                {renderStatusActions(row.status,row.id)}
               </StyledValueCell>
             </StyledTableRow>
           ))}

@@ -7,13 +7,29 @@ import Link from 'src/assets/link.svg'
 import Ident1 from 'src/assets/ident1.svg'
 import Ident2 from 'src/assets/ident2.svg'
 import Ident3 from 'src/assets/ident3.svg'
-import { useRef } from "react";
-const ReplyPopUp = (props: { open: boolean, onClose: () => void }) => {
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { baseUrl, ticketById } from "src/config";
+import { token } from "./MockData";
+import { EmployeeTickets } from "src/types/Employee.type";
+const ReplyPopUp = (props: { open: boolean, onClose: () => void ,id:string}) => {
   const editorRef = useRef<HTMLDivElement | null>(null);
+  const[ticketState,setTicket]=useState<EmployeeTickets|null>(null)
   const handleFormat = (command: string) => {
     document.execCommand(command, false, undefined);
     editorRef.current?.focus();
   };
+  useEffect(()=>{
+  axios.get(`${baseUrl}${ticketById(props.id)}`,{
+    headers:{
+      token:token
+    }
+  }).then(res=>{
+    console.log(res.data)
+    setTicket(res.data)
+  })
+  },[])
+
   return (
     <Modal
       open={props.open}
@@ -35,25 +51,21 @@ const ReplyPopUp = (props: { open: boolean, onClose: () => void }) => {
           <Box className="Box">
             <Typography className="fieldName">To Employee</Typography>
             <Box className="fieldContentBox">
-              <Typography className="fieldContent">lesie.alexander@gmail.com</Typography>
+              <Typography className="fieldContent">{ticketState?.user.official_email}</Typography>
             </Box>
           </Box>
 
           <Box className="Box">
             <Typography className="fieldName">Enter Subject</Typography>
             <Box className="fieldContentBox">
-              <Typography className="fieldContent">Login Not Working</Typography>
+              <Typography className="fieldContent">{ticketState?.subject}</Typography>
             </Box>
           </Box>
 
           <Box className="Box">
             <Typography className="fieldName">Query</Typography>
             <Box className="fieldContentBox">
-              <Typography className="fieldContent">Vestibulum tempus imperdiet sem ac porttitor. Vivamus pulvinar commodo orci,
-                suscipit porttitor velit elementum non. Fusce nec pellentesque erat, id lobortis nunc. Donec dui leo, ultrices quis
-                turpis nec, sollicitudin sodales tortor. Aenean dapibus magna quam,
-                id tincidunt quam placerat consequat. Nulla eu laoreet ex. Vestibulum nec vulputate turpis,
-                id euismod orci.</Typography>
+              <Typography className="fieldContent">{ticketState?.query}</Typography>
             </Box>
 
           </Box>

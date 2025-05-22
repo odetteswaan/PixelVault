@@ -1,17 +1,24 @@
 import { Box, Typography, Grid, Button, styled, TextField, InputAdornment } from "@mui/material"
 import { colors } from "src/themes/colors"
 import { customTheme } from "src/themes/theme";
-import { RaisedTicketData } from './MockData'
+import { token } from './MockData'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import ReplyPopUp from "./ReplyPopUp";
 import SearchIcon from "src/assets/search-normal.svg"
+import { EmployeeTickets } from "src/types/Employee.type";
+import axios from "axios";
+import { baseUrl, employeeTickets,changeStatus } from "src/config";
+import Loader from "src/components/loader/Loader";
 const RaisedTickets = () => {
     const [currentNav, setCurrentNav] = useState(1);
     const [display, setDisplay] = useState(NaN);
     const [open, setOpen] = useState(NaN)
     const [openPopUp, setOpenPopUp] = useState(false)
+    const[empTicket,setTicket]=useState<EmployeeTickets[]|null>(null)
+    const [isLoading,setLoading]=useState(true)
+    const [ticketId,setId]=useState('')
     const handleIncrement = () => {
         if (currentNav < 3) {
             setCurrentNav(currentNav + 1);
@@ -22,6 +29,7 @@ const RaisedTickets = () => {
             setCurrentNav(currentNav - 1);
         }
     };
+
     const CustomTextField = styled(TextField)(({ theme }) => ({
         '& .MuiOutlinedInput-root': {
             height: '55px',
@@ -41,6 +49,14 @@ const RaisedTickets = () => {
             },
         },
     }));
+    useEffect(()=>{
+      axios.get(`${baseUrl}${employeeTickets}`,{
+        headers:{token:token}
+      }).then(res=>{
+        setTicket(res.data)
+        setLoading(false)
+      }).catch(err=>console.log(err))
+    },[])
     const handlePopUp = (index: number) => {
         if (index === open) {
             setOpen(NaN)
@@ -49,10 +65,35 @@ const RaisedTickets = () => {
             setOpen(index)
         }
     }
+    const  formatDate=(inputDate: string):string=> {
+  const date = new Date(inputDate);
+
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  };
+    return date.toLocaleDateString('en-GB', options);
+}
     const closeModal = () => {
         setOpenPopUp(false)
     }
-
+    const changeTicketStatus=(id:number|string)=>{
+      const body={
+         ticket_id: id,
+         status: "Resolved"
+      }
+      axios.patch(`${baseUrl}${changeStatus}`,body,{
+        headers:{
+            token:token
+        }
+      }).then(()=>{
+         window.location.reload()        
+      }).catch((err)=>console.log(err))
+    }
+   if(isLoading){
+    return <Loader/>
+   }
     return (
         <Wrapper>
             <Box className="topContainer">
@@ -68,7 +109,7 @@ const RaisedTickets = () => {
                 <Button className="applyBtn">Apply</Button>
 
             </Box>
-            {openPopUp && <ReplyPopUp open={openPopUp} onClose={closeModal} />}
+            {openPopUp && <ReplyPopUp open={openPopUp} onClose={closeModal} id={ticketId} />}
             <Box className="flexBox">
                 <Box className="TableContainer">
                     <Grid container columnSpacing={1} rowSpacing={4}>
@@ -79,20 +120,20 @@ const RaisedTickets = () => {
                         <Grid size={1}><Typography className="tableHeading">Asset</Typography></Grid>
                         <Grid size={3}><Typography className="tableHeading">Query</Typography></Grid>
                         <Grid size={1}><Typography className="tableHeading">Action</Typography></Grid>
-                        {RaisedTicketData.map((item, index) => (
+                        {empTicket?.map((item, index) => (
                             <>
                                 <Grid size={12}><hr className="horizontalRule" /></Grid>
-                                <Grid size={2}><Typography className="tableHeading color" >{item.username}</Typography></Grid>
-                                <Grid size={2}><Typography className="tableData">{item.date}</Typography></Grid>
-                                <Grid size={2}><Typography className="tableData">{item.emailId}</Typography></Grid>
-                                <Grid size={1}><Button fullWidth className={item.status === 'Ressolved' ? "Ressolved" : "status"}>{item.status}</Button></Grid>
-                                <Grid size={1}><Typography className="tableData">{item.Asset}</Typography></Grid>
-                                <Grid size={3}><Typography className="tableData">{item.Query}</Typography></Grid>
+                                <Grid size={2}><Typography className="tableHeading color" >{item.user.full_name}</Typography></Grid>
+                                <Grid size={2}><Typography className="tableData">{formatDate(item.created_at)}</Typography></Grid>
+                                <Grid size={2}><Typography className="tableData">{item.user.official_email}</Typography></Grid>
+                                <Grid size={1}><Button fullWidth className={item.status === 'raised' ? "status" : "Ressolved"}>{item.status==='raised'?'Active':'Ressolved'}</Button></Grid>
+                                <Grid size={1}><Typography className="tableData">{item.asset.name}</Typography></Grid>
+                                <Grid size={3}><Typography className="tableData">{item.query}</Typography></Grid>
                                 <Grid size={1}><Box className="moreOption" onClick={() => { handlePopUp(index) }}><MoreVertIcon className="blue" />
                                 </Box><Box className={open === index ? "popUp" : "none"}>
-                                        <Box onClick={() => { setOpen(NaN); setOpenPopUp(true) }} className="popUpBox"><Typography className="popUpOptionText" >Reply to this dispute</Typography></Box>
+                                        <Box onClick={() => { setOpen(NaN); setOpenPopUp(true);setId(item.id.toString()) }} className="popUpBox"><Typography className="popUpOptionText" >Reply to this dispute</Typography></Box>
                                         <Box className="popUpBox backgroundColor"><Typography className="popUpOptionText">Close this dispute</Typography></Box>
-                                        <Box className="popUpBox"><Typography className="popUpOptionText">Mark as a resolved</Typography></Box>
+                                        <Box className="popUpBox" onClick={()=>changeTicketStatus(item.id)}><Typography className="popUpOptionText">Mark as a resolved</Typography></Box>
 
                                     </Box>
                                 </Grid>
@@ -103,10 +144,10 @@ const RaisedTickets = () => {
                 </Box>
                 <Box className="cardContainer">
                     <Grid container rowSpacing={5} columnSpacing={2} >
-                        {RaisedTicketData.map((item, index) => (
+                        {empTicket?.map((item, index) => (
                             <Grid size={{ lg: 6, md: 6, sm: 12, xs: 12 }}>
                                 <Box className="cardHeading">
-                                    <Typography className="userName">{item.username}</Typography>
+                                    <Typography className="userName">{item.user.full_name}</Typography>
                                     {display === index ? <KeyboardArrowUp className="black" onClick={() => { setDisplay(NaN) }} /> :
                                         <KeyboardArrowDown className="black" onClick={() => { setDisplay(index) }} />
                                     }
@@ -116,27 +157,27 @@ const RaisedTickets = () => {
 
                                         <Box >
                                             <Typography className="heading">User Email ID</Typography>
-                                            <Typography className="subHeading">{item.emailId}</Typography>
+                                            <Typography className="subHeading">{item.user.official_email}</Typography>
                                         </Box>
                                         <Box className="flexContainer">
                                             <Typography className="heading">Asset</Typography>
-                                            <Typography className="subHeading">{item.Asset}</Typography>
+                                            <Typography className="subHeading">{item.asset.name}</Typography>
                                         </Box>
                                     </Box>
                                     <hr className="horizontalRule" />
                                     <Box >
                                         <Typography className="heading">Date </Typography>
-                                        <Typography className="subHeading">{item.date}</Typography>
+                                        <Typography className="subHeading">{formatDate(item.created_at)}</Typography>
                                     </Box>
                                     <Box className="queryContainer">
                                         <Typography className="heading">Query </Typography>
-                                        <Typography className="subHeading">{item.Query}</Typography>
+                                        <Typography className="subHeading">{item.query}</Typography>
                                     </Box>
                                     <hr className="horizontalRule" />
                                     <Box className="statusContainer">
                                         <Box >
                                             <Typography className="heading" >Status</Typography>
-                                            <Button className={item.status === 'Ressolved' ? "Ressolved" : "status"}>{item.status}</Button>
+                                            <Button className={item.status === 'Ressolved' ? "Ressolved" : "status"}>{item.status==='raised'?'Active':'Ressolved'}</Button>
                                         </Box>
                                         <Box >
                                             <Typography className="heading">Action</Typography>

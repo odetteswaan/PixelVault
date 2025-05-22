@@ -16,6 +16,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import message from "../../assets/message.svg";
 import User from "../../assets/User.svg";
 import Call from "../../assets/Call.svg";
+import { useEffect, useState } from "react";
+import { assestDetailType } from "src/types/Assets.type";
+import axios from "axios";
+import { baseUrl, userAssets } from "src/config";
+import { token } from "../Admin/MockData";
 
 
 const StyledCard = styled(Box)(({theme})=>({
@@ -128,24 +133,38 @@ const DeleteButton = styled(Button)(({theme})=>({
 function EmployeeDetails() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [userDetails,setDetails]=useState<assestDetailType[]|null>(null)
+  const userId=localStorage.getItem('userId')
+  useEffect(()=>{
+    if(userId){
+axios.get(`${baseUrl}${userAssets(userId)}`,{
+  headers:{
+    token:token
+  }
+}).then(res=>{
+  console.log(res.data)
+  setDetails(res.data)
+})
+    }
+  },[])
   return (
     <StyledCard>
       <Header>
         <ProfileInfo>
           <StyledAvatar
-            src="https://randomuser.me/api/portraits/men/75.jpg"
+            src={userDetails?userDetails[0].assigned_user?.profile_image:"https://randomuser.me/api/portraits/men/75.jpg"}
             alt="Kimberly"
 
           />
           <Box>
             <StyledName>
-              Kimberly Mastrangelo
+              {userDetails?userDetails[0].assigned_user?.full_name:''}
             </StyledName>
             <StyledText >
-              irena.dubrovnawayne@gmail.com
+              {userDetails?userDetails[0].assigned_user?.official_email:''}
             </StyledText>
             <StyledText>
-              Employee ID: 10011
+              Employee ID: {userDetails?userDetails[0].assigned_user?.emp_id:''}
             </StyledText>
           </Box>
         </ProfileInfo>
@@ -159,11 +178,11 @@ function EmployeeDetails() {
           <InfoSection>
             <Label>
               <img src={User}/> Designation</Label>
-            <Value>Wordpress Developer</Value>
+            <Value>{userDetails?userDetails[0].assigned_user?.designation:''}</Value>
           </InfoSection>
           <InfoSection>
             <Label><img src={Call}/> Mobile Number</Label>
-            <Value>+91 95831 56000</Value>
+            <Value>{userDetails?userDetails[0].assigned_user?.phone_number:''}</Value>
           </InfoSection>
           <InfoSection>
             <Label><CalendarMonthOutlinedIcon fontSize="small" /> Date of Birth</Label>
@@ -175,11 +194,11 @@ function EmployeeDetails() {
           </InfoSection>
           <InfoSection>
             <Label><img src={message}/> Personal Email Address</Label>
-            <Value>victorsimmon@gmail.com</Value>
+            <Value>{userDetails?userDetails[0].assigned_user?.personal_email:''}</Value>
           </InfoSection>
           <InfoSection>
             <Label><LocationOnOutlinedIcon fontSize="small" /> Location</Label>
-            <Value>Ranchi, Jharkhand</Value>
+            <Value>{userDetails?userDetails[0].assigned_user?.location:''}</Value>
           </InfoSection>
           </Container>
       </CardContent>

@@ -58,7 +58,7 @@ const allRoutes = createBrowserRouter(
             <Route path={paths.dashboard} element={<AdminDashboard />} />
             <Route path={paths.counter} element={<CounterPage />} />
             <Route path={paths.employeeProfile} element={<EmployeeProfile/>} />
-            <Route path={`${paths.addNewAsset}`} element={<AddNewAsset/>}/>
+            <Route path={paths.addNewAsset} element={<AddNewAsset/>}/>
             <Route path={paths.allAssets} element={<AllAssets/>}/>
             <Route path={paths.raisedTickets} element={<RaisedTickets/>}/>
             <Route path={paths.warranty} element={<WarrantyExpiring/>} />

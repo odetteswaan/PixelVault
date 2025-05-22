@@ -1,11 +1,17 @@
 import { Box, Typography, Grid, Button, styled, IconButton } from "@mui/material"
 import { customTheme } from "src/themes/theme"
 import { colors } from 'src/themes/colors'
-import { employeeAssetAllocationData } from "./MockData"
+import { token } from "./MockData"
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { AssetAssignment } from "src/types/Assets.type"
+import {baseUrl,allAssetHistory} from 'src/config'
+import axios from "axios"
+import Loader from "src/components/loader/Loader"
 const EmployeeAssetAllocation = () => {
     const [open, setOpen] = useState(NaN)
+    const[assetAllocation,setAllocation]=useState<AssetAssignment[]|null>(null)
+    const[isLoading,setLoading]=useState(true)
     const handleOpen = (index: number) => {
         if (open === index) {
             setOpen(NaN)
@@ -13,6 +19,27 @@ const EmployeeAssetAllocation = () => {
         else {
             setOpen(index)
         }
+    }
+const  formatDate=(inputDate: string):string=> {
+  const date = new Date(inputDate);
+
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  };
+    return date.toLocaleDateString('en-GB', options);
+}
+    useEffect(()=>{
+        axios.get(`${baseUrl}${allAssetHistory}`,{headers:{
+            token:token
+        }}).then((res)=>{
+                setAllocation(res.data)
+                setLoading(false)
+        }).catch(err=>console.log(err))
+    },[])
+    if(isLoading){
+        return (<Loader/>)
     }
     return (
         <Wrapper>
@@ -22,17 +49,17 @@ const EmployeeAssetAllocation = () => {
                         <Grid size={1}><Typography className="tableHeading">No.</Typography></Grid>
                         <Grid size={3}><Typography className="tableHeading">Asset Allocation</Typography></Grid>
                         <Grid size={2}><Typography className="tableHeading">Status</Typography></Grid>
-                        <Grid size={3}><Typography className="tableHeading">Requested Date</Typography></Grid>
                         <Grid size={3}><Typography className="tableHeading">Allocated Date</Typography></Grid>
-                        {employeeAssetAllocationData.map((item) => (
+                        <Grid size={3}><Typography className="tableHeading">Returned Date</Typography></Grid>
+                        {assetAllocation?.map((item,index) => (
                             <>
                                 <Grid size={12}><hr className="horizontalRule" /></Grid>
-                                <Grid size={1}><Typography className="tableData">{item.id}</Typography></Grid>
-                                <Grid size={3}><Typography className="Asset">{item.assetAllocation}</Typography></Grid>
-                                <Grid size={2}><Button className={`${item.allocated === 'Returned' ? 'Returned' : 'allocated'}`}>
-                                    {item.allocated}</Button></Grid>
-                                <Grid size={3}><Typography className="tableData">{item.requestedDate}</Typography></Grid>
-                                <Grid size={3}><Typography className="tableData">{item.allocatedDate}</Typography></Grid>
+                                <Grid size={1}><Typography className="tableData">{index+1}</Typography></Grid>
+                                <Grid size={3}><Typography className="Asset">{item.asset.name}</Typography></Grid>
+                                <Grid size={2}><Button className={`${item.status === 'returned' ? 'Returned' : 'allocated'}`}>
+                                    {item.status}</Button></Grid>
+                                <Grid size={3}><Typography className="tableData">{formatDate(item.assigned_at)}</Typography></Grid>
+                                <Grid size={3}><Typography className="tableData">{item.returned_at?formatDate(item.returned_at):'-'}</Typography></Grid>
                             </>
                         ))}
                     </Grid>
@@ -40,11 +67,11 @@ const EmployeeAssetAllocation = () => {
                 </Box>
                 <Box className="cardCollection">
                     <Grid container rowSpacing={2} columnSpacing={3}>
-                        {employeeAssetAllocationData.map((item, index) => (
+                        {assetAllocation?.map((item, index) => (
 
                             <Grid size={{ md: 6, sm: 6, xs: 12 }}>
                                 <Box className="headingContainer">
-                                    <Typography className="heading">{item.assetAllocation}</Typography>
+                                    <Typography className="heading">{item.asset.name}</Typography>
                                     <IconButton onClick={() => handleOpen(index)} className="dimension">
                                         {open === index ? <KeyboardArrowUp /> :
                                             <KeyboardArrowDown />
@@ -54,19 +81,19 @@ const EmployeeAssetAllocation = () => {
                                 <Box className={`${open === index ? 'bodyContainer' : 'bodyContainerNone'}`}>
                                     <Box className="dateContainer">
                                         <Box className="date">
-                                            <Typography className="contentHeading">Requested Date</Typography>
-                                            <Typography className="content">{item.requestedDate}</Typography>
+                                            <Typography className="contentHeading">Allocated Date</Typography>
+                                            <Typography className="content">{formatDate(item.assigned_at)}</Typography>
                                         </Box>
                                         <Box className="date">
-                                            <Typography className="contentHeading">Allocated Date</Typography>
-                                            <Typography className="content">{item.allocatedDate}</Typography>
+                                            <Typography className="contentHeading">Returned Date</Typography>
+                                            <Typography className="content">{item.returned_at?formatDate(item.returned_at):'-'}</Typography>
                                         </Box>
                                     </Box>
                                     <hr className="horizontalRule" />
 
                                     <Box className="date">
                                         <Typography className="contentHeading">Status</Typography>
-                                        <Button className={`${item.allocated === 'Returned' ? 'Returned' : 'allocated'}`}>{item.allocated}</Button>
+                                        <Button className={`${item.status === 'returned' ? 'Returned' : 'allocated'}`}>{item.status}</Button>
                                     </Box>
                                 </Box>
                             </Grid>

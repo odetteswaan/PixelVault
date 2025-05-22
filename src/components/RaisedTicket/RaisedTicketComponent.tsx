@@ -1,16 +1,27 @@
 import { Box, Typography, styled, Grid, Button, IconButton } from "@mui/material";
-import { RaisedTicketData } from 'src/pages/Admin/MockData'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
+import { token } from "src/pages/Admin/MockData";
 import { customTheme } from "src/themes/theme";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import ReplyPopUp from "src/pages/Admin/ReplyPopUp";
-const RaisedTicketComponent = () => {
+import axios from "axios";
+import { baseUrl, ticketByAssetId } from "src/config";
+import { EmployeeTickets } from "src/types/Employee.type";
+const RaisedTicketComponent = (props:{productId:string|null}) => {
     const [showProfile, setShowProfile] = useState(NaN)
     const [showPopup, setShowPopup] = useState(NaN)
     const [showModal, setShowModal] = useState(false)
-
+    const[assetTickets,setTickets]=useState<EmployeeTickets[]|null|[]>(null)
+    const[ticketId,setTicket]=useState('')
+    const[loading,setLoading]=useState(true)
+    useEffect(()=>{
+      axios.get(`${baseUrl}${ticketByAssetId(props.productId)}`,{headers:{token:token}}).then(res=>{
+        setTickets(res.data)
+        setLoading(false)
+      }).catch(err=>console.log(err))
+    },[])
     const handleShow = (index: number) => {
         if (index === showProfile) {
             setShowProfile(NaN)
@@ -20,6 +31,16 @@ const RaisedTicketComponent = () => {
         }
 
     }
+     const  formatDate=(inputDate: string):string=> {
+  const date = new Date(inputDate);
+
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  };
+    return date.toLocaleDateString('en-GB', options);
+}
     const handlePop = (index: number) => {
         if (index === showPopup) {
             setShowPopup(NaN)
@@ -31,6 +52,9 @@ const RaisedTicketComponent = () => {
     const onClose = () => {
         setShowModal(false)
     }
+   if(loading){
+    return <p>Loading issue Raised For this assets...</p>
+   }
     return (
         <Wrapper>
             <Box className="TicketRaisedTable">
@@ -43,21 +67,21 @@ const RaisedTicketComponent = () => {
                     <Grid size={1.5}><Typography className="heading">Status</Typography></Grid>
                     <Grid size={3.5}><Typography className="heading">Query</Typography></Grid>
                     <Grid size={1}><Typography className="heading">Action</Typography></Grid>
-                    {RaisedTicketData.slice(0, 5).map((item, index) => (
+                    {assetTickets?.slice(0, 5).map((item, index) => (
 
                         <React.Fragment key={index}>
                             <hr className="horizontalRule" />
-                            <Grid size={2}><Typography className="employeeTableData fontWeight">{item.username}</Typography></Grid>
-                            <Grid size={1.5}><Typography className="employeeTableData">{item.date}</Typography></Grid>
-                            <Grid size={2.5}><Typography className="employeeTableData">{item.emailId} </Typography></Grid>
-                            <Grid size={1.5}><Button fullWidth className={item.status === 'Active' ? 'activeBtn' : 'returnBtn'}>{item.status}</Button></Grid>
-                            <Grid size={3.5}><Typography className="employeeTableData">{item.Query}</Typography></Grid>
+                            <Grid size={2}><Typography className="employeeTableData fontWeight">{item.user.full_name}</Typography></Grid>
+                            <Grid size={1.5}><Typography className="employeeTableData">{formatDate(item.created_at)}</Typography></Grid>
+                            <Grid size={2.5}><Typography className="employeeTableData">{item.user.official_email} </Typography></Grid>
+                            <Grid size={1.5}><Button fullWidth className={item.status === 'raised' ? 'activeBtn' : 'returnBtn'}>{item.status}</Button></Grid>
+                            <Grid size={3.5}><Typography className="employeeTableData">{item.query}</Typography></Grid>
                             <Grid size={1}>
                                 <Box className="moreIconContainer" onClick={() => handlePop(index)}>
                                     <MoreVertIcon className="icon" />
                                 </Box>
                                 <Box className={showPopup === index ? 'popupWindow' : 'none'}>
-                                    <Box onClick={() => setShowModal(true)} className="box1"><Typography className="popuptext">Reply to this Dispute</Typography> </Box>
+                                    <Box onClick={() => {setShowModal(true);setTicket(item.id.toString())}} className="box1"><Typography className="popuptext">Reply to this Dispute</Typography> </Box>
                                     <Box className="box2"><Typography className="popuptext">Close this Dispute</Typography></Box>
                                     <Box className="box3"><Typography className="popuptext">Mark as a resolved</Typography></Box>
 
@@ -69,15 +93,15 @@ const RaisedTicketComponent = () => {
 
                 </Grid>
             </Box>
-            {showModal ? <ReplyPopUp open={showModal} onClose={onClose} /> : ''}
+            {showModal ? <ReplyPopUp open={showModal} onClose={onClose} id={ticketId}/> : ''}
             <Box className="CardContainer">
                 <Typography className="mainHeading">Issues Raised For Asset</Typography>
-                {RaisedTicketData.slice(0, 5).map((item, index) => (
+                {assetTickets?.slice(0, 5).map((item, index) => (
 
                     <React.Fragment key={index}>
                         <Box>
                             <Box className="cardHeader">
-                                <Typography className="cardHeading">{item.username}</Typography>
+                                <Typography className="cardHeading">{item.user.full_name}</Typography>
                                 <IconButton onClick={() => handleShow(index)} className="iconButton">
                                     {showProfile !== index ? <KeyboardArrowDown /> : <KeyboardArrowUp />}
                                 </IconButton>
@@ -86,25 +110,25 @@ const RaisedTicketComponent = () => {
                                 <Box className="employeeDetails">
                                     <Box className="details">
                                         <Typography className="fieldHeading">Employee Email ID</Typography>
-                                        <Typography className="fieldValue">{item.emailId}</Typography>
+                                        <Typography className="fieldValue">{item.user.official_email}</Typography>
                                     </Box>
                                     <Box className="details">
                                         <Typography className="fieldHeading">Request Date</Typography>
-                                        <Typography className="fieldValue">{item.date} </Typography>
+                                        <Typography className="fieldValue">{formatDate(item.created_at)} </Typography>
                                     </Box>
                                 </Box>
                                 <hr className="horizontalRule" />
                                 <Box className="employeeDetails">
                                     <Box className="details">
                                         <Typography className="fieldHeading">Query</Typography>
-                                        <Typography className="fieldValue">{item.Query}</Typography>
+                                        <Typography className="fieldValue">{item.query}</Typography>
                                     </Box>
                                 </Box>
                                 <hr className="horizontalRule" />
                                 <Box className="employeeDetails">
                                     <Box className="details">
                                         <Typography className="fieldHeading">Status</Typography>
-                                        <Button className={item.status === 'Active' ? 'activeBtn' : 'returnBtn'}>{item.status}</Button>
+                                        <Button className={item.status === 'raised' ? 'activeBtn' : 'returnBtn'}>{item.status}</Button>
                                     </Box>
                                     <Box className="details">
                                         <Typography className="fieldHeading">Action</Typography>
@@ -112,7 +136,7 @@ const RaisedTicketComponent = () => {
                                             <MoreVertIcon className="icon" />
                                         </Box>
                                         <Box className={`${showPopup === index ? 'popupWindowSmall' : 'none'}`}>
-                                            <Box className="box1Small" onClick={() => setShowModal(true)}><Typography className="popuptext">Reply to this Dispute</Typography> </Box>
+                                            <Box className="box1Small" onClick={() => {setShowModal(true);setTicket(item.id.toString())}}><Typography className="popuptext">Reply to this Dispute</Typography> </Box>
                                             <Box className="box2Small"><Typography className="popuptext">Close this Dispute</Typography></Box>
                                             <Box className="box3Small"><Typography className="popuptext">Mark as a resolved</Typography></Box>
 

@@ -1,3 +1,25 @@
+export type User = {
+  id: number;
+  emp_id: string;
+  official_email: string;
+  full_name: string;
+  designation: string;
+  password: string | null;
+  mobile: string | null;
+  personal_email: string | null;
+  city: string | null;
+  state: string | null;
+  pin_code: string | null;
+  address: string | null;
+  user_role: string;
+  created_at: string;
+  updated_at: string;
+  password_digest: string;
+  status: string;
+  phone_number: null|string,
+  location:null|string;
+  profile_image:string
+};
 export type assetType = {
   id: number;
   name: string;
@@ -13,31 +35,13 @@ export type assetType = {
   purchased_from: string;
   purchased_type: string;
   asset_cost: number;
-  processor: null|string;
-  graphics: null|string;
+  processor: string;
+  graphics: string;
   imei_num_1: null;
   imei_num_2: null;
   invoice: string;
   allocation_status: string;
-  user: null|{
-    id: number;
-    emp_id: string;
-    official_email: string;
-    full_name: string;
-    designation: string;
-    password: string | null;
-    mobile: string | null;
-    personal_email: string | null;
-    city: string | null;
-    state: string | null;
-    pin_code: string | null;
-    address: string | null;
-    user_role: 'user' | 'admin' | string; // adjust roles as needed
-    created_at: string; // ISO date string
-    updated_at: string; // ISO date string
-    password_digest: string;
-    status: 'pending' | 'active' | 'inactive' | string; // adjust statuses as needed
-  };
+  user: null|User;
   allocation_date: null;
   profile_image: null;
   images: string[];
@@ -70,26 +74,11 @@ export type assestDetailType= {
   images: string[];
    acknowledgment: null|string,
     signed_acknowledgment: null|string,
-    assigned_user: {
-        id: number,
-        full_name: null|string,
-        emp_id: string,
-        official_email: string
-        personal_email: null,
-        phone_number: null,
-        department: null,
-        designation: string,
-        date_of_joining: null,
-        location: null,
-        profile_image: null,
-      created_at: null,
-        updated_at:string,
-        status: string
-    }|null
+    assigned_user: User|null
 };
 
 
-type Asset = {
+export type Asset = {
   id: number;
   name: string;
   asset_type: string;
@@ -117,25 +106,6 @@ type Asset = {
   graphic_card: string | null;
 };
 
-type User = {
-  id: number;
-  emp_id: string;
-  official_email: string;
-  full_name: string;
-  designation: string;
-  password: string | null;
-  mobile: string | null;
-  personal_email: string | null;
-  city: string | null;
-  state: string | null;
-  pin_code: string | null;
-  address: string | null;
-  user_role: string;
-  created_at: string;
-  updated_at: string;
-  password_digest: string;
-  status: string;
-};
 
 export type AssetAssignment = {
   id: number;
@@ -146,4 +116,3 @@ export type AssetAssignment = {
   status: string;
   employee_name: string;
 };
-
