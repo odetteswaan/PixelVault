@@ -7,6 +7,7 @@ export const paths = {
   forgotPassword: 'forgotPassword',
   requestProfile: 'request-profile',
   userProfile: 'user-profile',
+  adminProfile:'admin-profile',
   dashboard: 'dashboard',
   assets: 'assets',
   issues: 'issues-raised',

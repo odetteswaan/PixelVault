@@ -146,7 +146,8 @@ function TopNav() {
   const { header, showBackButton } = getHeaderAndSubheading();
 
   const handleProfileClick = () => {
-    navigate('/user-profile');
+    const role = localStorage.getItem('role');
+    navigate(`/${role}/admin-profile`);
   };
   const handleGoBack = () => {
     navigate(-1);
