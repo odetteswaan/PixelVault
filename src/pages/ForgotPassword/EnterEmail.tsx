@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, styled } from '@mui/material';
-import PasswordWithdraw from 'src/assets/Passwordwithdraw.svg';
+import PasswordWithdraw from 'src/assets/PasswordWithdraw.svg';
 import { colors } from 'src/themes/colors';
 import { customTheme } from 'src/themes/theme';
 import axios from 'axios';
